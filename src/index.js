@@ -18,6 +18,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 // react library for routing
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 // plugins styles from node_modules
 import "react-notification-alert/dist/animate.css";
@@ -39,13 +41,15 @@ import AuthLayout from "./layouts/Auth.js";
 import IndexView from "./views/Index.js";
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <Route path="/admin" render={(props) => <AdminLayout {...props} />} />   
-      <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
-      <Route path="/" render={(props) => <AdminLayout {...props} />} />
-      <Redirect from="*" to="/" />
-    </Switch>
-  </BrowserRouter>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/admin" render={(props) => <AdminLayout {...props} />} />   
+        <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
+        <Route path="/" render={(props) => <AdminLayout {...props} />} />
+        <Redirect from="*" to="/" />
+      </Switch>
+    </BrowserRouter>
+  </Provider>,
   document.getElementById("root")
 );
