@@ -7,7 +7,7 @@ import { CREATE_GROUP,
 
 const initialState = [];
 
-export const groupReducer = (groups = initialState, action) => {
+const groupReducer = (groups = initialState, action) => {
     const { type, payload } = action;
 
     switch (type) {
@@ -30,3 +30,5 @@ export const groupReducer = (groups = initialState, action) => {
             return groups;
     }
 }
+
+export default groupReducer

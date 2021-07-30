@@ -38,6 +38,8 @@ import {
 import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
 
 import { employees } from "./EmployeesData.js";
+import { useDispatch, useSelector } from  "react-redux";
+
 
 
 
@@ -74,7 +76,7 @@ const { SearchBar } = Search;
 
 function Employees(props) {
 
-  
+  const users = useSelector(state => state.users)
 
   const employeeDetails = (e)=> {  
       var { id} = e.target;
@@ -166,7 +168,7 @@ function Employees(props) {
                 </p>
               </CardHeader>
               <ToolkitProvider
-                data={employees}
+                data={users}//employees
                 keyField="firstName"
                 columns={[
                   {

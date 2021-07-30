@@ -5,7 +5,7 @@ import { CREATE_ROLE,
 
 const initialState = [];
 
-export const roleReducer = (roles = initialState, action) => {
+const roleReducer = (roles = initialState, action) => {
     const { type, payload } = action;
 
     switch (type) {
@@ -22,3 +22,5 @@ export const roleReducer = (roles = initialState, action) => {
             return roles;
     }
 }
+
+export default roleReducer

@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
-import users from "./userReducer";
-import groups from "./groupReducer"
-import bestPractices from "./bestPracticeReducer";
-import roles from "./roleReducer";
-import trainings from './trainingsReducer';
+import users from "./users";
+import groups from "./groups"
+import bestPractices from "./bestPractices";
+import roles from "./roles";
+import trainings from './trainings';
 
 export const rootReducer = combineReducers({
     users: users,

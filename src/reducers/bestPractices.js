@@ -1,4 +1,5 @@
-import { CREATE_BEST_PRACTICE, 
+import { 
+    CREATE_BEST_PRACTICE, 
     ADD_ATTACHMENT_TO_BEST_PRACTICE, 
     DELETE_ATTACHMENT_FROM_BEST_PRACTICE,
     DELETE_BEST_PRACTICE, 
@@ -10,7 +11,7 @@ import { CREATE_BEST_PRACTICE,
 
 const initialState = [];
 
-export const bestPracticeReducer = (bestPractices = initialState, action) => {
+const bestPracticeReducer = (bestPractices = initialState, action) => {
     const { type, payload } = action;
 
     switch (type) {
@@ -41,3 +42,5 @@ export const bestPracticeReducer = (bestPractices = initialState, action) => {
             return bestPractices;
     }
 }
+
+export default bestPracticeReducer

@@ -6,10 +6,10 @@ import { ONBOARD_EMPLOYEES,
      RETRIEVE_EMPLOYEES, 
      RETRIEVE_CARE_MEMBERS,
      SEARCH_CARE_USER } from "actions/types/user";
+import { user_initialState } from '../initialSates/user';
 
-const initialState = [];
 
-export const userReducer = (users = initialState, action) => {
+const userReducer = (users = user_initialState, action) => {
     const { type, payload } = action;
 
     switch (type) {
@@ -41,3 +41,5 @@ export const userReducer = (users = initialState, action) => {
             return users;
     }
 }
+
+export default userReducer

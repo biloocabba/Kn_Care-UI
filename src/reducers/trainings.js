@@ -10,7 +10,7 @@ import {
 
 const initialState = []
 
-export const trainingReducer = (trainings = initialState, action) => {
+const trainingReducer = (trainings = initialState, action) => {
   const { type, payload } = action
 
   switch (type) {
@@ -27,6 +27,7 @@ export const trainingReducer = (trainings = initialState, action) => {
       return
 
     case CREATE_TRAINING_TRAIL:
+      
       return
     case ADD_TRAINING_TO_TRAIL:
       return
@@ -37,3 +38,5 @@ export const trainingReducer = (trainings = initialState, action) => {
       return trainings
   }
 }
+
+export default trainingReducer;
