@@ -35,12 +35,14 @@ import { employees } from "./EmployeesData.js";
 
 // core components
 import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
-
+import { user_initialState } from '../../../initialSates/user';
 function EmployeeDetailsPage(props) {
 
   let { id } = useParams(); //see in routes path: "/users/employee-details/:id",
  // const importedEmployees =employees;
-  let employee=employees.find(emp => emp.id===parseInt(id));
+  // let employee=employees.find(emp => emp.id===parseInt(id));
+
+  let user=user_initialState.find(user => user.id === parseInt(id))
  
   return (
     <>
@@ -93,7 +95,7 @@ function EmployeeDetailsPage(props) {
                           </label>
                           <Input                            
                             id="input-first-name"
-                            value={employee.firstName}
+                            value={user.firstName}
                             type="text"
                             disabled = {true}
                           />
@@ -109,7 +111,7 @@ function EmployeeDetailsPage(props) {
                           </label>
                           <Input                           
                             id="input-last-name"
-                            value={employee.lastName}
+                            value={user.lastName}
                             disabled = {true}
                             type="text"
                           />
@@ -129,7 +131,7 @@ function EmployeeDetailsPage(props) {
                           </label>
                           <Input                           
                             id="input-username"
-                            value={employee.internationalName}
+                            value={user.internationalName}
                             disabled = {true}
                             type="text"                         
                           />
@@ -145,7 +147,7 @@ function EmployeeDetailsPage(props) {
                           </label>
                           <Input
                             id="input-email"
-                            value={employee.email}
+                            value={user.email}
                             disabled = {true}
                             type="email"
                           />
@@ -171,7 +173,7 @@ function EmployeeDetailsPage(props) {
                             Address
                           </label>
                           <Input
-                            defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
+                            defaultValue={user.address}
                             id="input-address"
                             placeholder="Home Address"
                             type="text"
@@ -189,7 +191,7 @@ function EmployeeDetailsPage(props) {
                             City
                           </label>
                           <Input
-                            defaultValue="New York"
+                            defaultValue={user.city}
                             id="input-city"
                             placeholder="City"
                             type="text"
@@ -205,7 +207,7 @@ function EmployeeDetailsPage(props) {
                             Country
                           </label>
                           <Input
-                            defaultValue="United States"
+                            defaultValue={user.country}
                             id="input-country"
                             placeholder="Country"
                             type="text"
@@ -222,6 +224,7 @@ function EmployeeDetailsPage(props) {
                           </label>
                           <Input
                             id="input-postal-code"
+                            value={user.postalCode}
                             placeholder="Postal code"
                             type="number"
                           />
@@ -239,7 +242,7 @@ function EmployeeDetailsPage(props) {
                           <label className="form-control-label">Title</label>
                           <Input
                                 id="title"
-                                value={employee.title}
+                                value={user.title}
                                 disabled = {true}
                                 type="text"
                               />
@@ -262,7 +265,7 @@ function EmployeeDetailsPage(props) {
                           <label className="form-control-label">Company Code</label>
                           <Input
                                 id="input-postal-code"
-                                value={employee.companyCode}
+                                value={user.companyCode}
                                 disabled = {true}
                                 type="text"
                               />
@@ -276,7 +279,7 @@ function EmployeeDetailsPage(props) {
                             <label className="form-control-label">Business Unit</label>
                             <Input
                                   id="input-postal-code"
-                                  value={employee.businessUnit}
+                                  value={user.businessUnit}
                                   disabled = {true}
                                   type="text"
                                 />
@@ -288,7 +291,7 @@ function EmployeeDetailsPage(props) {
                             <label className="form-control-label">Cost Center</label>
                             <Input
                                   id="input-postal-code"
-                                  value={employee.costCenter}
+                                  value={user.costCenter}
                                   disabled = {true}
                                   type="text"
                                 />
@@ -299,7 +302,7 @@ function EmployeeDetailsPage(props) {
                             <label className="form-control-label">Management Group</label>
                             <Input
                                   id="input-postal-code"
-                                  value={employee.managementGroup}
+                                  value={user.managementGroup}
                                   disabled = {true}
                                   type="text"
                                 />

@@ -1,4 +1,5 @@
-import { ONBOARD_EMPLOYEES, 
+import { ONBOARD_EMPLOYEES,
+    REMOVE_EMPLOYEE,
     OFFBOARD_CARE_USER, 
     RESIGN_CARE_USER,
      LOGIN_CARE_USER, 
@@ -15,6 +16,9 @@ const userReducer = (users = user_initialState, action) => {
     switch (type) {
         case ONBOARD_EMPLOYEES:
             return;
+
+        case REMOVE_EMPLOYEE:
+            return users.filter(({ id }) => id !== payload.id);
 
         case OFFBOARD_CARE_USER:
             return;

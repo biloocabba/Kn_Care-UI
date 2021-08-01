@@ -38,10 +38,10 @@ import {
 import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
 
 import { employees } from "./EmployeesData.js";
+import { user_initialState } from '../../../initialSates/user';
+
 import { useDispatch, useSelector } from  "react-redux";
-
-
-
+import { removeEmployee } from "actions/users.js";
 
 
 const pagination = paginationFactory({
@@ -77,6 +77,8 @@ const { SearchBar } = Search;
 function Employees(props) {
 
   const users = useSelector(state => state.users)
+  const dispatch = useDispatch();
+
 
   const employeeDetails = (e)=> {  
       var { id} = e.target;
@@ -84,14 +86,13 @@ function Employees(props) {
   }
 
   const employeeRemove = (e)=> {       
-    var { id} = e.target;   
-    let empIndex=employees.findIndex(emp => emp.id!==parseInt(id));
-    console.log(employees[empIndex]);
-    console.log(employees.length);
-    employees= employees.splice(id,  1);
-    console.log(employees.length);
+    var { id} = e.target;
 
-    //props.history.push('/admin/users/employee-details/'+id);   
+    console.log(id)
+
+    dispatch(removeEmployee(id))
+
+    //let empIndex=users.findIndex(emp => emp.id!==parseInt(id));
   }
   
   const formatActionButtonCell =(cell, row)=>{  

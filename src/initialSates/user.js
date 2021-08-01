@@ -18,5 +18,21 @@ export const user_initialState = [
 
 
   },
-  { id: 2, title: 'title 2', description: 'description 2', published: true },
+  { 
+    id: 2, 
+    firstName: 'firstName2', 
+    lastName: 'lastName2', 
+    internationalName: 'internationalName2', 
+    email: 'test@test.com',
+    address: 'address2',
+    city: 'City2',
+    country: 'Country2',
+    postalCode: 'PostalCode2',
+    title:'title2',
+    companyPhone: 'companyPhone2',
+    companyCode: 'companyCode2',
+    buissnessUnit: 'buisnessUnit2',
+    costCenter: 'costCenter2',
+    managementGroup: 'managementGroup2'
+  },
 ]
