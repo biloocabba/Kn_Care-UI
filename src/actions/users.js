@@ -1,5 +1,5 @@
 import { CREATE_USER, UPDATE_USER, DELETE_USER, RETRIEVE_USERS} from "./types/user"
-import { user_initialState } from '../initialSates/user';
+import { user_initialState } from '../initialStates/user';
 
 export const createUser = (data) => {
     console.log(data)

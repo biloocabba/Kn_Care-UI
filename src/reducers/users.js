@@ -4,7 +4,7 @@ import {
     RETRIEVE_USERS,
     DELETE_USER
  } from "actions/types/user";
-import { user_initialState } from '../initialSates/user';
+import { user_initialState } from '../initialStates/user';
 
 
 const userReducer = (users = user_initialState, action) => {
