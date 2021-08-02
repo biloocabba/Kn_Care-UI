@@ -1,12 +1,9 @@
-import { ONBOARD_EMPLOYEES,
-    REMOVE_EMPLOYEE,
-    OFFBOARD_CARE_USER, 
-    RESIGN_CARE_USER,
-     LOGIN_CARE_USER, 
-     LOGOUT_CARE_USER, 
-     RETRIEVE_EMPLOYEES, 
-     RETRIEVE_CARE_MEMBERS,
-     SEARCH_CARE_USER } from "actions/types/user";
+import { 
+    CREATE_USER, 
+    UPDATE_USER, 
+    RETRIEVE_USERS,
+    DELETE_USER
+ } from "actions/types/user";
 import { user_initialState } from '../initialSates/user';
 
 
@@ -14,33 +11,28 @@ const userReducer = (users = user_initialState, action) => {
     const { type, payload } = action;
 
     switch (type) {
-        case ONBOARD_EMPLOYEES:
-            return;
+        case CREATE_USER:
+            console.log(payload)
+            return [...users, payload];
 
-        case REMOVE_EMPLOYEE:
+        case RETRIEVE_USERS:
+            return payload;
+           
+        case UPDATE_USER:
+            return users.map(user => {
+                if(user.id === payload.id){
+                    return {
+                        ...user,
+                        ...payload
+                    };
+                } else {
+                    return user
+                }
+            });
+
+        case DELETE_USER:
             return users.filter(({ id }) => id !== payload.id);
 
-        case OFFBOARD_CARE_USER:
-            return;
-
-        case RESIGN_CARE_USER:
-            return;
-
-        case LOGIN_CARE_USER:
-            return;
-
-        case LOGOUT_CARE_USER:
-            return;
-
-        case RETRIEVE_EMPLOYEES:
-            return;
-
-        case RETRIEVE_CARE_MEMBERS:
-            return;
-
-        case SEARCH_CARE_USER:
-            return;
-    
         default:
             return users;
     }

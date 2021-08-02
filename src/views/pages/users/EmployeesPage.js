@@ -14,34 +14,28 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {  } from 'react'
 // react plugin that prints a given react component
-import ReactToPrint from "react-to-print";
 // react component for creating dynamic tables
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory from "react-bootstrap-table2-paginator";
-import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import BootstrapTable from 'react-bootstrap-table-next'
+import paginationFactory from 'react-bootstrap-table2-paginator'
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit'
 // react component used to create sweet alerts
-import ReactBSAlert from "react-bootstrap-sweetalert";
+import ReactBSAlert from 'react-bootstrap-sweetalert'
 // reactstrap components
 import {
   Button,
-  ButtonGroup,
   Card,
   CardHeader,
   Container,
   Row,
-  Col,
-  UncontrolledTooltip,
-} from "reactstrap";
+} from 'reactstrap'
 // core components
-import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
+import GradientEmptyHeader from 'components/Headers/GradientEmptyHeader.js'
 
-import { employees } from "./EmployeesData.js";
-import { user_initialState } from '../../../initialSates/user';
 
-import { useDispatch, useSelector } from  "react-redux";
-import { removeEmployee } from "actions/users.js";
+import { useDispatch, useSelector } from 'react-redux'
+import { deleteUser } from 'actions/users.js'
 
 
 const pagination = paginationFactory({
@@ -52,7 +46,7 @@ const pagination = paginationFactory({
   sizePerPageRenderer: ({ options, currSizePerPage, onSizePerPageChange }) => (
     <div className="dataTables_length" id="datatable-basic_length">
       <label>
-        Show{" "}
+        Show{' '}
         {
           <select
             name="datatable-basic_length"
@@ -65,84 +59,95 @@ const pagination = paginationFactory({
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
-        }{" "}
+        }{' '}
         entries.
       </label>
     </div>
   ),
-});
+})
 
-const { SearchBar } = Search;
+const { SearchBar } = Search
 
 function Employees(props) {
 
-  const users = useSelector(state => state.users)
-  const dispatch = useDispatch();
+  const users = useSelector((state) => state.users)
+  const dispatch = useDispatch()
 
 
-  const employeeDetails = (e)=> {  
-      var { id} = e.target;
-      props.history.push('/admin/users/employee-details/'+id);     
+
+  const employeeDetails = (e) => {
+    var { id } = e.target
+    props.history.push('/admin/users/employee-details/' + id)
   }
 
-  const employeeRemove = (e)=> {       
-    var { id} = e.target;
-
-    console.log(id)
-
-    dispatch(removeEmployee(id))
-
-    //let empIndex=users.findIndex(emp => emp.id!==parseInt(id));
-  }
-  
-  const formatActionButtonCell =(cell, row)=>{  
-      
-    return (    <>
-                    <Button id={row.id} className="btn-icon btn-2" type="button" color="info" onClick={employeeDetails}>
-                        <span id={row.id} className="btn-inner--icon">
-                          <i id={row.id} className="ni ni-badge" />
-                        </span>                        
-                      </Button>
-                      <Button id={row.id} className="btn-icon btn-2" color="danger" type="button" onClick={employeeRemove}>
-                        <span id={row.id} className="btn-inner--icon">
-                          <i id={row.id} className="ni ni-fat-remove" />
-                        </span>
-                      </Button>
-                      </>);
-        
-  
+  const employeeRemove = (e) => {
+    var { id } = e.target
+    dispatch(deleteUser(id))
   }
 
-  const [alert, setAlert] = React.useState(null);
-  const componentRef = React.useRef(null);
+  const selectRow = {
+    mode: 'radio' // single row selection
+  };
+
+  const formatActionButtonCell = (cell, row) => {
+    return (
+      <>
+        <Button
+          id={row.id}
+          className="btn-icon btn-2"
+          type="button"
+          color="info"
+          onClick={employeeDetails}
+        >
+          <span id={row.id} className="btn-inner--icon">
+            <i id={row.id} className="ni ni-badge" />
+          </span>
+        </Button>
+        <Button
+          id={row.id}
+          className="btn-icon btn-2"
+          color="danger"
+          type="button"
+          // onClick={employeeRemove(row.id)}
+        >
+          <span id={row.id} className="btn-inner--icon">
+            <i id={row.id} className="ni ni-fat-remove" />
+          </span>
+        </Button>
+      </>
+    )
+  }
+
+  const [alert, setAlert] = React.useState(null)
+  const componentRef = React.useRef(null)
   // this function will copy to clipboard an entire table,
   // so you can paste it inside an excel or csv file
   const copyToClipboardAsTable = (el) => {
     var body = document.body,
       range,
-      sel;
+      sel
     if (document.createRange && window.getSelection) {
-      range = document.createRange();
-      sel = window.getSelection();
-      sel.removeAllRanges();
+      range = document.createRange()
+      sel = window.getSelection()
+      sel.removeAllRanges()
       try {
-        range.selectNodeContents(el);
-        sel.addRange(range);
+        range.selectNodeContents(el)
+        sel.addRange(range)
       } catch (e) {
-        range.selectNode(el);
-        sel.addRange(range);
+        range.selectNode(el)
+        sel.addRange(range)
       }
-      document.execCommand("copy");
+      document.execCommand('copy')
     } else if (body.createTextRange) {
-      range = body.createTextRange();
-      range.moveToElementText(el);
-      range.select();
-      range.execCommand("Copy");
+      range = body.createTextRange()
+      range.moveToElementText(el)
+      range.select()
+      range.execCommand('Copy')
     }
     setAlert(
       <ReactBSAlert
         success
-        style={{ display: "block", marginTop: "-100px" }}
+        style={{ display: 'block', marginTop: '-100px' }}
         title="Good job!"
         onConfirm={() => setAlert(null)}
         onCancel={() => setAlert(null)}
@@ -151,80 +156,79 @@ function Employees(props) {
       >
         Copied to clipboard!
       </ReactBSAlert>
-    );
-  };
+    )
+  }
 
   return (
     <>
       {alert}
-      <GradientEmptyHeader name="Employees"  />
+      <GradientEmptyHeader name="Employees" />
       <Container className="mt--6" fluid>
         <Row>
           <div className="col">
             <Card>
               <CardHeader>
                 <h3 className="mb-0">Employees</h3>
-                <p className="text-sm mb-0">
-                  Kn Employees from PDM
-                </p>
+                <p className="text-sm mb-0">Kn Employees from PDM</p>
               </CardHeader>
               <ToolkitProvider
-                data={users}//employees
+                data={users} //employees
                 keyField="firstName"
                 columns={[
                   {
-                    dataField: "firstName",
-                    text: "First Name",
-                    hidden : true,
+                    dataField: 'firstName',
+                    text: 'First Name',
+                    hidden: true,
                   },
                   {
-                    dataField: "lastName",
-                    text: "lastName",
-                    hidden : true,
+                    dataField: 'lastName',
+                    text: 'lastName',
+                    hidden: true,
                   },
                   {
-                    dataField: "internationalName",
-                    text: "int Name",
-                    sort: true                    
-                  },
-                  {
-                    dataField: "title",
-                    text: "title",
-                    sort: true ,
-                    style: { width:'50px' }                   
-                  },
-                  {
-                    dataField: "businessUnit",
-                    text: "bUnit",
-                    sort: true,
-                    style: { width:'50px' }
-                  },
-                  {
-                    dataField: "managementGroup",
-                    text: "Man Group",
-                    sort: true,
-                    style: { width:'50px' }
-                  },
-                  {
-                    dataField: "companyCode",
-                    text: "companyCode",
-                    sort: true,
-                    style: { width:'50px' }
-                  },
-                  {
-                    dataField: "costCenter",
-                    text: "costCenter",
+                    dataField: 'internationalName',
+                    text: 'int Name',
                     sort: true,
                   },
                   {
-                    dataField: "country",
-                    text: "country",
+                    dataField: 'title',
+                    text: 'title',
                     sort: true,
-                  },{  
-                    dataField: 'action',    
-                    text:'',
-                    formatter: formatActionButtonCell
-                }
+                    style: { width: '50px' },
+                  },
+                  {
+                    dataField: 'businessUnit',
+                    text: 'bUnit',
+                    sort: true,
+                    style: { width: '50px' },
+                  },
+                  {
+                    dataField: 'managementGroup',
+                    text: 'Man Group',
+                    sort: true,
+                    style: { width: '50px' },
+                  },
+                  {
+                    dataField: 'companyCode',
+                    text: 'companyCode',
+                    sort: true,
+                    style: { width: '50px' },
+                  },
+                  {
+                    dataField: 'costCenter',
+                    text: 'costCenter',
+                    sort: true,
+                  },
+                  {
+                    dataField: 'country',
+                    text: 'country',
+                    sort: true,
+                  },
+                  {
+                    dataField: 'action',
+                    text: '',
+                    formatter: formatActionButtonCell,
+                  },
                 ]}
                 search
               >
@@ -248,18 +252,17 @@ function Employees(props) {
                       bootstrap4={true}
                       pagination={pagination}
                       bordered={false}
-                      deleteRow={ true }
+                      deleteRow={true}
                     />
                   </div>
                 )}
               </ToolkitProvider>
             </Card>
-         
           </div>
         </Row>
       </Container>
     </>
-  );
+  )
 }
 
-export default Employees;
+export default Employees

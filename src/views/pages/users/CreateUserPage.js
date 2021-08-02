@@ -14,11 +14,9 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from 'react'
-
+import React, { useState } from 'react'
 // reactstrap components
 import {
-  Button,
   Card,
   CardHeader,
   CardBody,
@@ -28,25 +26,57 @@ import {
   Container,
   Row,
   Col,
+  Button,
 } from 'reactstrap'
-
-import { useParams } from 'react-router-dom'
-import { employees } from './EmployeesData.js'
-
 // core components
-import GradientEmptyHeader from 'components/Headers/GradientEmptyHeader.js'
-import { useSelector } from 'react-redux'
+import { v4 as uuidv4 } from 'uuid'
+import { useDispatch } from 'react-redux'
+import { createUser } from '../../../actions/users'
 
-function EmployeeDetailsPage(props) {
-  let { id } = useParams() //see in routes path: "/users/employee-details/:id",
+function CreateUserPage() {
+  const initialState = {
+    id: 3,
+    firstName: '',
+    lastName: '',
+    internationalName: '',
+    email: '',
+    address: '',
+    city: '',
+    country: '',
+    postalCode: '',
+    title: '',
+    companyPhone: '',
+    companyCode: '',
+    buisnessUnit: '',
+    costCenter: '',
+    managementGroup: '',
+  }
 
-  const users = useSelector((state) => state.users)
+  const [user, setUser] = useState(initialState)
+  const dispatch = useDispatch()
 
-  let user = users.find((user) => user.id === parseInt(id))
+  const handleChange = (event) => {
+    const { name, value } = event.target
+    setUser({ ...user, [name]: value })
+  }
+
+  const saveUser = () => {
+    dispatch(createUser(user))
+  }
 
   return (
     <>
-      <GradientEmptyHeader name="Employees" />
+      <div
+        className="header pb-6 d-flex align-items-center"
+        style={{
+          minHeight: '100px',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center top',
+        }}
+      >
+        <span className="mask bg-gradient-info opacity-8" />
+      </div>
+
       <Container className="mt--6" fluid>
         <Row>
           <Col className="order-xl-1" xl="12">
@@ -54,27 +84,7 @@ function EmployeeDetailsPage(props) {
               <CardHeader>
                 <Row className="align-items-center">
                   <Col xs="8">
-                    <h3 className="mb-0">Employee Details</h3>
-                  </Col>
-                </Row>
-                <Row className="align-items-center py-4">
-                  <Col lg="12" xs="7" className="text-right">
-                    <Button
-                      type="button"
-                      color="success"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      Invite to Care
-                    </Button>
-                    <Button
-                      type="button"
-                      color="info"
-                      href="#pablo"
-                      onClick={(e) => props.history.push('/admin/employees')}
-                    >
-                      Back to Search
-                    </Button>
+                    <h3 className="mb-0">Create User</h3>
                   </Col>
                 </Row>
               </CardHeader>
@@ -85,80 +95,77 @@ function EmployeeDetailsPage(props) {
                   </h6>
                   <div className="pl-lg-4">
                     <Row>
-                      <Col lg="6">
+                      <Col lg="10">
                         <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="input-first-name"
+                            htmlFor="input-group-name"
                           >
-                            First name
+                            First Name
                           </label>
                           <Input
-                            id="input-first-name"
                             value={user.firstName}
+                            name="firstName"
+                            id="input-first-name"
+                            placeholder="First name"
                             type="text"
-                            disabled={true}
+                            onChange={handleChange}
                           />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="6">
-                        <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="input-last-name"
+                            htmlFor="input-group-name"
                           >
-                            Last name
+                            Last Name
                           </label>
                           <Input
-                            id="input-last-name"
                             value={user.lastName}
-                            disabled={true}
+                            name="lastName"
+                            id="input-last-name"
+                            placeholder="Last name"
                             type="text"
+                            onChange={handleChange}
+                          />
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-group-name"
+                          >
+                            International Name
+                          </label>
+                          <Input
+                            value={user.internationalName}
+                            name="internationalName"
+                            id="input-international-name"
+                            placeholder="International name"
+                            type="text"
+                            onChange={handleChange}
+                          />
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-group-name"
+                          >
+                            Email
+                          </label>
+                          <Input
+                            value={user.email}
+                            name="email"
+                            id="input--email"
+                            placeholder="Email"
+                            type="text"
+                            onChange={handleChange}
                           />
                         </FormGroup>
                       </Col>
                     </Row>
 
                     <Row>
-                      <Col lg="6">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-username"
-                          >
-                            International Name
-                          </label>
-                          <Input
-                            id="input-username"
-                            value={user.internationalName}
-                            disabled={true}
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="6">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-email"
-                          >
-                            Email address
-                          </label>
-                          <Input
-                            id="input-email"
-                            value={user.email}
-                            disabled={true}
-                            type="email"
-                          />
-                        </FormGroup>
+                      <Col lg="10">
+                        <FormGroup></FormGroup>
                       </Col>
                     </Row>
                   </div>
                   <hr className="my-4" />
 
-                  <h6 className="heading-small text-muted mb-4">
-                    Contact information
-                  </h6>
+                  <h6 className="heading-small text-muted mb-4">Address</h6>
                   <div className="pl-lg-4">
                     <Row>
                       <Col md="12">
@@ -170,10 +177,12 @@ function EmployeeDetailsPage(props) {
                             Address
                           </label>
                           <Input
-                            defaultValue={user.address}
+                            value={user.address}
+                            name="address"
                             id="input-address"
                             placeholder="Home Address"
                             type="text"
+                            onChange={handleChange}
                           />
                         </FormGroup>
                       </Col>
@@ -188,10 +197,12 @@ function EmployeeDetailsPage(props) {
                             City
                           </label>
                           <Input
-                            defaultValue={user.city}
+                            value={user.city}
+                            name="city"
                             id="input-city"
                             placeholder="City"
                             type="text"
+                            onChange={handleChange}
                           />
                         </FormGroup>
                       </Col>
@@ -204,10 +215,12 @@ function EmployeeDetailsPage(props) {
                             Country
                           </label>
                           <Input
-                            defaultValue={user.country}
+                            value={user.country}
+                            name="country"
                             id="input-country"
                             placeholder="Country"
                             type="text"
+                            onChange={handleChange}
                           />
                         </FormGroup>
                       </Col>
@@ -220,10 +233,12 @@ function EmployeeDetailsPage(props) {
                             Postal code
                           </label>
                           <Input
-                            id="input-postal-code"
                             value={user.postalCode}
+                            name="postalCode"
+                            id="input-postal-code"
                             placeholder="Postal code"
                             type="number"
+                            onChange={handleChange}
                           />
                         </FormGroup>
                       </Col>
@@ -232,91 +247,94 @@ function EmployeeDetailsPage(props) {
                   <hr className="my-4" />
 
                   <h6 className="heading-small text-muted mb-4">
-                    Company Data
+                    Company information
                   </h6>
                   <div className="pl-lg-4">
                     <Row>
                       <Col lg="4">
                         <FormGroup>
-                          <label className="form-control-label">Title</label>
-                          <Input
-                            id="title"
-                            value={user.title}
-                            disabled={true}
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-
-                      <Col lg="4">
-                        <FormGroup>
-                          <label className="form-control-label">
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-group-name"
+                          >
                             Company Phone
                           </label>
                           <Input
-                            id="companyPhone"
-                            value="+372 77645322"
-                            disabled={true}
+                            value={user.companyPhone}
+                            name="companyPhone"
+                            id="input-company-phone"
+                            placeholder="company phone"
                             type="text"
+                            onChange={handleChange}
                           />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label className="form-control-label">
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-group-name"
+                          >
                             Company Code
                           </label>
                           <Input
-                            id="input-postal-code"
                             value={user.companyCode}
-                            disabled={true}
+                            name="companyCode"
+                            id="input-company-code"
+                            placeholder="company code"
                             type="text"
+                            onChange={handleChange}
                           />
                         </FormGroup>
+                      </Col>
+                      <Col lg="4">
+                        <label
+                          className="form-control-label"
+                          htmlFor="input-group-name"
+                        >
+                          Buisness Unit
+                        </label>
+                        <Input
+                          value={user.buisnessUnit}
+                          name="buisnessUnit"
+                          id="input-buisness-unit"
+                          placeholder="buisness Unit"
+                          type="text"
+                          onChange={handleChange}
+                        />
+
+                        <label
+                          className="form-control-label"
+                          htmlFor="input-group-name"
+                        >
+                          Cost center
+                        </label>
+                        <Input
+                          value={user.costCenter}
+                          name="costCenter"
+                          id="input-cost-center"
+                          placeholder="cost center"
+                          type="text"
+                          onChange={handleChange}
+                        />
+                      </Col>
+                      <Col lg="4">
+                        <label
+                          className="form-control-label"
+                          htmlFor="input-group-name"
+                        >
+                          Management Group
+                        </label>
+                        <Input
+                          value={user.managementGroup}
+                          name="managementGroup"
+                          id="input-management-group"
+                          placeholder="management group"
+                          type="text"
+                          onChange={handleChange}
+                        />
                       </Col>
                     </Row>
-
                     <Row>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label className="form-control-label">
-                            Business Unit
-                          </label>
-                          <Input
-                            id="input-postal-code"
-                            value={user.businessUnit}
-                            disabled={true}
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-
-                      <Col lg="4">
-                        <FormGroup>
-                          <label className="form-control-label">
-                            Cost Center
-                          </label>
-                          <Input
-                            id="input-postal-code"
-                            value={user.costCenter}
-                            disabled={true}
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label className="form-control-label">
-                            Management Group
-                          </label>
-                          <Input
-                            id="input-postal-code"
-                            value={user.managementGroup}
-                            disabled={true}
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
+                      <Button color="primary" type="button" onClick={saveUser}>
+                        Save
+                      </Button>
                     </Row>
                   </div>
                 </Form>
@@ -329,4 +347,4 @@ function EmployeeDetailsPage(props) {
   )
 }
 
-export default EmployeeDetailsPage
+export default CreateUserPage
