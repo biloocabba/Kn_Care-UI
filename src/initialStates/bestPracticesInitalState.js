@@ -5,5 +5,5 @@ const initialState = [
             title: "Sample title",
             content: "Hello world!"
         }]
-    ),
+    )
 ];
