@@ -50,7 +50,7 @@ import ArchivePage from "views/pages/communications/ArchivePage.js"
 
 import ChartsPage from "views/pages/dashboards/ChartsPage.js"
 import WorldOverviewPage from "views/pages/dashboards/WorldOverviewPage.js"
-import CreateUserPage from './views/pages/users/CreateUserPage';
+import CreateEmployeePage from './views/pages/users/CreateEmployeePage';
 
 
 const routes = [
@@ -78,7 +78,7 @@ const routes = [
         path: "/new-user",
         name: "Create New",
         miniName: "CM",
-        component: CreateUserPage,
+        component: CreateEmployeePage,
         layout: "/admin",
       },
     ],

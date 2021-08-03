@@ -29,11 +29,11 @@ import {
   Button,
 } from 'reactstrap'
 // core components
-import { v4 as uuidv4 } from 'uuid'
+import { uuid } from 'uuidv4';
 import { useDispatch } from 'react-redux'
 import { createUser } from '../../../actions/users'
 
-function CreateUserPage() {
+function CreateEmployeePage() {
   const initialState = {
     id: 3,
     firstName: '',
@@ -347,4 +347,4 @@ function CreateUserPage() {
   )
 }
 
-export default CreateUserPage
+export default CreateEmployeePage

@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, {  } from 'react'
+import React from 'react'
 // react plugin that prints a given react component
 // react component for creating dynamic tables
 import BootstrapTable from 'react-bootstrap-table-next'
@@ -23,20 +23,12 @@ import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit'
 // react component used to create sweet alerts
 import ReactBSAlert from 'react-bootstrap-sweetalert'
 // reactstrap components
-import {
-  Button,
-  Card,
-  CardHeader,
-  Container,
-  Row,
-} from 'reactstrap'
+import { Button, Card, CardHeader, Container, Row } from 'reactstrap'
 // core components
 import GradientEmptyHeader from 'components/Headers/GradientEmptyHeader.js'
 
-
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteUser } from 'actions/users.js'
-
 
 const pagination = paginationFactory({
   page: 1,
@@ -69,11 +61,8 @@ const pagination = paginationFactory({
 const { SearchBar } = Search
 
 function Employees(props) {
-
   const users = useSelector((state) => state.users)
   const dispatch = useDispatch()
-
-
 
   const employeeDetails = (e) => {
     var { id } = e.target
@@ -82,12 +71,10 @@ function Employees(props) {
 
   const employeeRemove = (e) => {
     var { id } = e.target
+
+    console.log(id)
     dispatch(deleteUser(id))
   }
-
-  const selectRow = {
-    mode: 'radio' // single row selection
-  };
 
   const formatActionButtonCell = (cell, row) => {
     return (
@@ -108,7 +95,7 @@ function Employees(props) {
           className="btn-icon btn-2"
           color="danger"
           type="button"
-          // onClick={employeeRemove(row.id)}
+          onClick={employeeRemove}
         >
           <span id={row.id} className="btn-inner--icon">
             <i id={row.id} className="ni ni-fat-remove" />
