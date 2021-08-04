@@ -229,12 +229,12 @@ function ReactBSTables(props) {
         <Button id={row.id} className="btn-icon btn-2" type="button" onClick={e => ViewBestPractice(e)}>
           View
         </Button>
-        <Button id={row.id} className="btn-icon btn-2" type="button" color="info" onClick={()=>console.log("click")}>
+        <Button id={row.id} className="btn-icon btn-2" type="button" color="info" onClick={()=>console.log("Details page is not yet implemented!")}>
           <span id={row.id} className="btn-inner--icon">
             <i id={row.id} className="ni ni-badge" />
           </span>                        
         </Button>
-        <Button id={row.id} className="btn-icon btn-2" color="danger" type="button" onClick={()=>console.log("click")/*employeeRemove*/}>
+        <Button id={row.id} className="btn-icon btn-2" color="danger" type="button" onClick={()=>removeBestPractice(row.id)}>
           <span id={row.id} className="btn-inner--icon">
             <i id={row.id} className="ni ni-fat-remove" />
           </span>
