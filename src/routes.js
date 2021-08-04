@@ -40,6 +40,7 @@ import GroupsPage from "views/pages/groups/GroupsPage.js"
 
 import CreateBestPracticePage from "views/pages/best-practices/CreateBestPracticePage.js"
 import SearchBestPracticesPage from "views/pages/best-practices/SearchBestPracticesPage.js"
+import BestPracticeView from "views/pages/best-practices/BestPracticeView";
 
 import CreateEmailPage from "views/pages/communications/CreateEmailPage.js"
 import SendNotificationPage from "views/pages/communications/SendNotificationPage.js"
@@ -203,6 +204,13 @@ const routes = [
     global:true, 
     path: "/users/care-member-details/:id",
     component: EditCareMemberPage,
+    layout: "/admin"
+  },
+  {
+    collapse: false,
+    global:true,
+    path:"/best-practice/:id",
+    component: BestPracticeView,
     layout: "/admin"
   },
   {

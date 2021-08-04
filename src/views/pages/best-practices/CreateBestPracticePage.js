@@ -49,6 +49,7 @@ function CreateBestPracticePage() {
   const dispatch = useDispatch();
   const initialState = {
     id: null,
+    title: "",
     content:""
   };
   const [content, setContent] = useState(initialState);
@@ -72,6 +73,14 @@ function CreateBestPracticePage() {
     <>
        <GradientEmptyHeader name="Best Practices"  />
        <Container className="mt--6" fluid>    
+        <Row>
+          <Col className="order-xl-1">
+            <FormGroup>
+              <label className="form-control-label">Title</label>
+              <Input type="text" onChange={e => setContent({...content, title: e.target.value})}/>
+            </FormGroup>
+          </Col>
+        </Row>
         <Row>     
           <Col className="order-xl-1" xl="12">
           <FormGroup>
