@@ -50,6 +50,7 @@ import ArchivePage from "views/pages/communications/ArchivePage.js"
 
 import ChartsPage from "views/pages/dashboards/ChartsPage.js"
 import WorldOverviewPage from "views/pages/dashboards/WorldOverviewPage.js"
+import CreateUserPage from './views/pages/users/CreateUserPage';
 
 
 const routes = [
@@ -71,6 +72,13 @@ const routes = [
         name: "Care Members",
         miniName: "CM",
         component: CareMembersPage,
+        layout: "/admin",
+      },
+      {
+        path: "/new-user",
+        name: "Create New",
+        miniName: "CM",
+        component: CreateUserPage,
         layout: "/admin",
       },
     ],

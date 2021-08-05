@@ -38,6 +38,7 @@ import {
 import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
 
 import { employees } from "./EmployeesData.js";
+import { useDispatch, useSelector } from  "react-redux";
 
 const pagination = paginationFactory({
   page: 1,
@@ -100,6 +101,8 @@ function CareMembersPage(props) {
 
   const [alert, setAlert] = React.useState(null);
   const componentRef = React.useRef(null);
+  const users = useSelector(state => state.users)
+
   // this function will copy to clipboard an entire table,
   // so you can paste it inside an excel or csv file
   const copyToClipboardAsTable = (el) => {
@@ -154,7 +157,7 @@ function CareMembersPage(props) {
                 </p>
               </CardHeader>
               <ToolkitProvider
-                data={employees}
+                data={users}
                 keyField="firstName"
                 columns={[
                   {
