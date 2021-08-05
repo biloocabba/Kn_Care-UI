@@ -14,7 +14,9 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {useState, useEffect} from "react";
+import { useDispatch, useSelector } from  "react-redux";
+import {CREATE_GROUP} from "actions/types"
 
 // reactstrap components
 import {
@@ -38,6 +40,35 @@ import {
 import GroupHeader from "components/Headers/GroupHeader.js";
 
 function CreateGroupPage() {
+
+  const [selectedOption, setSelectedOption] = useState(null);
+  const dispatch = useDispatch();
+  const initialGroupState = {
+    id: null,
+    groupName: "",
+    groupDesc: "",
+    members: []
+  }
+
+  const [group, setGroup] = useState(initialGroupState)
+
+
+  const handleInputChange = event => {
+    const { name, value } = event.target;
+    setGroup({ ...group, [name]: value });
+    console.log(group)
+  };
+
+  const saveGroup = () => {
+    dispatch({
+      type: CREATE_GROUP,
+      payload: group
+    });
+
+  }
+
+  
+
   return (
     <>
       
@@ -199,6 +230,13 @@ function CreateGroupPage() {
                       />
                     </FormGroup>
                   </div>
+
+                  <div className="pl-lg-4">
+                   
+                   <button onClick={saveGroup} className="btn btn-success">
+           Submit
+         </button>
+                 </div>
                 </Form>
               </CardBody>
             </Card>
