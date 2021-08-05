@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from 'react'
+import React, { useEffect } from 'react'
 // react plugin that prints a given react component
 // react component for creating dynamic tables
 import BootstrapTable from 'react-bootstrap-table-next'
@@ -29,8 +29,8 @@ import GradientEmptyHeader from 'components/Headers/GradientEmptyHeader.js'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteUser } from 'actions/users.js'
-import { employees } from "./EmployeesData.js";
-
+import { employees } from './EmployeesData.js'
+import { reterieveEmployees } from '../../../actions/users'
 
 const pagination = paginationFactory({
   page: 1,
@@ -73,10 +73,13 @@ function Employees(props) {
 
   const employeeRemove = (e) => {
     var { id } = e.target
-
     console.log(id)
     dispatch(deleteUser(id))
   }
+
+  useEffect(() => {
+    dispatch(reterieveEmployees())
+  }, [dispatch])
 
   const formatActionButtonCell = (cell, row) => {
     return (
@@ -186,7 +189,7 @@ function Employees(props) {
                     style: { width: '50px' },
                   },
                   {
-                    dataField: 'businessUnit',
+                    dataField: 'businessUnit.name',
                     text: 'bUnit',
                     sort: true,
                     style: { width: '50px' },

@@ -282,7 +282,7 @@ function EmployeeDetailsPage(props) {
                           </label>
                           <Input
                             id="input-postal-code"
-                            value={user.businessUnit}
+                            value={user.businessUnit.name}
                             disabled={true}
                             type="text"
                           />

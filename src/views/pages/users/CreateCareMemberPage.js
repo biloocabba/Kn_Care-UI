@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useMemo} from 'react'
 
 // reactstrap components
 import {
@@ -23,6 +23,9 @@ import GradientEmptyHeader from 'components/Headers/GradientEmptyHeader.js'
 // react plugin used to create DropdownMenu for selecting items
 import Select2 from 'react-select2-wrapper'
 import { createCareMember } from 'actions/users'
+
+// react plugin used to fetch list of countries
+import countryList from 'react-select-country-list'
 
 const CreateCareMemberPage = (props) => {
 
@@ -66,6 +69,15 @@ const CreateCareMemberPage = (props) => {
       console.log(careMember)
       dispatch(createCareMember(careMember))
   }
+
+  console.log(countryList().getData())
+  const [country, setCountry] = useState('')
+
+
+  const changeHandler = country => {
+    setCountry(country)
+  }
+
   return (
     <>
       <GradientEmptyHeader name="users" />
@@ -147,7 +159,7 @@ const CreateCareMemberPage = (props) => {
                             className="form-control"
                             defaultValue="1"
                             options={{
-                              placeholder: 'Select',
+                              placeholder: 'Select Role',
                             }}
                             data={[
                               { id: '1', text: 'Care Advocate' },
@@ -168,11 +180,13 @@ const CreateCareMemberPage = (props) => {
                           >
                             Country
                           </label>
-                          <Input
-                            id="input-email"
-                            value={user.country}
-                            onChange={(e) => e.preventDefault}
-                            type="email"
+                          <Select2
+                            className="form-control"
+                            defaultValue="1"
+                            options={{
+                              placeholder: 'Select Country',
+                            }}
+                            data={countryList().getData()}
                           />
                         </FormGroup>
                       </Col>
@@ -274,6 +288,7 @@ const CreateCareMemberPage = (props) => {
                             id="input-address"
                             placeholder="Home Address"
                             type="text"
+                            disabled={true}
                           />
                         </FormGroup>
                       </Col>
@@ -292,6 +307,7 @@ const CreateCareMemberPage = (props) => {
                             id="input-city"
                             placeholder="City"
                             type="text"
+                            disabled={true}
                           />
                         </FormGroup>
                       </Col>
@@ -308,6 +324,7 @@ const CreateCareMemberPage = (props) => {
                             id="input-country"
                             placeholder="Country"
                             type="text"
+                            disabled={true}
                           />
                         </FormGroup>
                       </Col>
@@ -324,6 +341,7 @@ const CreateCareMemberPage = (props) => {
                             id="input-postal-code"
                             placeholder="Postal code"
                             type="number"
+                            disabled={true}
                           />
                         </FormGroup>
                       </Col>
@@ -384,7 +402,7 @@ const CreateCareMemberPage = (props) => {
                           </label>
                           <Input
                             id="input-postal-code"
-                            value={user.businessUnit}
+                            value={user.businessUnit.name}
                             disabled={true}
                             type="text"
                           />
