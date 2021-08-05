@@ -29,7 +29,6 @@ import {
   Button,
 } from 'reactstrap'
 // core components
-import { uuid } from 'uuidv4';
 import { useDispatch } from 'react-redux'
 import { createUser } from '../../../actions/users'
 
