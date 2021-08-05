@@ -2,16 +2,16 @@ import http from "../http-common";
 
 
 const getAll = () => {
-  return http.get("/search-groups")
+  return http.get("/groups")
 }
 
 const get = id => {
-  return http.get(`groups/${id}`)
+  return http.get(`/groups/${id}`)
 }
 
 const create = data => {
 
-  return http.post("/new-group", data);
+  return http.post("/new-group/", data);
 
 }
 

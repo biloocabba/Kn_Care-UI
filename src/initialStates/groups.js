@@ -2,8 +2,8 @@ export const dataGroup = [
 
     {
       id: 8238328,
-      groupName: "Well being",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Well being",
+      description: "lorem ipsum dolor sit amet",
       active: true,
       language: "English",
       remote: true,
@@ -46,8 +46,8 @@ export const dataGroup = [
     },
     {
       id: 8238329,
-      groupName: "How to eat healthy",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "How to eat healthy",
+      description: "lorem ipsum dolor sit amet",
       active: false,
       language: "English",
       remote: true,
@@ -57,8 +57,8 @@ export const dataGroup = [
     },
     {
       id: 8238330,
-      groupName: "Kim Chi making",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Kim Chi making",
+      description: "lorem ipsum dolor sit amet",
       active: true,
       language: "French",
       remote: true,
@@ -82,8 +82,8 @@ export const dataGroup = [
     },
     {
       id: 8238332,
-      groupName: "Dealing with anxiety",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Dealing with anxiety",
+      description: "lorem ipsum dolor sit amet",
       active: true,
       language: "English",
       remote: true,
@@ -91,8 +91,8 @@ export const dataGroup = [
     },
     {
       id: 8238333,
-      groupName: "Dealing with anxiety",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Dealing with anxiety",
+      description: "lorem ipsum dolor sit amet",
       active: true,
       language: "French",
       remote: true,
@@ -100,8 +100,8 @@ export const dataGroup = [
     },
     {
       id: 8238334,
-      groupName: "Dealing with anxiety",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Dealing with anxiety",
+      description: "lorem ipsum dolor sit amet",
       active: true,
       language: "German",
       remote: true,

@@ -8,12 +8,10 @@ import {
   UPDATE_GROUP
   } from "../actions/types";
 
-  import { dataGroup } from "../initialStates/groups";
+const initialState = []
   
-  function groupsReducer(groups = dataGroup, action) {
+  function groupsReducer(groups = initialState, action) {
     const { type, payload } = action;
-
-    
   
     switch (type) {
       case CREATE_GROUP:

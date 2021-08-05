@@ -9,16 +9,14 @@ import {
   
   import GroupDataService from "../services/GroupServices";
   
-  export const createGroup = (groupName, groupDesc) => async (dispatch) => {
+  export const createGroup = (name, description) => async (dispatch) => {
     try {
-      const res = await GroupDataService.create({ groupName, groupDesc });
+      const res = await GroupDataService.create({ name, description });
   
       dispatch({
         type: CREATE_GROUP,
         payload: res.data,
       });
-
-      console.log(Promise.resolve(res.data))
   
       return Promise.resolve(res.data);
     } catch (err) {
@@ -32,7 +30,7 @@ import {
       console.log(res.data)
       dispatch({
         type: RETRIEVE_GROUPS,
-        payload: res.data.users,
+        payload: res.data.groups,
       });
     } catch (err) {
       console.log(err);

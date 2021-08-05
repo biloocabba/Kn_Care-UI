@@ -16,7 +16,7 @@
 */
 import React, {useState, useEffect} from "react";
 import { useDispatch, useSelector } from  "react-redux";
-import {CREATE_GROUP} from "actions/types"
+import {createGroup} from "actions/groups"
 
 // reactstrap components
 import {
@@ -41,31 +41,49 @@ import GroupHeader from "components/Headers/GroupHeader.js";
 
 function CreateGroupPage() {
 
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null); //to add members
   const dispatch = useDispatch();
   const initialGroupState = {
     id: null,
-    groupName: "",
-    groupDesc: "",
+    name: "",
+    description: "",
     members: []
   }
 
   const [group, setGroup] = useState(initialGroupState)
+  const [submitted, setSubmitted] = useState(false);
+
 
 
   const handleInputChange = event => {
     const { name, value } = event.target;
     setGroup({ ...group, [name]: value });
-    console.log(group)
   };
 
   const saveGroup = () => {
-    dispatch({
-      type: CREATE_GROUP,
-      payload: group
-    });
+    const {name, description} = group;
+    dispatch(createGroup(name, description))
+      .then(data => {
+        setGroup({
+          id: Math.floor(Math.random() * 10000),
+          name: data.name,
+          description: data.description,
+        });
+        setSubmitted(true);
+
+        console.log(data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  
 
   }
+
+  const newGroup = () => {
+    setGroup(initialGroupState);
+    setSubmitted(false);
+  };
 
   
 
@@ -97,6 +115,14 @@ function CreateGroupPage() {
                 </Row>
               </CardHeader>
               <CardBody>
+              {submitted ? (
+                 <div>
+                 <h4>You submitted successfully!</h4>
+                 <button className="btn btn-success" onClick={newGroup}>
+                   Add
+                 </button>
+               </div>
+             ) : (
                 <Form>
                   <h6 className="heading-small text-muted mb-4">
                     Group information
@@ -112,10 +138,14 @@ function CreateGroupPage() {
                             Group Name
                           </label>
                           <Input
+                            name="name"
                             defaultValue=""
+                            value={group.name}
+                            required
                             id="input-group-name"
                             placeholder="Group name"
                             type="text"
+                            onChange={handleInputChange}  
                           />
                         </FormGroup>
                       </Col>                    
@@ -126,15 +156,19 @@ function CreateGroupPage() {
                         <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="input-group-description"
+                            htmlFor="description"
                           >
                             Group Description (optional)
                           </label>
                           <Input
-                            id="input-group-description"
+                          name="description"
+                            id="description"
                             placeholder="A few words about the group"
                             rows="4"
-                            type="textarea"                           
+                            type="textarea" 
+                            name="description"
+                            onChange={handleInputChange}  
+                            value={group.description}                          
                           />
                         </FormGroup>
                       </Col>                    
@@ -147,90 +181,7 @@ function CreateGroupPage() {
                   <h6 className="heading-small text-muted mb-4">
                     Add Employees
                   </h6>
-                  <div className="pl-lg-4">
-                    <Row>
-                      <Col md="12">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-address"
-                          >
-                            Address
-                          </label>
-                          <Input
-                            defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                            id="input-address"
-                            placeholder="Home Address"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-city"
-                          >
-                            City
-                          </label>
-                          <Input
-                            defaultValue="New York"
-                            id="input-city"
-                            placeholder="City"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-country"
-                          >
-                            Country
-                          </label>
-                          <Input
-                            defaultValue="United States"
-                            id="input-country"
-                            placeholder="Country"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-country"
-                          >
-                            Postal code
-                          </label>
-                          <Input
-                            id="input-postal-code"
-                            placeholder="Postal code"
-                            type="number"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                  </div>
-                  <hr className="my-4" />
-
-                  <h6 className="heading-small text-muted mb-4">About me</h6>
-                  <div className="pl-lg-4">
-                    <FormGroup>
-                      <label className="form-control-label">About Me</label>
-                      <Input
-                        placeholder="A few words about you ..."
-                        rows="4"
-                        type="textarea"
-                        defaultValue="A beautiful premium dashboard for Bootstrap 4."
-                      />
-                    </FormGroup>
-                  </div>
-
+                 
                   <div className="pl-lg-4">
                    
                    <button onClick={saveGroup} className="btn btn-success">
@@ -238,6 +189,8 @@ function CreateGroupPage() {
          </button>
                  </div>
                 </Form>
+
+             )}
               </CardBody>
             </Card>
           </Col>

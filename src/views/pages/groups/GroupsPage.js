@@ -14,7 +14,8 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 // react plugin that prints a given react component
 import ReactToPrint from "react-to-print";
 // react component for creating dynamic tables
@@ -38,6 +39,10 @@ import {
 import SimpleHeader from "components/Headers/SimpleHeader.js";
 
 import { dataTable } from "variables/general";
+import {
+  retrieveGroups
+} from "../../../actions/groups";
+
 
 const pagination = paginationFactory({
   page: 1,
@@ -110,6 +115,14 @@ function GroupsPage() {
       </ReactBSAlert>
     );
   };
+
+  const groups = useSelector(state => state.groups);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(retrieveGroups());
+  }, []);
+
 
   return (
     <>
