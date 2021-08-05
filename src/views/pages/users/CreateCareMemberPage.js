@@ -1,20 +1,4 @@
-/*!
-
-=========================================================
-* Argon Dashboard PRO React - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-pro-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import React from 'react'
+import React, {useState} from 'react'
 
 // reactstrap components
 import {
@@ -31,20 +15,60 @@ import {
 } from 'reactstrap'
 
 import { useParams } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 
 // core components
 import GradientEmptyHeader from 'components/Headers/GradientEmptyHeader.js'
-import { useSelector } from 'react-redux'
 
-function EmployeeDetailsPage(props) {
-  let { id } = useParams() //see in routes path: "/users/employee-details/:id",
+// react plugin used to create DropdownMenu for selecting items
+import Select2 from 'react-select2-wrapper'
+import { createCareMember } from 'actions/users'
+
+const CreateCareMemberPage = (props) => {
+
+    let { id } = useParams()
 
   const users = useSelector((state) => state.users)
   let user = users.find((user) => user.id === parseInt(id))
 
+  const date = new Date()
+  const onBoardDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+  const offBoardDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear() + 1}`//OffBoard Date is 1 year from on Board date
+
+  const initialState = {
+    id: 3,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    internationalName: user.internationalName,
+    email: user.email,
+    address: user.address,
+    city: user.city,
+    country: user.country,
+    postalCode: user.postalCode,
+    title: user.title,
+    companyPhone: user.companyPhone,
+    companyCode: user.companyCode,
+    buisnessUnit: user.buisnessUnit,
+    costCenter: user.costCenter,
+    managementGroup: user.managementGroup,
+    onBoardDate: onBoardDate,
+    offBoardDate: offBoardDate,
+    careRole: 'care Advocate'
+  }
+
+  //Local state to hold the Current careMember before calling a dispatch to the store
+  const [careMember, setCareMember] = useState(initialState)
+  const dispatch = useDispatch()
+
+  const saveCareMember = () => {
+
+      setCareMember({ ...initialState })
+      console.log(careMember)
+      dispatch(createCareMember(careMember))
+  }
   return (
     <>
-      <GradientEmptyHeader name="Employees" />
+      <GradientEmptyHeader name="users" />
       <Container className="mt--6" fluid>
         <Row>
           <Col className="order-xl-1" xl="12">
@@ -52,32 +76,110 @@ function EmployeeDetailsPage(props) {
               <CardHeader>
                 <Row className="align-items-center">
                   <Col xs="8">
-                    <h3 className="mb-0">Employee Details</h3>
+                    <h3 className="mb-0">New Care Member</h3>
                   </Col>
                 </Row>
                 <Row className="align-items-center py-4">
                   <Col lg="12" xs="7" className="text-right">
                     <Button
                       type="button"
-                      color="success"
-                      href="#pablo"
-                      onClick={(e) => props.history.push('/admin/users/new-care-member/' + id)}
-                    >
-                      Invite to Care
-                    </Button>
-                    <Button
-                      type="button"
                       color="info"
                       href="#pablo"
                       onClick={(e) => props.history.push('/admin/employees')}
                     >
-                      Back to Search
+                      Back to Employees
                     </Button>
                   </Col>
                 </Row>
               </CardHeader>
               <CardBody>
                 <Form>
+                  <h6 className="heading-small text-muted mb-4">
+                    Care Member information
+                  </h6>
+                  <div className="pl-lg-4">
+                    <Row>
+                      <Col lg="6">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-first-name"
+                          >
+                            Onboard Date
+                          </label>
+                          <Input
+                            id="input-first-name"
+                            value={onBoardDate}
+                            disabled={true}
+                            type="text"
+    
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col lg="6">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-last-name"
+                          >
+                            Auto Offboard Date
+                          </label>
+                          <Input
+                            id="input-last-name"
+                            value={offBoardDate}
+                            onChange={(e) => e.preventDefault}
+                            type="text"
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col lg="6">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-care-role"
+                          >
+                            Care Role
+                          </label>
+                          <Select2
+                            className="form-control"
+                            defaultValue="1"
+                            options={{
+                              placeholder: 'Select',
+                            }}
+                            data={[
+                              { id: '1', text: 'Care Advocate' },
+                              { id: '2', text: 'Care Role' },
+                              { id: '3', text: 'Care Role' },
+                              { id: '4', text: 'Care Role' },
+                              { id: '5', text: 'Care Role' },
+                              { id: '6', text: 'Care Role' },
+                            ]}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col lg="6">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-email"
+                          >
+                            Country
+                          </label>
+                          <Input
+                            id="input-email"
+                            value={user.country}
+                            onChange={(e) => e.preventDefault}
+                            type="email"
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                  </div>
+                  <hr className="my-4" />
+
                   <h6 className="heading-small text-muted mb-4">
                     User information
                   </h6>
@@ -168,7 +270,7 @@ function EmployeeDetailsPage(props) {
                             Address
                           </label>
                           <Input
-                            defaultValue={user.address}
+                            value={user.address}
                             id="input-address"
                             placeholder="Home Address"
                             type="text"
@@ -186,7 +288,7 @@ function EmployeeDetailsPage(props) {
                             City
                           </label>
                           <Input
-                            defaultValue={user.city}
+                            value={user.city}
                             id="input-city"
                             placeholder="City"
                             type="text"
@@ -202,7 +304,7 @@ function EmployeeDetailsPage(props) {
                             Country
                           </label>
                           <Input
-                            defaultValue={user.country}
+                            value={user.country}
                             id="input-country"
                             placeholder="Country"
                             type="text"
@@ -218,8 +320,8 @@ function EmployeeDetailsPage(props) {
                             Postal code
                           </label>
                           <Input
-                            id="input-postal-code"
                             value={user.postalCode}
+                            id="input-postal-code"
                             placeholder="Postal code"
                             type="number"
                           />
@@ -316,6 +418,15 @@ function EmployeeDetailsPage(props) {
                         </FormGroup>
                       </Col>
                     </Row>
+                    <Row>
+                      <Button
+                        color="primary"
+                        type="button"
+                        onClick={saveCareMember}
+                      >
+                        Save
+                      </Button>
+                    </Row>
                   </div>
                 </Form>
               </CardBody>
@@ -327,4 +438,4 @@ function EmployeeDetailsPage(props) {
   )
 }
 
-export default EmployeeDetailsPage
+export default CreateCareMemberPage

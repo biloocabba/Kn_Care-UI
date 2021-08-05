@@ -29,6 +29,8 @@ import GradientEmptyHeader from 'components/Headers/GradientEmptyHeader.js'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteUser } from 'actions/users.js'
+import { employees } from "./EmployeesData.js";
+
 
 const pagination = paginationFactory({
   page: 1,

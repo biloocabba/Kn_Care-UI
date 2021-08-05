@@ -51,6 +51,7 @@ import ArchivePage from "views/pages/communications/ArchivePage.js"
 import ChartsPage from "views/pages/dashboards/ChartsPage.js"
 import WorldOverviewPage from "views/pages/dashboards/WorldOverviewPage.js"
 import CreateEmployeePage from './views/pages/users/CreateEmployeePage';
+import CreateCareMemberPage from "views/pages/users/CreateCareMemberPage";
 
 
 const routes = [
@@ -72,13 +73,6 @@ const routes = [
         name: "Care Members",
         miniName: "CM",
         component: CareMembersPage,
-        layout: "/admin",
-      },
-      {
-        path: "/new-user",
-        name: "Create New",
-        miniName: "CM",
-        component: CreateEmployeePage,
         layout: "/admin",
       },
     ],
@@ -212,6 +206,13 @@ const routes = [
     path: "/users/care-member-details/:id",
     component: EditCareMemberPage,
     layout: "/admin"
+  },
+  {
+    collapse: false,  
+    global:true, 
+    path: "/users/new-care-member/:id",
+    component: CreateCareMemberPage,
+    layout: "/admin",
   },
   {
     collapse: true,

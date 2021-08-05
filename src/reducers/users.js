@@ -2,7 +2,8 @@ import {
     CREATE_USER, 
     UPDATE_USER, 
     RETRIEVE_USERS,
-    DELETE_USER
+    DELETE_USER,
+    CREATE_CARE_MEMBER
  } from "actions/types/user";
 import { user_initialState } from '../initialStates/user';
 
@@ -13,6 +14,9 @@ const userReducer = (users = user_initialState, action) => {
     switch (type) {
         case CREATE_USER:
             console.log(payload)
+            return [...users, payload];
+
+        case CREATE_CARE_MEMBER:
             return [...users, payload];
 
         case RETRIEVE_USERS:
