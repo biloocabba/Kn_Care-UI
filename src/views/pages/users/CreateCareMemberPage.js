@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from 'react'
+import React, { useState, useMemo } from 'react'
 
 // reactstrap components
 import {
@@ -25,38 +25,32 @@ import Select2 from 'react-select2-wrapper'
 import { createCareMember } from 'actions/users'
 
 // react plugin used to fetch list of countries
-import countryList from 'react-select-country-list'
+import countryList from 'country-list'
+import { employees } from './EmployeesData'
 
 const CreateCareMemberPage = (props) => {
-
-    let { id } = useParams()
+  let { id } = useParams()
+  const [selectedCountry, setSelectedCountry] = useState('')
+  const [selectedRole, setSelectedRole] = useState('')
 
   const users = useSelector((state) => state.users)
   let user = users.find((user) => user.id === parseInt(id))
 
   const date = new Date()
-  const onBoardDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-  const offBoardDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear() + 1}`//OffBoard Date is 1 year from on Board date
+
+  const onBoardDate = `${date.getDate()}/${
+    date.getMonth() + 1
+  }/${date.getFullYear()}`
+  const offBoardDate = `${date.getDate()}/${date.getMonth() + 1}/${
+    date.getFullYear() + 1
+  }` //OffBoard Date is 1 year from on Board date
 
   const initialState = {
-    id: 3,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    internationalName: user.internationalName,
-    email: user.email,
-    address: user.address,
-    city: user.city,
-    country: user.country,
-    postalCode: user.postalCode,
-    title: user.title,
-    companyPhone: user.companyPhone,
-    companyCode: user.companyCode,
-    buisnessUnit: user.buisnessUnit,
-    costCenter: user.costCenter,
-    managementGroup: user.managementGroup,
     onBoardDate: onBoardDate,
     offBoardDate: offBoardDate,
-    careRole: 'care Advocate'
+    employee: user.id,
+    role: 'care Advocate',
+    country: selectedCountry,
   }
 
   //Local state to hold the Current careMember before calling a dispatch to the store
@@ -64,18 +58,17 @@ const CreateCareMemberPage = (props) => {
   const dispatch = useDispatch()
 
   const saveCareMember = () => {
-
-      setCareMember({ ...initialState })
-      console.log(careMember)
-      dispatch(createCareMember(careMember))
-  }
-
-  console.log(countryList().getData())
-  const [country, setCountry] = useState('')
-
-
-  const changeHandler = country => {
-    setCountry(country)
+    dispatch(createCareMember(careMember)).then((data) =>
+      setCareMember({
+        onBoardDate: onBoardDate,
+        offBoardDate: offBoardDate,
+        employee: user.id,
+        role: 'care Advocate',
+        country: selectedCountry,
+      })
+    ).catch((error) => {
+      console.log(error);
+    })
   }
 
   return (
@@ -124,7 +117,6 @@ const CreateCareMemberPage = (props) => {
                             value={onBoardDate}
                             disabled={true}
                             type="text"
-    
                           />
                         </FormGroup>
                       </Col>
@@ -182,11 +174,12 @@ const CreateCareMemberPage = (props) => {
                           </label>
                           <Select2
                             className="form-control"
-                            defaultValue="1"
                             options={{
                               placeholder: 'Select Country',
                             }}
-                            data={countryList().getData()}
+                            data={countryList.getNames()}
+                            onChange={(event) => setSelectedCountry(event.target.value)}
+                            value={selectedCountry}
                           />
                         </FormGroup>
                       </Col>

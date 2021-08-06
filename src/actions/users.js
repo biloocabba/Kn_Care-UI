@@ -14,15 +14,34 @@ export const createUser = (data) => {
 }
 
 export const createCareMember = (data) => async (dispatch) => {
-  return { type: CREATE_CARE_MEMBER, payload: data }
+
+  console.log(data)
+  
+  const { onBoardDate, offBoardDate, employee, role, country } = data
+
+  try {
+    const res = await UserService.create({
+      onBoardDate,
+      offBoardDate,
+      employee,
+      role,
+      country,
+    })
+    dispatch({ type: CREATE_CARE_MEMBER, payload: res.data })
+
+    console.log(res)
+
+    return Promise.resolve(res.data)
+  } catch (error) {
+    console.log(error)
+    return Promise.reject(error)
+  }
 }
 
 export const reterieveEmployees = () => async (dispatch) => {
   try {
-
     const res = await UserService.getAll()
     dispatch({ type: RETRIEVE_USERS, payload: res.data })
-    
   } catch (error) {
     console.log(error)
   }
