@@ -7,6 +7,7 @@ import {
 } from './types/user'
 import { user_initialState } from '../initialStates/user'
 import UserService from '../services/UserService'
+import { toast } from 'react-toastify';
 
 export const createUser = (data) => {
   console.log(data)
@@ -28,6 +29,10 @@ export const createCareMember = (data) => async (dispatch) => {
       country,
     })
     dispatch({ type: CREATE_CARE_MEMBER, payload: res.data })
+
+    if(res.status === 201){
+      toast.success("Care Member Created Successfully")
+    }
 
     console.log(res)
 

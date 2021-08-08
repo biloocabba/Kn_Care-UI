@@ -46,11 +46,11 @@ const CreateCareMemberPage = (props) => {
   }` //OffBoard Date is 1 year from on Board date
 
   const initialState = {
-    onBoardDate: onBoardDate,
-    offBoardDate: offBoardDate,
-    employee: user.id,
-    role: 'care Advocate',
-    country: selectedCountry,
+    onBoardDate: '',
+    offBoardDate: '',
+    employee: null,
+    role: '',
+    country: '',
   }
 
   //Local state to hold the Current careMember before calling a dispatch to the store
@@ -58,17 +58,28 @@ const CreateCareMemberPage = (props) => {
   const dispatch = useDispatch()
 
   const saveCareMember = () => {
-    dispatch(createCareMember(careMember)).then((data) =>
-      setCareMember({
-        onBoardDate: onBoardDate,
-        offBoardDate: offBoardDate,
-        employee: user.id,
-        role: 'care Advocate',
-        country: selectedCountry,
+    
+    const careMemberInfo = {
+      onBoardDate: onBoardDate,
+      offBoardDate: offBoardDate,
+      employee: user.id,
+      role: 'care Advocate',
+      country: selectedCountry,
+    }
+
+    dispatch(createCareMember(careMemberInfo))
+      .then((data) =>
+        setCareMember({
+          onBoardDate: onBoardDate,
+          offBoardDate: offBoardDate,
+          employee: user.id,
+          role: 'care Advocate',
+          country: selectedCountry,
+        })
+      )
+      .catch((error) => {
+        console.log(error)
       })
-    ).catch((error) => {
-      console.log(error);
-    })
   }
 
   return (
@@ -178,7 +189,9 @@ const CreateCareMemberPage = (props) => {
                               placeholder: 'Select Country',
                             }}
                             data={countryList.getNames()}
-                            onChange={(event) => setSelectedCountry(event.target.value)}
+                            onChange={(event) =>
+                              setSelectedCountry(event.target.value)
+                            }
                             value={selectedCountry}
                           />
                         </FormGroup>
