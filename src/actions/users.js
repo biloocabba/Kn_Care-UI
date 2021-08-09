@@ -6,7 +6,7 @@ export const createUser = (data) => {
     return {type: CREATE_USER, payload: data }
 }
 
-export const reterieveEmployees = () => {
+export const retrieveEmployees = () => {
     return {type: RETRIEVE_USERS, payload: user_initialState }
 }
 

@@ -15,15 +15,13 @@
 
 */
 import React from "react";
-// react plugin that prints a given react component
 import ReactToPrint from "react-to-print";
-// react component for creating dynamic tables
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-// react component used to create sweet alerts
 import ReactBSAlert from "react-bootstrap-sweetalert";
-// reactstrap components
+import axios from "axios";
+
 import {
   Button,
   ButtonGroup,
@@ -36,9 +34,15 @@ import {
 } from "reactstrap";
 // core components
 import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
-
-import { employees } from "./EmployeesData.js";
 import { useDispatch, useSelector } from  "react-redux";
+
+const fetchUsers = async () => {
+  const { data } = await axios.get(
+      "https://jsonplaceholder.typicode.com/users/"
+  );
+  return { data };
+};
+
 
 const pagination = paginationFactory({
   page: 1,
@@ -223,7 +227,46 @@ function CareMembersPage(props) {
                       className="dataTables_filter px-4 pb-1"
                     >
                       <label>
-                        Search:
+                        Int Name:
+                        <SearchBar
+                          className="form-control-sm"
+                          placeholder=""
+                          {...props.searchProps}
+                        />
+                      </label>
+                    </div>
+                    <div
+                      id="datatable-basic_filter"
+                      className="dataTables_filter px-4 pb-1"
+                    >
+                      <label>
+                        BUnit:
+                        <SearchBar
+                          className="form-control-sm"
+                          placeholder=""
+                          {...props.searchProps}
+                        />
+                      </label>
+                    </div>
+                    <div
+                      id="datatable-basic_filter"
+                      className="dataTables_filter px-4 pb-1"
+                    >
+                      <label>
+                        CC:
+                        <SearchBar
+                          className="form-control-sm"
+                          placeholder=""
+                          {...props.searchProps}
+                        />
+                      </label>
+                    </div>
+                    <div
+                      id="datatable-basic_filter"
+                      className="dataTables_filter px-4 pb-1"
+                    >
+                      <label>
+                        Country:
                         <SearchBar
                           className="form-control-sm"
                           placeholder=""

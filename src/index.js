@@ -43,14 +43,14 @@ import store from './store';
 
 ReactDOM.render(
   <Provider store={store}>
-      <BrowserRouter>
-    <Switch>
-      <Route path="/admin" render={(props) => <AdminLayout {...props} />} />   
-      <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
-      <Route path="/" render={(props) => <AdminLayout {...props} />} />
-      <Redirect from="*" to="/" />
-    </Switch>
-  </BrowserRouter>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/admin" render={(props) => <AdminLayout {...props} />} />   
+        <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
+        <Route path="/" render={(props) => <AdminLayout {...props} />} />
+        <Redirect from="*" to="/" />
+      </Switch>
+    </BrowserRouter>
   </Provider>
 ,
   document.getElementById("root")
