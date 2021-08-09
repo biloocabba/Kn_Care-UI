@@ -41,7 +41,6 @@ import GroupHeader from "components/Headers/GroupHeader.js";
 
 function CreateGroupPage() {
 
-  const [selectedOption, setSelectedOption] = useState(null); //to add members
   const dispatch = useDispatch();
   const initialGroupState = {
     id: null,
@@ -52,8 +51,6 @@ function CreateGroupPage() {
 
   const [group, setGroup] = useState(initialGroupState)
   const [submitted, setSubmitted] = useState(false);
-
-
 
   const handleInputChange = event => {
     const { name, value } = event.target;
@@ -70,18 +67,14 @@ function CreateGroupPage() {
           description: data.description,
         });
         setSubmitted(true);
-
-        console.log(data);
       })
       .catch(e => {
         console.log(e);
       });
   
-
   }
 
   const newGroup = () => {
-    setGroup(initialGroupState);
     setSubmitted(false);
   };
 
@@ -184,9 +177,7 @@ function CreateGroupPage() {
                  
                   <div className="pl-lg-4">
                    
-                   <button onClick={saveGroup} className="btn btn-success">
-           Submit
-         </button>
+                   <button onClick={saveGroup} className="btn btn-success"> Submit </button>
                  </div>
                 </Form>
 
