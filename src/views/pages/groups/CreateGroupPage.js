@@ -57,7 +57,8 @@ function CreateGroupPage() {
     setGroup({ ...group, [name]: value });
   };
 
-  const saveGroup = () => {
+  const saveGroup = (e) => {
+    e.preventDefault();
     const {name, description} = group;
     dispatch(createGroup(name, description))
       .then(data => {

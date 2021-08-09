@@ -15,6 +15,7 @@ const initialState = []
   
     switch (type) {
       case CREATE_GROUP:
+        console.log([...groups, payload])
         return [...groups, payload];
   
       case RETRIEVE_GROUPS:

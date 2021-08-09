@@ -12,14 +12,14 @@ import {
   export const createGroup = (name, description) => async (dispatch) => {
     try {
       const res = await GroupDataService.create({ name, description });
-  
       dispatch({
         type: CREATE_GROUP,
         payload: res.data,
       });
-  
+      console.log(res.data)
       return Promise.resolve(res.data);
     } catch (err) {
+      console.log(err)
       return Promise.reject(err);
     }
   };
