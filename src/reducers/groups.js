@@ -12,10 +12,11 @@ const initialState = []
   
   function groupsReducer(groups = initialState, action) {
     const { type, payload } = action;
+
+    console.log([...groups]);
   
     switch (type) {
       case CREATE_GROUP:
-        console.log([...groups, payload])
         return [...groups, payload];
   
       case RETRIEVE_GROUPS:
