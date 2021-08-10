@@ -17,6 +17,8 @@
 import React, {useState, useEffect} from "react";
 import { useDispatch, useSelector } from  "react-redux";
 import {createGroup} from "actions/groups"
+import {user_initialState} from "../../../initialStates/user"
+import AsyncSelect from 'react-select/async';
 
 // reactstrap components
 import {
@@ -38,6 +40,7 @@ import {
 } from "reactstrap";
 // core components
 import GroupHeader from "components/Headers/GroupHeader.js";
+import Select from 'react-select';
 
 function CreateGroupPage() {
 
@@ -78,6 +81,42 @@ function CreateGroupPage() {
   const newGroup = () => {
     setSubmitted(false);
   };
+
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  let options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+  ]
+
+  const [members, setMembers] = useState(options)
+  const [inputValMembers, setInputValMembers] = useState(null)
+
+  const getMembers = () =>{
+    user_initialState.map(user => options.push( {value: user.id, label: `${user.firstName} ${user.lastname}`}))
+  }
+
+  const filterMembers = (inputValMembers) => {
+    return options.filter(i =>
+      i.label.toLowerCase().includes(inputValMembers.toLowerCase())
+    );
+  };
+
+
+  //temporary before being able to make query with search parameter
+
+  const promiseOptions = inputValMembers =>
+  new Promise(resolve => {
+    setTimeout(() => {
+      resolve(filterMembers(inputValMembers));
+    }, 1000);
+  });
+
+  useEffect(() => {
+    getMembers()
+  }, []);
+  
 
   
 
@@ -170,11 +209,49 @@ function CreateGroupPage() {
 
 
                   </div>
-                  <hr className="my-4" />
+                      {/* <hr className="my-4" />
 
-                  <h6 className="heading-small text-muted mb-4">
-                    Add Employees
-                  </h6>
+                      <h6 className="heading-small text-muted mb-4">
+                        Add Employees
+                      </h6> */}
+
+                  <div className="pl-lg-4">
+
+                  <Row>
+                       <Col lg="10">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="members"
+                          >
+                            Add members
+                          </label>
+                          {/* <Select
+                                  defaultValue={selectedOption}
+                                  onChange={setSelectedOption}
+                                  options={members}
+                                  isMulti
+                                /> */}
+
+                          <AsyncSelect
+                                  isMulti
+                                  cacheOptions
+                                  defaultOptions
+                                  loadOptions={promiseOptions}
+                                />
+                        </FormGroup>
+                      </Col>                    
+                    </Row>
+
+                    <Row>
+
+                   
+                    </Row>
+
+               
+                      
+          
+        </div>
                  
                   <div className="pl-lg-4">
                    
