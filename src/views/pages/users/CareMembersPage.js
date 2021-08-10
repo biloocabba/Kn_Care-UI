@@ -14,14 +14,20 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ReactToPrint from "react-to-print";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import ReactBSAlert from "react-bootstrap-sweetalert";
 import axios from "axios";
-
+import {
+  retrieveCareMembers,
+  findCareMembersByInternationalName,
+  findCareMembersByBusinessUnit,
+  findCareMembersByCostCenter,
+  findCareMembersByCountry
+} from "../../../actions/careMembers";
 import {
   Button,
   ButtonGroup,
@@ -36,13 +42,12 @@ import {
 import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
 import { useDispatch, useSelector } from  "react-redux";
 
-const fetchUsers = async () => {
-  const { data } = await axios.get(
-      "https://jsonplaceholder.typicode.com/users/"
+const fetchCareMembers = async () => {
+  const { content } = await axios.get(
+      ""
   );
-  return { data };
+  return { content };
 };
-
 
 const pagination = paginationFactory({
   page: 1,
@@ -75,6 +80,70 @@ const pagination = paginationFactory({
 const { SearchBar } = Search;
 
 function CareMembersPage(props) {
+
+  const [currentCareMember, setCurrentCareMember] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(-1);
+  const [searchInternationalName, setSearchInternationalName] = useState("");
+  const [searchBusinessUnit, setSearchBusinessUnit] = useState("");
+  const [searchCostCenter, setSearchCostCenter] = useState("");
+  const [searchCountry, setSearchCountry] = useState("");
+
+  const careMembers = useSelector(state => state.tutorials);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(retrieveCareMembers());
+  }, []);
+
+  const onChangeSearchInternationalName = e => {
+    const searchInternationalName = e.target.value;
+    setSearchInternationalName(searchInternationalName);
+  };
+
+  const onChangeSearchBusinessUnit = e => {
+    const searchBusinessUnit = e.target.value;
+    setSearchBusinessUnit(searchBusinessUnit);
+  };
+
+  const onChangeSearchCostCenter = e => {
+    const searchCostCenter = e.target.value;
+    setSearchCostCenter(searchCostCenter);
+  };
+
+  const onChangeSearchCountry = e => {
+    const searchCountry = e.target.value;
+    setSearchCountry(searchCountry);
+  };
+
+  const refreshData = () => {
+    setCurrentCareMember(null);
+    setCurrentIndex(-1);
+  };
+
+  const setActiveCareMember = (careMember, index) => {
+    setCurrentCareMember(careMember);
+    setCurrentIndex(index);
+  };
+
+  const findByInternationalName = () => {
+    refreshData();
+    dispatch(findCareMembersByInternationalName(searchInternationalName));
+  };
+
+  const findByBusinessUnit = () => {
+    refreshData();
+    dispatch(findCareMembersByBusinessUnit(searchBusinessUnit));
+  };
+
+  const findByCostCenter = () => {
+    refreshData();
+    dispatch(findCareMembersByCostCenter(searchCostCenter));
+  };
+
+  const findByCountry = () => {
+    refreshData();
+    dispatch(findCareMembersByCountry(searchCountry));
+  };
 
   const rowDataDetails = (e)=> {   
     //console.log(e.target);
@@ -227,11 +296,11 @@ function CareMembersPage(props) {
                       className="dataTables_filter px-4 pb-1"
                     >
                       <label>
-                        Int Name:
                         <SearchBar
                           className="form-control-sm"
-                          placeholder=""
-                          {...props.searchProps}
+                          placeholder="International Name"
+                          value={searchInternationalName}
+                          onChange={onChangeSearchInternationalName}
                         />
                       </label>
                     </div>
@@ -240,11 +309,11 @@ function CareMembersPage(props) {
                       className="dataTables_filter px-4 pb-1"
                     >
                       <label>
-                        BUnit:
                         <SearchBar
                           className="form-control-sm"
-                          placeholder=""
-                          {...props.searchProps}
+                          placeholder="Business Unit"
+                          value={searchBusinessUnit}
+                          onChange={onChangeSearchBusinessUnit}
                         />
                       </label>
                     </div>
@@ -253,11 +322,11 @@ function CareMembersPage(props) {
                       className="dataTables_filter px-4 pb-1"
                     >
                       <label>
-                        CC:
                         <SearchBar
                           className="form-control-sm"
-                          placeholder=""
-                          {...props.searchProps}
+                          placeholder="Cost Center"
+                          value={searchCostCenter}
+                          onChange={onChangeSearchCostCenter}
                         />
                       </label>
                     </div>
@@ -266,14 +335,23 @@ function CareMembersPage(props) {
                       className="dataTables_filter px-4 pb-1"
                     >
                       <label>
-                        Country:
                         <SearchBar
                           className="form-control-sm"
-                          placeholder=""
-                          {...props.searchProps}
+                          placeholder="Country"
+                          value={searchCountry}
+                          onChange={onChangeSearchCountry}
                         />
                       </label>
                     </div>
+                    <div className="input-group-append">
+                      <button
+                        className="btn btn-info"
+                        type="button"
+                        onClick={findByInternationalName, findByBusinessUnit, findByCostCenter, findByCountry}
+                      >
+                        Search
+                      </button>
+                    </div>  
                     <BootstrapTable
                       {...props.baseProps}
                       bootstrap4={true}
