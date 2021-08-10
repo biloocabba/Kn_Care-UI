@@ -94,7 +94,7 @@ function CreateGroupPage() {
   const [inputValMembers, setInputValMembers] = useState(null)
 
   const getMembers = () =>{
-    user_initialState.map(user => options.push( {value: user.id, label: `${user.firstName} ${user.lastname}`}))
+    user_initialState.map(user => options.push( {value: user.id, label: `${user.firstName} ${user.lastName}`}))
   }
 
   const filterMembers = (inputValMembers) => {
