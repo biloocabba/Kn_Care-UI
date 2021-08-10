@@ -178,7 +178,7 @@ function CareMembersPage(props) {
                     style: { width: '50px' },
                   },
                   {
-                    dataField: 'businessUnit',
+                    dataField: 'businessUnit.name',
                     text: 'bUnit',
                     sort: true,
                     style: { width: '50px' },
