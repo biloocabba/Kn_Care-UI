@@ -50,7 +50,6 @@ import ArchivePage from "views/pages/communications/ArchivePage.js"
 
 import ChartsPage from "views/pages/dashboards/ChartsPage.js"
 import WorldOverviewPage from "views/pages/dashboards/WorldOverviewPage.js"
-import CreateEmployeePage from './views/pages/users/CreateEmployeePage';
 import CreateCareMemberPage from "views/pages/users/CreateCareMemberPage";
 
 

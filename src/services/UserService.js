@@ -4,8 +4,8 @@ const getAll = () => {
   return http.get('/employees')
 }
 
-const create = () => {
-  return http.post('/members')
+const create = (data) => {
+  return http.post('/members/', data)
 }
 
 const UserService = {

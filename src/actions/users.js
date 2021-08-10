@@ -18,16 +18,17 @@ export const createCareMember = (data) => async (dispatch) => {
 
   console.log(data)
   
-  const { onBoardDate, offBoardDate, employee, role, country } = data
+  const { country, employee, offBoardDate, onBoardDate, role } = data
 
   try {
     const res = await UserService.create({
-      onBoardDate,
-      offBoardDate,
-      employee,
-      role,
-      country,
+     country,
+     employee,
+     offBoardDate,
+     onBoardDate,
+     role
     })
+
     dispatch({ type: CREATE_CARE_MEMBER, payload: res.data })
 
     if(res.status === 201){
