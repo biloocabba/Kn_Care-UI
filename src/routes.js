@@ -47,9 +47,11 @@ import CreateEmailTemplatePage from "views/pages/communications/CreateEmailTempl
 import SearchTemplatePage from "views/pages/communications/SearchTemplatePage.js"
 import EmailHistoryPage from "views/pages/communications/EmailHistoryPage.js"
 import ArchivePage from "views/pages/communications/ArchivePage.js"
+import SearchEmailPage from "views/pages/communications/SearchEmailPage";
 
 import ChartsPage from "views/pages/dashboards/ChartsPage.js"
 import WorldOverviewPage from "views/pages/dashboards/WorldOverviewPage.js"
+import ViewEmailPage from "views/pages/communications/ViewEmailPage";
 
 
 const routes = [
@@ -133,6 +135,13 @@ const routes = [
         layout: "/admin",
       },
       {
+        path: "/search-email",
+        name: "Search Email",
+        miniName: "SE",
+        component: SearchEmailPage,
+        layout: "/admin",
+      },
+      {
         path: "/create-notification",
         name: "Create Notification",
         miniName: "CN",
@@ -203,6 +212,13 @@ const routes = [
     global:true, 
     path: "/users/care-member-details/:id",
     component: EditCareMemberPage,
+    layout: "/admin"
+  },
+  {
+    collapse: false,
+    global:true,
+    path: "/view-email/:id",
+    component: ViewEmailPage,
     layout: "/admin"
   },
   {

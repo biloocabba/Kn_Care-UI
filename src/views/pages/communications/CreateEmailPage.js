@@ -16,6 +16,14 @@
 */
 import React, { useState } from "react";
 
+import Select from "react-select";
+import AsyncSelect from "react-select/async";
+import makeAnimated from 'react-select/animated';
+
+import SimpleHeader from "components/Headers/SimpleHeader.js";
+
+import EmailService from "services/EmailService";
+
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"
 
@@ -39,23 +47,40 @@ import {
   Col,
 } from "reactstrap";
 // core components
-import ProfileHeader from "components/Headers/ProfileHeader.js";
 
-function CreateEmailPage() {
+function CreateEmailPage(props) {
   const initialEmailState = {
     id:"",
     subject:"",
     content:"",
     attachments:null,
-    createdBy:null,
+    createdBy:1, //maybe rename it to creatorId?
     recipients:[],
     recipientGroups:[]
   };
 
   const [emailState, setEmailState] = useState(initialEmailState);
 
+  //mock options until real API requests can be made
+  //fetching groups and individual recipients is unavailable
+  //as of August 10th
+  const options = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "mango", label: "Mango" },
+    { value: "orange", label: "Orange" },
+    { value: "passionfruit", label: "Passionfruit" }
+  ];
+
+  const saveAsDraft = () => {
+    EmailService.saveAsDraft(emailState.id,emailState.createdBy);
+    props.history.push("/admin/search-email");
+  }
+
   return (
     <>
+      <SimpleHeader name="Create Email" parentName="Communications" />
       <Container className="mt--6" fluid>
         <Row>
           <Col>
@@ -77,7 +102,7 @@ function CreateEmailPage() {
                       </Button>
                       <Button
                         href="#pablo"
-                        onClick={(e) => e.preventDefault()}
+                        onClick={saveAsDraft}
                         size="sm"
                       >
                         Save as Draft
@@ -106,16 +131,22 @@ function CreateEmailPage() {
                           >
                             Recipient
                           </label>
-                          <Input
-                            id="input-email"
-                            placeholder="jesse1@example.com;jesse2@example.com"
-                            type="email"
+                          <Select 
+                          id="input-email"
+                          components = {makeAnimated()} 
+                          isMulti 
+                          options = {options}
+                          onChange={e => {
+                            let recipientsArray = [];
+                            e.forEach(element => recipientsArray.push(element.value));
+                            setEmailState({...emailState, recipients:recipientsArray});
+                          }}
                           />
                         </FormGroup>
                       </Col>
                     </Row>
                     <Row>
-                      <Col lg="6">
+                      <Col>
                         <FormGroup>
                           <label
                             className="form-control-label"
@@ -123,10 +154,16 @@ function CreateEmailPage() {
                           >
                           Recipient Group
                           </label>
-                          <Input
-                            id="input-recipient-group"
-                            placeholder="Sample Care Group"
-                            type="text"
+                          <Select
+                          id="input-recipient-group"
+                          components = {makeAnimated()}
+                          isMulti
+                          options = {options}
+                          onChange = {e => {
+                            let recipientGroupsArray = [];
+                            e.forEach(element => recipientGroupsArray.push(element.value));
+                            setEmailState({...emailState, recipientGroups:recipientGroupsArray});
+                          }}
                           />
                         </FormGroup>
                       </Col>

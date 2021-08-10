@@ -112,79 +112,79 @@ discardMail
 //tegemist on struktuurinäidistega, sisu mitte arvestada
 const sample1 = {
     "content": [
-    {
-        "id": 1,
-        "onBoardDate": "2021-08-03T14:38:33",
-        "offBoardDate": "2021-08-03T14:38:33"
-    },
-    {
-        "id": 2,
-        "onBoardDate": "2021-08-04T14:38:33",
-        "offBoardDate": "2021-09-03T14:38:33"
-    },
-    {
-        "id": 3,
-        "onBoardDate": "2021-08-05T14:38:33",
-        "offBoardDate": "2021-10-03T14:38:33"
-    },
-    {
-        "id": 4,
-        "onBoardDate": "2021-08-06T14:38:33",
-        "offBoardDate": "2021-11-03T14:38:33"
-    },
-    {
-        "id": 5,
-        "onBoardDate": "2021-08-07T14:38:33",
-        "offBoardDate": "2021-12-03T14:38:33"
-    },
-    {
-        "id": 6,
-        "onBoardDate": "2021-08-08T14:38:33",
-        "offBoardDate": "2021-03-03T14:38:33"
-    },
-    {
-        "id": 7,
-        "onBoardDate": "2021-08-09T14:38:33",
-        "offBoardDate": "2021-04-03T14:38:33"
-    },
-    {
-        "id": 8,
-        "onBoardDate": "2021-08-10T14:38:33",
-        "offBoardDate": "2021-05-03T14:38:33"
-    },
-    {
-        "id": 9,
-        "onBoardDate": "2021-08-11T14:38:33",
-        "offBoardDate": "2021-06-03T14:38:33"
-    },
-    {
-        "id": 10,
-        "onBoardDate": "2021-08-12T14:38:33",
-        "offBoardDate": "2021-07-03T14:38:33"
-    }
-],
+        {
+            "id": 1,
+            "onBoardDate": "2021-08-03T14:38:33",
+            "offBoardDate": "2021-08-03T14:38:33"
+        },
+        {
+            "id": 2,
+            "onBoardDate": "2021-08-04T14:38:33",
+            "offBoardDate": "2021-09-03T14:38:33"
+        },
+        {
+            "id": 3,
+            "onBoardDate": "2021-08-05T14:38:33",
+            "offBoardDate": "2021-10-03T14:38:33"
+        },
+        {
+            "id": 4,
+            "onBoardDate": "2021-08-06T14:38:33",
+            "offBoardDate": "2021-11-03T14:38:33"
+        },
+        {
+            "id": 5,
+            "onBoardDate": "2021-08-07T14:38:33",
+            "offBoardDate": "2021-12-03T14:38:33"
+        },
+        {
+            "id": 6,
+            "onBoardDate": "2021-08-08T14:38:33",
+            "offBoardDate": "2021-03-03T14:38:33"
+        },
+        {
+            "id": 7,
+            "onBoardDate": "2021-08-09T14:38:33",
+            "offBoardDate": "2021-04-03T14:38:33"
+        },
+        {
+            "id": 8,
+            "onBoardDate": "2021-08-10T14:38:33",
+            "offBoardDate": "2021-05-03T14:38:33"
+        },
+        {
+            "id": 9,
+            "onBoardDate": "2021-08-11T14:38:33",
+            "offBoardDate": "2021-06-03T14:38:33"
+        },
+        {
+            "id": 10,
+            "onBoardDate": "2021-08-12T14:38:33",
+            "offBoardDate": "2021-07-03T14:38:33"
+        }
+    ],
     "pageable": {
-    "sort": {
-        "sorted": false,
-            "unsorted": true,
-            "empty": true
-    },
-    "offset": 0,
+        "sort": {
+            "sorted": false,
+                "unsorted": true,
+                "empty": true
+        },
+        "offset": 0,
         "pageNumber": 0,
         "pageSize": 10,
         "unpaged": false,
         "paged": true
-},
+    },
     "last": true,
     "totalElements": 10,
     "totalPages": 1,
     "size": 10,
     "number": 0,
     "sort": {
-    "sorted": false,
-        "unsorted": true,
-        "empty": true
-},
+        "sorted": false,
+            "unsorted": true,
+            "empty": true
+    },
     "first": true,
     "numberOfElements": 10,
     "empty": false
