@@ -1,13 +1,11 @@
 import { 
     CREATE_CARE_MEMBER,
     RETRIEVE_CARE_MEMBERS,
-    UPDATE_CARE_USER,
-    OFFBOARD_CARE_USER
- } from "actions/types/user";
-import { careMember_initialState } from '../initialStates/careMember';
+    UPDATE_CARE_MEMBER,
+    OFFBOARD_CARE_MEMBER
+ } from "actions/types";
 
-
-const userReducer = (careMembers = careMember_initialState, action) => {
+const careMemberReducer = (careMembers = [], action) => {
     const { type, payload } = action;
 
     switch (type) {
@@ -18,7 +16,7 @@ const userReducer = (careMembers = careMember_initialState, action) => {
         case RETRIEVE_CARE_MEMBERS:
             return payload;
            
-        case UPDATE_CARE_USER:
+        case UPDATE_CARE_MEMBER:
             return careMembers.map(user => {
                 if(user.id === payload.id){
                     return {
@@ -30,7 +28,7 @@ const userReducer = (careMembers = careMember_initialState, action) => {
                 }
             });
 
-        case OFFBOARD_CARE_USER:
+        case OFFBOARD_CARE_MEMBER:
             return careMembers.filter(({ id }) => id !== payload.id);
 
         default:
@@ -38,4 +36,4 @@ const userReducer = (careMembers = careMember_initialState, action) => {
     }
 }
 
-export default userReducer
+export default careMemberReducer

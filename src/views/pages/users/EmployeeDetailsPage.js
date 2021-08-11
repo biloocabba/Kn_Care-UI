@@ -39,7 +39,7 @@ import { useSelector } from 'react-redux'
 function EmployeeDetailsPage(props) {
   let { id } = useParams() //see in routes path: "/users/employee-details/:id",
 
-  const users = useSelector((state) => state.users)
+  const users = useSelector((state) => state.employees)
   let user = users.find((user) => user.id === parseInt(id))
 
   return (

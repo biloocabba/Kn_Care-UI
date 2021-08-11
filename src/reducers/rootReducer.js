@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import users from "./users";
-import careMembers from './careMembers';
+import employeesReducer from "./employees.js";
+import careMembers from './careMembers.js';
 
 export const rootReducer = combineReducers({
-    users: users,
+    employees: employeesReducer,
     careMembers: careMembers,
   });
