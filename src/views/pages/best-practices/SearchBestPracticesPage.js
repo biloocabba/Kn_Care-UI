@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {useEffect} from "react";
 // react plugin that prints a given react component
 import ReactToPrint from "react-to-print";
 // react component for creating dynamic tables
@@ -38,6 +38,8 @@ import {
 import SimpleHeader from "components/Headers/SimpleHeader.js";
 
 import { dataTable } from "variables/general";
+import { useSelector, useDispatch} from 'react-redux';
+import { reterieveBestPractices } from "actions/bestPractices";
 
 const pagination = paginationFactory({
   page: 1,
@@ -111,6 +113,15 @@ function ReactBSTables() {
     );
   };
 
+  const bestPractices = useSelector((state) => state.bestPractices)
+  const dispatch = useDispatch()
+
+
+  useEffect(() => {
+    dispatch(reterieveBestPractices())
+  }, [dispatch])
+
+  
   return (
     <>
       {alert}
@@ -120,47 +131,31 @@ function ReactBSTables() {
           <div className="col">
             <Card>
               <CardHeader>
-                <h3 className="mb-0">React Bootstrap Table 2</h3>
+                <h3 className="mb-0">Search Best Practice</h3>
                 <p className="text-sm mb-0">
-                  This is an exmaple of data table using the well known
-                  react-bootstrap-table2 plugin. This is a minimal setup in
-                  order to get started fast.
+                 
                 </p>
               </CardHeader>
               <ToolkitProvider
-                data={dataTable}
+                data={bestPractices}
                 keyField="name"
                 columns={[
                   {
-                    dataField: "name",
-                    text: "Name",
+                    dataField: "title",
+                    text: "Title",
                     sort: true,
                   },
                   {
-                    dataField: "position",
-                    text: "Position",
+                    dataField: "content",
+                    text: "Content",
                     sort: true,
                   },
                   {
-                    dataField: "office",
-                    text: "Office",
+                    dataField: "description",
+                    text: "Description",
                     sort: true,
-                  },
-                  {
-                    dataField: "age",
-                    text: "Age",
-                    sort: true,
-                  },
-                  {
-                    dataField: "start_date",
-                    text: "Start date",
-                    sort: true,
-                  },
-                  {
-                    dataField: "salary",
-                    text: "Salary",
-                    sort: true,
-                  },
+                  }
+                  
                 ]}
                 search
               >
@@ -189,7 +184,7 @@ function ReactBSTables() {
                 )}
               </ToolkitProvider>
             </Card>
-            <Card>
+            {/* <Card>
               <CardHeader>
                 <h3 className="mb-0">Action buttons</h3>
                 <p className="text-sm mb-0">
@@ -311,7 +306,7 @@ function ReactBSTables() {
                   </div>
                 )}
               </ToolkitProvider>
-            </Card>
+            </Card> */}
           </div>
         </Row>
       </Container>

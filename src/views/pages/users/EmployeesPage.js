@@ -71,12 +71,6 @@ function Employees(props) {
     props.history.push('/admin/users/employee-details/' + id)
   }
 
-  const employeeRemove = (e) => {
-    var { id } = e.target
-    console.log(id)
-    dispatch(deleteUser(id))
-  }
-
   useEffect(() => {
     dispatch(reterieveEmployees())
   }, [dispatch])
@@ -100,7 +94,6 @@ function Employees(props) {
           className="btn-icon btn-2"
           color="danger"
           type="button"
-          onClick={employeeRemove}
         >
           <span id={row.id} className="btn-inner--icon">
             <i id={row.id} className="ni ni-fat-remove" />

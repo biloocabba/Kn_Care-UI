@@ -4,4 +4,9 @@ export const bestPractice_InitialState = [
     title: 'Sample title',
     content: 'Hello world!',
   },
+  {
+    id: '2',
+    title: 'Sample title',
+    content: 'Hello world!',
+  },
 ]
