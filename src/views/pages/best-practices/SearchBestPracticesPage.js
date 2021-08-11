@@ -125,7 +125,7 @@ function ReactBSTables() {
   return (
     <>
       {alert}
-      <SimpleHeader name="React Tables" parentName="Tables" />
+      <SimpleHeader name="Best Practices" parentName="Tables" />
       <Container className="mt--6" fluid>
         <Row>
           <div className="col">
