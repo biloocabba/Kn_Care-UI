@@ -95,6 +95,11 @@ function CreateEmailPage(props) {
     props.history.push("/admin/search-email");
   }
 
+  const handleSaveAsDraft = () => {
+    EmailService.saveAsDraft(emailState.id,emailState.createdBy);
+    props.history.push("/admin/search-email");
+  }
+
   return (
     <>
       <SimpleHeader name="Create Email" parentName="Communications" />
@@ -119,7 +124,7 @@ function CreateEmailPage(props) {
                       </Button>
                       <Button
                         href="#pablo"
-                        onClick={(e) => e.preventDefault()}
+                        onClick={handleSaveAsDraft}
                         size="sm"
                       >
                         Save as Draft
