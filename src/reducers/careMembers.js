@@ -5,7 +5,7 @@ import {
     OFFBOARD_CARE_MEMBER
  } from "actions/types";
 
-const careMemberReducer = (careMembers = [], action) => {
+const careMembersReducer = (careMembers = [], action) => {
     const { type, payload } = action;
 
     switch (type) {
@@ -36,4 +36,4 @@ const careMemberReducer = (careMembers = [], action) => {
     }
 }
 
-export default careMemberReducer
+export default careMembersReducer

@@ -133,7 +133,6 @@ function CreateGroupPage() {
                           </label>
                           <Input
                             name="name"
-                            defaultValue=""
                             value={group.name}
                             required
                             id="input-group-name"
@@ -160,7 +159,6 @@ function CreateGroupPage() {
                             placeholder="A few words about the group"
                             rows="4"
                             type="textarea" 
-                            name="description"
                             onChange={handleInputChange}  
                             value={group.description}                          
                           />

@@ -10,7 +10,7 @@ const get = id => {
 }
 
 const create = data => {
-  return http.post("/new-group/", data);
+  return http.post("/groups", data);
 
 }
 

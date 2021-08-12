@@ -16,7 +16,7 @@ import {
         type: CREATE_GROUP,
         payload: res.data,
       });
-      console.log(res.data)
+      //console.log(res.data)
       return Promise.resolve(res.data);
     } catch (err) {
       console.log(err)
