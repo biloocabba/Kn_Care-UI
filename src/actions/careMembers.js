@@ -1,16 +1,19 @@
 import {
-  RETRIEVE_USERS,
   CREATE_CARE_MEMBER,
-} from './types/user'
-import UserService from '../services/UserService'
+} from './types'
+
+import careMemberService from '../services/careMemberService'
 import { toast } from 'react-toastify';
+
 
 export const createCareMember = (data) => async (dispatch) => {
 
+  console.log(data)
+  
   const { country, employee, offBoardDate, onBoardDate, role } = data
 
   try {
-    const res = await UserService.create({
+    const res = await careMemberService.create({
      country,
      employee,
      offBoardDate,
@@ -33,11 +36,3 @@ export const createCareMember = (data) => async (dispatch) => {
   }
 }
 
-export const reterieveEmployees = () => async (dispatch) => {
-  try {
-    const res = await UserService.getAll()
-    dispatch({ type: RETRIEVE_USERS, payload: res.data })
-  } catch (error) {
-    console.log(error)
-  }
-}

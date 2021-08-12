@@ -17,7 +17,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 // react library for routing
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { Provider } from 'react-redux';
 
 // plugins styles from node_modules
 import 'react-notification-alert/dist/animate.css'
@@ -35,11 +36,9 @@ import './assets/scss/argon-dashboard-pro-react.scss?v1.2.0'
 
 import AdminLayout from './layouts/Admin.js'
 import AuthLayout from './layouts/Auth.js'
-import { Provider } from 'react-redux'
 import store from './store'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 ReactDOM.render(
   <Provider store={store}>

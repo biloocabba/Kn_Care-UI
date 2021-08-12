@@ -22,18 +22,17 @@ import GradientEmptyHeader from 'components/Headers/GradientEmptyHeader.js'
 
 // react plugin used to create DropdownMenu for selecting items
 import Select2 from 'react-select2-wrapper'
-import { createCareMember } from 'actions/users'
-
+import { createCareMember } from '../../../actions/careMembers.js'
 // react plugin used to fetch list of countries
 import countryList from 'country-list'
-import { employees } from './EmployeesData'
+
 
 const CreateCareMemberPage = (props) => {
   let { id } = useParams()
   const [selectedCountry, setSelectedCountry] = useState('')
   const [selectedRole, setSelectedRole] = useState('')
 
-  const users = useSelector((state) => state.users)
+  const users = useSelector((state) => state.employees)
   let user = users.find((user) => user.id === parseInt(id))
 
   const date = new Date()

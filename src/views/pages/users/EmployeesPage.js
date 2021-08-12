@@ -28,9 +28,7 @@ import { Button, Card, CardHeader, Container, Row } from 'reactstrap'
 import GradientEmptyHeader from 'components/Headers/GradientEmptyHeader.js'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteUser } from 'actions/users.js'
-import { employees } from './EmployeesData.js'
-import { reterieveEmployees } from '../../../actions/users'
+import { deleteUser, reterieveEmployees } from '../../../actions/employee.js'
 
 const pagination = paginationFactory({
   page: 1,
@@ -63,7 +61,7 @@ const pagination = paginationFactory({
 const { SearchBar } = Search
 
 function Employees(props) {
-  const users = useSelector((state) => state.users)
+  const users = useSelector((state) => state.employees )
   const dispatch = useDispatch()
 
   const employeeDetails = (e) => {
