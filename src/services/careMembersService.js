@@ -1,7 +1,7 @@
 import http from "../http-common";
 
 const getAllCareMembers = () => {
-  return http.get("/");
+  return http.get("/careMembers");
 };
 
 const findByInternationalName = internationalName => {

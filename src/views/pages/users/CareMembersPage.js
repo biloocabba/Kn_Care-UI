@@ -41,13 +41,7 @@ import {
 // core components
 import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
 import { useDispatch, useSelector } from  "react-redux";
-
-const fetchCareMembers = async () => {
-  const { content } = await axios.get(
-      ""
-  );
-  return { content };
-};
+import careMembersService from "services/careMembersService";
 
 const pagination = paginationFactory({
   page: 1,
@@ -81,19 +75,19 @@ const { SearchBar } = Search;
 
 function CareMembersPage(props) {
 
-  const [currentCareMember, setCurrentCareMember] = useState(null);
+  const [currentCareMember, setCurrentCareMember] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchInternationalName, setSearchInternationalName] = useState("");
   const [searchBusinessUnit, setSearchBusinessUnit] = useState("");
   const [searchCostCenter, setSearchCostCenter] = useState("");
   const [searchCountry, setSearchCountry] = useState("");
 
-  const careMembers = useSelector(state => state.tutorials);
+  const careMembers = useSelector(state => state.careMembers);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(retrieveCareMembers());
-  }, []);
+    dispatch(retrieveCareMembers())
+  }, [dispatch])
 
   const onChangeSearchInternationalName = e => {
     const searchInternationalName = e.target.value;
@@ -144,6 +138,13 @@ function CareMembersPage(props) {
     refreshData();
     dispatch(findCareMembersByCountry(searchCountry));
   };
+
+  const findByAllParameters = () => {
+    findByInternationalName();
+    findByBusinessUnit();
+    findByCostCenter();
+    findByCountry();
+  }
 
   const rowDataDetails = (e)=> {   
     //console.log(e.target);
@@ -230,7 +231,7 @@ function CareMembersPage(props) {
                 </p>
               </CardHeader>
               <ToolkitProvider
-                data={users}
+                data={careMembers}
                 keyField="firstName"
                 columns={[
                   {
@@ -347,7 +348,7 @@ function CareMembersPage(props) {
                       <button
                         className="btn btn-info"
                         type="button"
-                        onClick={findByInternationalName, findByBusinessUnit, findByCostCenter, findByCountry}
+                        onClick={findByAllParameters}
                       >
                         Search
                       </button>
