@@ -131,15 +131,14 @@ function ReactBSTables(props) {
     .then(response => {
         setEmails(response.data);
     });
-  }, []); //maybe add an empty array as a dependency to run this effect only once
+  }, []);
 
   const EditDraft = e => {
     var {id} = e.target;
-    //props.history.push("/admin/view-email/" + id); //ära unusta seda komponenti ja routes.js failis kirjete kustutamist!!!
+    props.history.push("/admin/create-email/"+id);
   }
 
   const formatActionButtonCell =(cell, row)=>{  
-    console.log(`row ${row.id}`);
     return (
         <>
             <Button id={row.id} className="btn-icon btn-2" type="button" onClick={e => EditDraft(e)}>

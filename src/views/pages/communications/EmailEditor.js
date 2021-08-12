@@ -14,7 +14,8 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
@@ -49,17 +50,33 @@ import {
 // core components
 
 function CreateEmailPage(props) {
+
+  let { id } = useParams();
+
   const initialEmailState = {
     id:"",
     subject:"",
     content:"",
     attachments:null,
-    createdBy:1, //maybe rename it to creatorId?
+    createdBy:1,
     recipients:[],
     recipientGroups:[]
   };
 
   const [emailState, setEmailState] = useState(initialEmailState);
+
+  useEffect(()=>{
+    if(id !== ":id" && id !== undefined){
+      const fetchData = async () => {
+        const result = await EmailService.getOne(id);
+        if(result.status === 200){
+          //setEmailState(result.data);
+          setEmailState(result.data);
+        }
+      }
+      fetchData();
+    }
+  }, [id]);
 
   //mock options until real API requests can be made
   //fetching groups and individual recipients is unavailable
@@ -73,8 +90,8 @@ function CreateEmailPage(props) {
     { value: "passionfruit", label: "Passionfruit" }
   ];
 
-  const saveAsDraft = () => {
-    EmailService.saveAsDraft(emailState.id,emailState.createdBy);
+  const handleSend = () => {
+    EmailService.sendMail(emailState);
     props.history.push("/admin/search-email");
   }
 
@@ -102,7 +119,7 @@ function CreateEmailPage(props) {
                       </Button>
                       <Button
                         href="#pablo"
-                        onClick={saveAsDraft}
+                        onClick={(e) => e.preventDefault()}
                         size="sm"
                       >
                         Save as Draft
@@ -110,7 +127,7 @@ function CreateEmailPage(props) {
                       <Button
                         color="primary"
                         href="#pablo"
-                        onClick={(e) => e.preventDefault()}
+                        onClick={handleSend}
                         size="sm"
                       >
                         Send
@@ -181,10 +198,39 @@ function CreateEmailPage(props) {
                           <Input
                             id="email-subject"
                             type="text"
+                            value={emailState.subject}
                             onChange={e => setEmailState({...emailState, subject:e.target.value})}
                           />
                     </FormGroup>
-                    <ReactQuill value={emailState.content} onChange={e=>setEmailState({...emailState, content:e})}/>
+                    <ReactQuill value={emailState.content} onChange={e=>{
+                      /*This random assignment does not have any logical meaning, however, 
+                        it has a side effect of somehow updating emailState. This state
+                        update won't show up at first with react-devtools, but when you
+                        change some other fields (subject, recipient, recipient group),
+                        you will notice that emailState.content has also been updated.
+                        
+                        This is of course not a good final solution but rather a workaround
+                        to a bug that's probably somewhere in ReactQuill's source code.
+                        Maybe I myself wrote a bug elsewhere, but after looking at my own
+                        code for hours, I couldn't find an error in my code.
+                        
+                        I'm using this workaround as a last resort because I cannot waste more
+                        time on this bug.*/
+                      let newEmailState = emailState;
+                      newEmailState.content = e;
+
+                      /*with this console log you can see the state being changed
+                      because react-devtools doesn't show it right after emailState.content
+                      has changed, but only after something else has also changed*/
+                      console.log(emailState);
+                      /* 
+                        This assignment should be the way to change emailState.content,
+                        but it also overrides emailState.id and emailState.subject with 
+                        empty strings for some strange reason. I couldn't find a proper
+                        solution.
+                      */
+                      //setEmailState({...emailState, content:e});
+                      }}/>
                   </div>
                 </Form>
               </CardBody>

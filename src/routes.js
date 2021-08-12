@@ -41,7 +41,7 @@ import GroupsPage from "views/pages/groups/GroupsPage.js"
 import CreateBestPracticePage from "views/pages/best-practices/CreateBestPracticePage.js"
 import SearchBestPracticesPage from "views/pages/best-practices/SearchBestPracticesPage.js"
 
-import CreateEmailPage from "views/pages/communications/CreateEmailPage.js"
+import EmailEditor from "views/pages/communications/EmailEditor.js"
 import SendNotificationPage from "views/pages/communications/SendNotificationPage.js"
 import CreateEmailTemplatePage from "views/pages/communications/CreateEmailTemplatePage.js"
 import SearchTemplatePage from "views/pages/communications/SearchTemplatePage.js"
@@ -51,7 +51,6 @@ import SearchEmailPage from "views/pages/communications/SearchEmailPage";
 
 import ChartsPage from "views/pages/dashboards/ChartsPage.js"
 import WorldOverviewPage from "views/pages/dashboards/WorldOverviewPage.js"
-import ViewEmailPage from "views/pages/communications/ViewEmailPage";
 
 
 const routes = [
@@ -128,10 +127,10 @@ const routes = [
     state: "communicationsCollapse",
     views: [
       {
-        path: "/create-email",
+        path: "/create-email/:id?",
         name: "Create Email",
         miniName: "CE",
-        component: CreateEmailPage,
+        component: EmailEditor,
         layout: "/admin",
       },
       {
@@ -212,13 +211,6 @@ const routes = [
     global:true, 
     path: "/users/care-member-details/:id",
     component: EditCareMemberPage,
-    layout: "/admin"
-  },
-  {
-    collapse: false,
-    global:true,
-    path: "/view-email/:id",
-    component: ViewEmailPage,
     layout: "/admin"
   },
   {

@@ -4,18 +4,18 @@ const getAll = () => {
     return http.get("/emails");
 };
 
-const saveAsDraft = (emailId, memberId) => {
-    return http.post("emails/:emailId/participants/:memberId",undefined,{
-        params: {
-            emailId: emailId,
-            memberId: memberId
-        }
-    });
-};
+const getOne = id => {
+    return http.get("/emails/" + id);
+}
+
+const sendMail = email => {
+    console.log("sending not yet implemented at the backend");
+}
 
 const EmailService = {
     getAll,
-    saveAsDraft
+    getOne,
+    sendMail
 };
 
 export default EmailService;
