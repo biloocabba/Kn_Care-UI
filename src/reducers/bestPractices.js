@@ -1,7 +1,6 @@
-import { bestPractice_InitialState } from '../initialStates/bestPractice'
 import { RETERIEVE_BEST_PRACTICES } from '../actions/types/bestPractice'
 
-const bestPracticeReducer = (bestpractices = bestPractice_InitialState, action) => {
+const bestPracticeReducer = (bestpractices = [], action) => {
   const { type, payload } = action
 
   switch (type) {

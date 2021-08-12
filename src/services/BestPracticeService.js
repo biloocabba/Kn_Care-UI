@@ -1,10 +1,10 @@
-import http from '../http-common'
+import http from './http-common'
 
 const getAll = () => {
-  return http.get('/bestPractices')
+  return http.get('/best-practices')
 }
 
-const BestPracticeService = {
+const bestPracticeService = {
   getAll
 }
-export default BestPracticeService
+export default bestPracticeService

@@ -80,7 +80,7 @@ function EditCareMemberPage(props) {
               </CardHeader>
               <CardBody>
               <Form>
-              <h6 className="heading-small text-muted mb-4">
+                  <h6 className="heading-small text-muted mb-4">
                     Care Member information
                   </h6>
                   <div className="pl-lg-4">                    
