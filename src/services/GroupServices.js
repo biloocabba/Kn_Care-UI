@@ -1,4 +1,4 @@
-import http from "../http-common";
+import http from "./http-common";
 
 
 const getAll = () => {
@@ -39,7 +39,7 @@ const removeAll = () => {
 
 
 
-const GroupService = {
+const groupService = {
 
   getAll,
   get,
@@ -49,4 +49,4 @@ const GroupService = {
   removeAll,
 }
 
-export default GroupService;
+export default groupService;
