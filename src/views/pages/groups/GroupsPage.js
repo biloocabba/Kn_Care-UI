@@ -43,7 +43,6 @@ import {
 // core components
 import SimpleHeader from "components/Headers/SimpleHeader.js";
 
-import { dataTable } from "variables/general";
 import { retrieveGroups } from "../../../actions/groups";
 
 
@@ -109,7 +108,9 @@ function GroupsPage(props) {
     props.history.push('/admin/group-member-details/'+id);     
   }
 
-  const dataGroup = useSelector(state => state.groups);
+  const groups = useSelector(state => state.groups);
+  console.log(groups);
+
   const [alert, setAlert] = React.useState(null);
   const componentRef = React.useRef(null);
   // this function will copy to clipboard an entire table,
@@ -157,15 +158,11 @@ function GroupsPage(props) {
 
   const toggleDropDown = () => setDropdownOpen(!dropdownOpen);
 
-  // const loadGroups = () => {
-  //   dispatch({
-  //     type: RETRIEVE_GROUPS
-  //   });
-  // }
 
-  useEffect(() => {
-    dispatch(retrieveGroups());
-  }, []);
+  //this goes in a different story
+  // useEffect(() => {
+  //   dispatch(retrieveGroups());
+  // }, []);
 
   
 
@@ -214,7 +211,7 @@ function GroupsPage(props) {
                 </p>
               </CardHeader>
               <ToolkitProvider
-                data={dataGroup}
+                data={groups}
                 keyField="group"
                
                 columns={[
