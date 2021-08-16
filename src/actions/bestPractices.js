@@ -1,10 +1,10 @@
 import { RETERIEVE_BEST_PRACTICES } from './types/bestPractice';
-import bestPractices from '../services/bestPracticeService';
+import bestPracticeService from '../services/BestPracticeService';
 
 export const reterieveBestPractices = () => async (dispatch) => {
 
     try {
-      const res = await bestPractices.getAll()
+      const res = await bestPracticeService.getAll()
       console.log(res)
       dispatch({ type: RETERIEVE_BEST_PRACTICES, payload: res.data })
     } catch (error) {

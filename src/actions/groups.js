@@ -7,11 +7,11 @@ import {
     SEARCH_GROUP,
   } from "./types";
   
-  import groupDataService from "../services/groupServices";
-  
+  import groupService from "../services/GroupServices";
+
   export const createGroup = (name, description) => async (dispatch) => {
     try {
-      const res = await groupDataService.create({ name, description });
+      const res = await groupService.create({ name, description });
       dispatch({
         type: CREATE_GROUP,
         payload: res.data,
@@ -26,7 +26,7 @@ import {
   
   export const retrieveGroups = () => async (dispatch) => {
     try {
-      const res = await groupDataService.getAll();
+      const res = await groupService.getAll();
       console.log(res.data)
       dispatch({
         type: RETRIEVE_GROUPS,
@@ -39,7 +39,7 @@ import {
   
   export const addGroupMember = (id, data) => async (dispatch) => {
     try {
-      const res = await groupDataService.update(id, data);
+      const res = await groupService.update(id, data);
       dispatch({
         type: ADD_CAREMEMBER_TO_GROUP,
         payload: data,
@@ -53,7 +53,7 @@ import {
   
   export const deactivateGroup = (id) => async (dispatch) => {
     try {
-      await groupDataService.update(id);
+      await groupService.update(id);
       dispatch({
         type: DEACTIVATE_GROUP,
         payload: { id },
@@ -65,7 +65,7 @@ import {
 
   export const removeGroupMember = (id, data) => async (dispatch) => {
     try {
-      await groupDataService.update(id, data);
+      await groupService.update(id, data);
   
       dispatch({
         type: REMOVE_CAREMEMBER_FROM_GROUP,
@@ -81,7 +81,7 @@ import {
   
   // export const deleteAllGroups = () => async (dispatch) => {
   //   try {
-  //     const res = await GroupDataService.removeAll();
+  //     const res = await groupService.removeAll();
   
   //     dispatch({
   //       type: DELETE_ALL_GROUPS,

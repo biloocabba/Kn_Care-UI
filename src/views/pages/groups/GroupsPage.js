@@ -14,16 +14,16 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, {useState, useEffect} from "react";
-import { useDispatch, useSelector } from  "react-redux";
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 // react plugin that prints a given react component
-import ReactToPrint from "react-to-print";
+import ReactToPrint from 'react-to-print'
 // react component for creating dynamic tables
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory from "react-bootstrap-table2-paginator";
-import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import BootstrapTable from 'react-bootstrap-table-next'
+import paginationFactory from 'react-bootstrap-table2-paginator'
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit'
 // react component used to create sweet alerts
-import ReactBSAlert from "react-bootstrap-sweetalert";
+import ReactBSAlert from 'react-bootstrap-sweetalert'
 
 // reactstrap components
 import {
@@ -38,15 +38,12 @@ import {
   InputGroupButtonDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
-} from "reactstrap";
+  DropdownItem,
+} from 'reactstrap'
 // core components
-import SimpleHeader from "components/Headers/SimpleHeader.js";
+import SimpleHeader from 'components/Headers/SimpleHeader.js'
 
-import { retrieveGroups } from "../../../actions/groups";
-
-
-
+import { retrieveGroups } from '../../../actions/groups'
 
 const pagination = paginationFactory({
   page: 1,
@@ -56,7 +53,7 @@ const pagination = paginationFactory({
   sizePerPageRenderer: ({ options, currSizePerPage, onSizePerPageChange }) => (
     <div className="dataTables_length" id="datatable-basic_length">
       <label>
-        Show{" "}
+        Show{' '}
         {
           <select
             name="datatable-basic_length"
@@ -69,78 +66,76 @@ const pagination = paginationFactory({
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
-        }{" "}
+        }{' '}
         entries.
       </label>
     </div>
   ),
-});
+})
 
-const { SearchBar } = Search;
-
-
-
-
+const { SearchBar } = Search
 
 const statusBadge = (status) => {
-
-  return( status ? <button> Yes </button> : <button> No</button>)
+  return status ? <button> Yes </button> : <button> No</button>
 }
 
 function GroupsPage(props) {
-
-  const formatActionButtonCell =(cell, row)=>{  
-      
-    return (    <>
-                    <Button id={row.id} className="btn-icon btn-2" type="button" color="info" onClick={groupDetails} >
-                        <span id={row.id} className="btn-inner--icon">
-                          <i id={row.id} className="ni ni-badge" />
-                        </span>                        
-                      </Button>
-
-                      </>);
-        
-  
+  const formatActionButtonCell = (cell, row) => {
+    return (
+      <>
+        <Button
+          id={row.id}
+          className="btn-icon btn-2"
+          type="button"
+          color="info"
+          onClick={groupDetails}
+        >
+          <span id={row.id} className="btn-inner--icon">
+            <i id={row.id} className="ni ni-badge" />
+          </span>
+        </Button>
+      </>
+    )
   }
 
-  const groupDetails = (e)=> {  
-    var { id} = e.target;
-    props.history.push('/admin/group-member-details/'+id);     
+  const groupDetails = (e) => {
+    var { id } = e.target
+    props.history.push('/admin/group-member-details/' + id)
   }
 
-  const groups = useSelector(state => state.groups);
-  console.log(groups);
+  const groups = useSelector((state) => state.groups)
+  console.log(groups)
 
-  const [alert, setAlert] = React.useState(null);
-  const componentRef = React.useRef(null);
+  const [alert, setAlert] = React.useState(null)
+  const componentRef = React.useRef(null)
   // this function will copy to clipboard an entire table,
   // so you can paste it inside an excel or csv file
   const copyToClipboardAsTable = (el) => {
     var body = document.body,
       range,
-      sel;
+      sel
     if (document.createRange && window.getSelection) {
-      range = document.createRange();
-      sel = window.getSelection();
-      sel.removeAllRanges();
+      range = document.createRange()
+      sel = window.getSelection()
+      sel.removeAllRanges()
       try {
-        range.selectNodeContents(el);
-        sel.addRange(range);
+        range.selectNodeContents(el)
+        sel.addRange(range)
       } catch (e) {
-        range.selectNode(el);
-        sel.addRange(range);
+        range.selectNode(el)
+        sel.addRange(range)
       }
-      document.execCommand("copy");
+      document.execCommand('copy')
     } else if (body.createTextRange) {
-      range = body.createTextRange();
-      range.moveToElementText(el);
-      range.select();
-      range.execCommand("Copy");
+      range = body.createTextRange()
+      range.moveToElementText(el)
+      range.select()
+      range.execCommand('Copy')
     }
     setAlert(
       <ReactBSAlert
         success
-        style={{ display: "block", marginTop: "-100px" }}
+        style={{ display: 'block', marginTop: '-100px' }}
         title="Good job!"
         onConfirm={() => setAlert(null)}
         onCancel={() => setAlert(null)}
@@ -149,22 +144,19 @@ function GroupsPage(props) {
       >
         Copied to clipboard!
       </ReactBSAlert>
-    );
-  };
+    )
+  }
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false)
 
-  const toggleDropDown = () => setDropdownOpen(!dropdownOpen);
-
+  const toggleDropDown = () => setDropdownOpen(!dropdownOpen)
 
   //this goes in a different story
   // useEffect(() => {
   //   dispatch(retrieveGroups());
   // }, []);
-
-  
 
   return (
     <>
@@ -174,32 +166,26 @@ function GroupsPage(props) {
         <Row>
           <div className="col">
             <Card className="my-3 p-3">
-
-            <h5>Filter</h5>
-            <div class="d-flex justify-content-start">
-            <InputGroupButtonDropdown addonType="append" isOpen={dropdownOpen} toggle={toggleDropDown}>
-          <DropdownToggle caret>
-            Language
-          </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem value="english">English</DropdownItem>
-            <DropdownItem value="french">French</DropdownItem>
-            <DropdownItem value="estonian">Estonian</DropdownItem>
-            <DropdownItem value="french">Japanese</DropdownItem>
-          </DropdownMenu>
-        </InputGroupButtonDropdown>
-        <InputGroupButtonDropdown addonType="append" >
-          <DropdownToggle caret>
-            Created From
-          </DropdownToggle>
-          <DropdownMenu>
-           
-          </DropdownMenu>
-        </InputGroupButtonDropdown>
-
-
-            </div>
-
+              <h5>Filter</h5>
+              <div class="d-flex justify-content-start">
+                <InputGroupButtonDropdown
+                  addonType="append"
+                  isOpen={dropdownOpen}
+                  toggle={toggleDropDown}
+                >
+                  <DropdownToggle caret>Language</DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem value="english">English</DropdownItem>
+                    <DropdownItem value="french">French</DropdownItem>
+                    <DropdownItem value="estonian">Estonian</DropdownItem>
+                    <DropdownItem value="french">Japanese</DropdownItem>
+                  </DropdownMenu>
+                </InputGroupButtonDropdown>
+                <InputGroupButtonDropdown addonType="append">
+                  <DropdownToggle caret>Created From</DropdownToggle>
+                  <DropdownMenu></DropdownMenu>
+                </InputGroupButtonDropdown>
+              </div>
             </Card>
             <Card>
               <CardHeader>
@@ -213,30 +199,27 @@ function GroupsPage(props) {
               <ToolkitProvider
                 data={groups}
                 keyField="group"
-               
                 columns={[
                   {
-                    dataField: "id",
-                    text: "ID",
+                    dataField: 'id',
+                    text: 'ID',
                     sort: true,
                   },
                   {
-                    dataField: "name",
-                    text: "Group Name",
+                    dataField: 'name',
+                    text: 'Group Name',
                     sort: true,
                   },
                   {
-                    dataField: "active",
-                    text: "Active",
+                    dataField: 'active',
+                    text: 'Active',
                     sort: true,
                   },
-                  {  
-                    dataField: 'action',    
-                    text:'',
-                    formatter: formatActionButtonCell
-                },
-                
-                 
+                  {
+                    dataField: 'action',
+                    text: '',
+                    formatter: formatActionButtonCell,
+                  },
                 ]}
                 search
               >
@@ -253,7 +236,7 @@ function GroupsPage(props) {
                               id="copy-tooltip"
                               onClick={() =>
                                 copyToClipboardAsTable(
-                                  document.getElementById("react-bs-table")
+                                  document.getElementById('react-bs-table')
                                 )
                               }
                             >
@@ -321,8 +304,7 @@ function GroupsPage(props) {
         </Row>
       </Container>
     </>
-  );
+  )
 }
 
-
-export default GroupsPage;
+export default GroupsPage
