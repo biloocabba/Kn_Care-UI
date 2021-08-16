@@ -8,6 +8,7 @@ const BestPracticeView = () => {
     const temporaryFakePractice = {
         id:"fake-id",
         title: "Fake Title",
+        description: "Fake Description",
         content: "Fake content."
     }
     const currentPractice = temporaryFakePractice;

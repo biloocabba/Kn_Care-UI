@@ -50,6 +50,7 @@ function CreateBestPracticePage() {
   const initialState = {
     id: null,
     title: "",
+    description: "",
     content:""
   };
   const [content, setContent] = useState(initialState);
@@ -73,11 +74,18 @@ function CreateBestPracticePage() {
     <>
        <GradientEmptyHeader name="Best Practices"  />
        <Container className="mt--6" fluid>    
-        <Row>
+       <Row>
           <Col className="order-xl-1">
             <FormGroup>
               <label className="form-control-label">Title</label>
               <Input type="text" onChange={e => setContent({...content, title: e.target.value})}/>
+            </FormGroup>
+          </Col>
+        </Row><Row>
+          <Col className="order-xl-1">
+            <FormGroup>
+              <label className="form-control-label">Description</label>
+              <Input type="text" onChange={e => setContent({...content, description: e.target.value})}/>
             </FormGroup>
           </Col>
         </Row>
