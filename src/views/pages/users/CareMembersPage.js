@@ -15,12 +15,10 @@
 
 */
 import React, { useState, useEffect } from "react";
-import ReactToPrint from "react-to-print";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-import ReactBSAlert from "react-bootstrap-sweetalert";
-import axios from "axios";
+//import ReactBSAlert from "react-bootstrap-sweetalert";
 import {
   retrieveCareMembers,
   findCareMembersByInternationalName,
@@ -31,18 +29,14 @@ import {
 } from "../../../actions/careMembers";
 import {
   Button,
-  ButtonGroup,
   Card,
   CardHeader,
   Container,
   Row,
-  Col,
-  UncontrolledTooltip,
 } from "reactstrap";
 // core components
 import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
 import { useDispatch, useSelector } from  "react-redux";
-import careMembersService from "services/careMembersService";
 
 const pagination = paginationFactory({
   page: 1,
@@ -76,8 +70,6 @@ const { SearchBar } = Search;
 
 function CareMembersPage(props) {
 
-  const [currentCareMember, setCurrentCareMember] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchInternationalName, setSearchInternationalName] = useState("");
   const [searchBusinessUnit, setSearchBusinessUnit] = useState("");
   const [searchCompanyCode, setSearchCompanyCode] = useState("");
@@ -116,38 +108,23 @@ function CareMembersPage(props) {
     setSearchOnBoardDate(searchOnboardingDate);
   };
 
-  const refreshData = () => {
-    setCurrentCareMember(null);
-    setCurrentIndex(-1);
-  };
-
-  const setActiveCareMember = (careMember, index) => {
-    setCurrentCareMember(careMember);
-    setCurrentIndex(index);
-  };
-
   const findByInternationalName = () => {
-    refreshData();
     dispatch(findCareMembersByInternationalName(searchInternationalName));
   };
 
   const findByBusinessUnit = () => {
-    refreshData();
     dispatch(findCareMembersByBusinessUnit(searchBusinessUnit));
   };
 
   const findByCompanyCode = () => {
-    refreshData();
     dispatch(findCareMembersByCompanyCode(searchCompanyCode));
   };
 
   const findByCountry = () => {
-    refreshData();
     dispatch(findCareMembersByCountry(searchCountry));
   };
 
   const findByOnBoardDate = () => {
-    refreshData();
     dispatch(findCareMembersByOnBoardDate(searchOnBoardDate));
   };
 
@@ -186,48 +163,47 @@ function CareMembersPage(props) {
   
   }
 
-  const [alert, setAlert] = React.useState(null);
-  const componentRef = React.useRef(null);
-  const users = useSelector(state => state.users)
+  //const [alert, setAlert] = React.useState(null);
+  //const componentRef = React.useRef(null);
 
   // this function will copy to clipboard an entire table,
   // so you can paste it inside an excel or csv file
-  const copyToClipboardAsTable = (el) => {
-    var body = document.body,
-      range,
-      sel;
-    if (document.createRange && window.getSelection) {
-      range = document.createRange();
-      sel = window.getSelection();
-      sel.removeAllRanges();
-      try {
-        range.selectNodeContents(el);
-        sel.addRange(range);
-      } catch (e) {
-        range.selectNode(el);
-        sel.addRange(range);
-      }
-      document.execCommand("copy");
-    } else if (body.createTextRange) {
-      range = body.createTextRange();
-      range.moveToElementText(el);
-      range.select();
-      range.execCommand("Copy");
-    }
-    setAlert(
-      <ReactBSAlert
-        success
-        style={{ display: "block", marginTop: "-100px" }}
-        title="Good job!"
-        onConfirm={() => setAlert(null)}
-        onCancel={() => setAlert(null)}
-        confirmBtnBsStyle="info"
-        btnSize=""
-      >
-        Copied to clipboard!
-      </ReactBSAlert>
-    );
-  };
+  // const copyToClipboardAsTable = (el) => {
+  //   var body = document.body,
+  //     range,
+  //     sel;
+  //   if (document.createRange && window.getSelection) {
+  //     range = document.createRange();
+  //     sel = window.getSelection();
+  //     sel.removeAllRanges();
+  //     try {
+  //       range.selectNodeContents(el);
+  //       sel.addRange(range);
+  //     } catch (e) {
+  //       range.selectNode(el);
+  //       sel.addRange(range);
+  //     }
+  //     document.execCommand("copy");
+  //   } else if (body.createTextRange) {
+  //     range = body.createTextRange();
+  //     range.moveToElementText(el);
+  //     range.select();
+  //     range.execCommand("Copy");
+  //   }
+  //   setAlert(
+  //     <ReactBSAlert
+  //       success
+  //       style={{ display: "block", marginTop: "-100px" }}
+  //       title="Good job!"
+  //       onConfirm={() => setAlert(null)}
+  //       onCancel={() => setAlert(null)}
+  //       confirmBtnBsStyle="info"
+  //       btnSize=""
+  //     >
+  //       Copied to clipboard!
+  //     </ReactBSAlert>
+  //   );
+  // };
 
   return (
     <>
