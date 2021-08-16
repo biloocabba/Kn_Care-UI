@@ -41,7 +41,14 @@ import {
 // core components
 import SimpleHeader from 'components/Headers/SimpleHeader.js'
 import { useSelector, useDispatch } from 'react-redux'
-import { reterieveBestPractices } from 'actions/bestPractices'
+import {
+  reterieveBestPractices,
+  findBestPracticesByTime,
+  findBestPracticesByAuthor,
+  findBestPracticesByTag,
+  findBestPracticesByRate,
+  findBestPracticesByTitle,
+} from 'actions/bestPractices'
 import Select2 from 'react-select2-wrapper'
 
 const pagination = paginationFactory({
@@ -118,16 +125,36 @@ function SearchBestPracticePage() {
 
   const bestPractices = useSelector((state) => state.bestPractices)
   const dispatch = useDispatch()
-  const [selectedTime, setSelectedTime] = useState('')
-  const [selectedAuthor, setSelectedAuthor] = useState('')
-  const [selectedTag, setSelectedTag] = useState('')
-  const [selectedRate, setSelctedRate] = useState('')
-  const [selectedTitle, setSelctedTitle] = useState('')
+  const [searchTime, setSearchTime] = useState('')
+  const [searchAuthor, setSearchAuthor] = useState('')
+  const [searchTag, setSearchTag] = useState('')
+  const [searchRate, setSearchRate] = useState('')
+  const [searchTitle, setSearchTitle] = useState('')
 
   // this should happen on click after selecting the filters
   // useEffect(() => {
   //   dispatch(reterieveBestPractices())
   // }, [dispatch])
+
+  const findByTime = () => {
+    dispatch(findBestPracticesByTime(searchTime))
+  }
+
+  const findByAuthor = () => {
+    dispatch(findBestPracticesByAuthor(searchAuthor))
+  }
+
+  const findByTag = () => {
+    dispatch(findBestPracticesByTag(searchTag))
+  }
+
+  const findByRate = () => {
+    dispatch(findBestPracticesByRate(searchRate))
+  }
+
+  const findByTitle = () => {
+    dispatch(findBestPracticesByTitle(searchTitle))
+  }
 
   return (
     <>
@@ -144,8 +171,8 @@ function SearchBestPracticePage() {
                   options={{
                     placeholder: 'Search Time',
                   }}
-                  onChange={(event) => setSelectedTime(event.target.value)}
-                  value={selectedTime}
+                  onChange={(event) => setSearchTime(event.target.value)}
+                  value={searchTime}
                   data={[
                     { id: '1', text: 'Time' },
                     { id: '2', text: 'Time' },
@@ -161,8 +188,8 @@ function SearchBestPracticePage() {
                   options={{
                     placeholder: 'Search Author',
                   }}
-                  onChange={(event) => setSelectedAuthor(event.target.value)}
-                  value={selectedAuthor}
+                  onChange={(event) => setSearchAuthor(event.target.value)}
+                  value={searchAuthor}
                   data={[
                     { id: '1', text: 'Author' },
                     { id: '2', text: 'Author' },
@@ -178,8 +205,8 @@ function SearchBestPracticePage() {
                   options={{
                     placeholder: 'Search Tag',
                   }}
-                  onChange={(event) => setSelectedTag(event.target.value)}
-                  value={selectedTag}
+                  onChange={(event) => setSearchTag(event.target.value)}
+                  value={searchTag}
                   data={[
                     { id: '1', text: 'Tag' },
                     { id: '2', text: 'Tag' },
@@ -194,8 +221,8 @@ function SearchBestPracticePage() {
                   options={{
                     placeholder: 'Search Rate',
                   }}
-                  onChange={(event) => setSelctedRate(event.target.value)}
-                  value={selectedRate}
+                  onChange={(event) => setSearchRate(event.target.value)}
+                  value={searchRate}
                   data={[
                     { id: '1', text: 'Rate' },
                     { id: '2', text: 'Rate' },
@@ -211,8 +238,8 @@ function SearchBestPracticePage() {
                   options={{
                     placeholder: 'Search Title',
                   }}
-                  onChange={(event) => setSelctedTitle(event.target.value)}
-                  value={selectedTitle}
+                  onChange={(event) => setSearchTitle(event.target.value)}
+                  value={searchTitle}
                   data={[
                     { id: '1', text: 'Title' },
                     { id: '2', text: 'Title' },
