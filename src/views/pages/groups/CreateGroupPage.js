@@ -84,14 +84,15 @@ function CreateGroupPage() {
 
   const [selectedOption, setSelectedOption] = useState(null);
 
-  let options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-  ]
+  let options = []
 
-  const [members, setMembers] = useState(options)
+  const [members, setMembers] = useState([])
   const [inputValMembers, setInputValMembers] = useState(null)
+
+  const handleChangeMembers = (e) => {
+    setMembers(Array.isArray(e) ? e.map(x => x.value) : []);
+  }
+   
 
   const getMembers = () =>{
     user_initialState.map(user => options.push( {value: user.id, label: `${user.firstName} ${user.lastName}`}))
@@ -236,6 +237,8 @@ function CreateGroupPage() {
                                   cacheOptions
                                   defaultOptions
                                   loadOptions={promiseOptions}
+                                  onChange={handleChangeMembers}
+                                  isClearable
                                 />
                         </FormGroup>
                       </Col>                    
