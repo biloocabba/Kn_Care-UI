@@ -1,4 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useSelector, useState } from "react";
+import initialState from "redux/initialState";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { Card, CardHeader, Container, Row } from "reactstrap";
 import SimpleHeader from "components/Headers/SimpleHeader.js";
 import {
@@ -17,34 +20,54 @@ import {
     Label
 } from "reactstrap";
 
+import {
+    retrieveSingleBestPractice,
+  } from "../../../redux/actions/bestPractices/bestPractice";
+import BestPracticeService from "services/BestPracticeService";
 
-const BestPracticePage = () => {
 
-    const temporaryFakePractice = {
-        id: "fake-id",
-        title: "Fake Title",
-        description: "Fake Description",
-        content: "Fake content."
-    }
-    const currentPractice = temporaryFakePractice;
+const BestPracticePage = (props) => {
+
+    const [currentBestPractice, setCurrentBestPractice] = useState(initialState);
+    console.log(currentBestPractice);
+    const dispatch = useDispatch();
+
+    const getBestPractice = id => {
+        BestPracticeService.get(id)
+            .then(response => {
+                setCurrentBestPractice(response.data);
+                console.log(response.data);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    };
+  
+    useEffect(() => {
+        getBestPractice(props.match.params.id);
+    }, [props.match.params.id]);
+
+    
+    
+    
 
 
     return (
         <>
-            <SimpleHeader name={currentPractice.title} parentName="Best Practices" />
+            <SimpleHeader name={currentBestPractice.title} parentName="Best Practices" />
             <Container className="mt-6 ml-6" fluid>
                 <Row>
                     <Col className="order-xl-1">
                         <FormGroup>
                             <label className="form-control-label">Title</label>
-                            <p>Test</p>
+                            <p>{currentBestPractice.title}</p>
                         </FormGroup>
                     </Col>
                 </Row><Row>
                     <Col className="order-xl-1">
                         <FormGroup>
                             <label className="form-control-label">Description</label>
-                            <p>Test</p>
+                            <p>{currentBestPractice.description}</p>
                         </FormGroup>
                     </Col>
                 </Row>
