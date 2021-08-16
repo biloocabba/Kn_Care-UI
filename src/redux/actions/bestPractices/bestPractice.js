@@ -6,7 +6,7 @@ import {
     RETRIEVE_SINGLE_BEST_PRACTICE
 } from "./types";
 
-import BestPracticeService from "../../services/BestPracticeService";
+import BestPracticeService from "../../../services/BestPracticeService"
 
 export const createBestPractice = (title, description, content) => async (dispatch) => {
     try {
@@ -29,7 +29,7 @@ export const retrieveBestPractices = () => async (dispatch) => {
 
         dispatch({
             type: RETRIEVE_BEST_PRACTICES,
-            payload: res.data,
+            payload: res.data.content,
         });
     } catch (err) {
         console.log(err);

@@ -45,6 +45,10 @@ import {
   FormGroup,
   Label
 } from "reactstrap";
+
+import {
+  retrieveBestPractices,
+} from "../../../redux/actions/bestPractices/bestPractice";
 // core components
 import SimpleHeader from "components/Headers/SimpleHeader.js";
 
@@ -162,11 +166,10 @@ function ReactBSTables(props) {
   const bestPractices = useSelector(state => state.bestPractices);
   const dispatch = useDispatch();
 
-  const defaultPost = {id:"", content:""};
-  const [localBestPractice, setLocalBestPractice] = useState(defaultPost);
+  useEffect(() => {
+    dispatch(retrieveBestPractices());
+}, [dispatch]);
 
-  const [modal, setModal] = useState(false);
-  const toggle = () => setModal(!modal);
 
   const removeBestPractice = id => {
     dispatch({
@@ -174,48 +177,48 @@ function ReactBSTables(props) {
       payload: { id }
     });
   }
-  const handleSaveClick = () => {
-    dispatch({
-      type: UPDATE_BEST_PRACTICE,
-      payload: localBestPractice
-    });
-    toggle();
-  }
+  // const handleSaveClick = () => {
+  //   dispatch({
+  //     type: UPDATE_BEST_PRACTICE,
+  //     payload: localBestPractice
+  //   });
+  //   toggle();
+  // }
 
-  const handleEditClick = bestPractice => {
-    setLocalBestPractice(bestPractice);
-    toggle();
-  }
+  // const handleEditClick = bestPractice => {
+  //   setLocalBestPractice(bestPractice);
+  //   toggle();
+  // }
 
-  const renderModal = () => {
-      return(
-        <Modal isOpen={modal} toggle={toggle}>
-          <ModalHeader toggle={toggle}>Edit post</ModalHeader>
-          <ModalBody>
-            <Form>
-              <FormGroup>
-                <Label for="id">Id</Label>
-                <Input type="text" disabled id="id" value={localBestPractice.id}/>
-              </FormGroup>
-              <FormGroup>
-                <Label for="title">Title</Label>
-                <Input type="text" id="title" value={localBestPractice.title}
-                onChange={e => setLocalBestPractice({...localBestPractice, title: e.target.value})}/>
-              </FormGroup>
-              <FormGroup>
-                <Label for="content">Post</Label>
-                <Input type="textarea" id="content" value={localBestPractice.content}
-                onChange={e => setLocalBestPractice({...localBestPractice, content: e.target.value})}/>
-              </FormGroup>
-            </Form>
-          </ModalBody>
-          <ModalFooter>
-            <Button onClick={() => handleSaveClick()}>Save Changes</Button>
-            <Button onClick={toggle}>Cancel</Button>
-          </ModalFooter>
-        </Modal>
-      );
-  }
+  // const renderModal = () => {
+  //     return(
+  //       <Modal isOpen={modal} toggle={toggle}>
+  //         <ModalHeader toggle={toggle}>Edit post</ModalHeader>
+  //         <ModalBody>
+  //           <Form>
+  //             <FormGroup>
+  //               <Label for="id">Id</Label>
+  //               <Input type="text" disabled id="id" value={localBestPractice.id}/>
+  //             </FormGroup>
+  //             <FormGroup>
+  //               <Label for="title">Title</Label>
+  //               <Input type="text" id="title" value={localBestPractice.title}
+  //               onChange={e => setLocalBestPractice({...localBestPractice, title: e.target.value})}/>
+  //             </FormGroup>
+  //             <FormGroup>
+  //               <Label for="content">Post</Label>
+  //               <Input type="textarea" id="content" value={localBestPractice.content}
+  //               onChange={e => setLocalBestPractice({...localBestPractice, content: e.target.value})}/>
+  //             </FormGroup>
+  //           </Form>
+  //         </ModalBody>
+  //         <ModalFooter>
+  //           <Button onClick={() => handleSaveClick()}>Save Changes</Button>
+  //           <Button onClick={toggle}>Cancel</Button>
+  //         </ModalFooter>
+  //       </Modal>
+  //     );
+  // }
 
   const ViewBestPractice = e => {
     var {id} = e.target;
