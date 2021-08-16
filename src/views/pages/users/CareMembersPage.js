@@ -28,7 +28,7 @@ import {
   findCareMembersByOnBoardDate
 } from "../../../actions/careMembers";
 import {
-  Button,
+  //Button,
   Card,
   CardHeader,
   Container,
@@ -69,7 +69,6 @@ const pagination = paginationFactory({
 const { SearchBar } = Search;
 
 function CareMembersPage(props) {
-
   const [searchInternationalName, setSearchInternationalName] = useState("");
   const [searchBusinessUnit, setSearchBusinessUnit] = useState("");
   const [searchCompanyCode, setSearchCompanyCode] = useState("");
@@ -109,19 +108,27 @@ function CareMembersPage(props) {
   };
 
   const findByInternationalName = () => {
-    dispatch(findCareMembersByInternationalName(searchInternationalName));
+    if (searchCompanyCode !== null) {
+      dispatch(findCareMembersByInternationalName(searchInternationalName));
+    }
   };
 
   const findByBusinessUnit = () => {
-    dispatch(findCareMembersByBusinessUnit(searchBusinessUnit));
+    if (searchBusinessUnit !== null) {
+      dispatch(findCareMembersByBusinessUnit(searchBusinessUnit));
+    }  
   };
 
   const findByCompanyCode = () => {
-    dispatch(findCareMembersByCompanyCode(searchCompanyCode));
+    if (searchCompanyCode !== null) {
+      dispatch(findCareMembersByCompanyCode(searchCompanyCode));
+    }
   };
 
   const findByCountry = () => {
-    dispatch(findCareMembersByCountry(searchCountry));
+    if (searchCountry !== null) {
+      dispatch(findCareMembersByCountry(searchCountry));
+    }
   };
 
   const findByOnBoardDate = () => {
@@ -136,32 +143,32 @@ function CareMembersPage(props) {
     findByOnBoardDate();
   }
 
-  const rowDataDetails = (e)=> {   
-    //console.log(e.target);
-    var { id} = e.target;
-    console.log("See Details for Id: "+id);
-    //props.history.push('/admin/users/care-member-details/'+id);
-    props.history.push('/admin/users/care-member-details/1');
-  }
+  // const rowDataDetails = (e)=> {   
+  //   //console.log(e.target);
+  //   var { id} = e.target;
+  //   console.log("See Details for Id: "+id);
+  //   //props.history.push('/admin/users/care-member-details/'+id);
+  //   props.history.push('/admin/users/care-member-details/1');
+  // }
 
   
-  const formatActionButtonCell =(cell, row)=>{  
+  // const formatActionButtonCell =(cell, row)=>{  
         
-    return (  <>
-    <Button className="btn-icon btn-2" type="button" color="info" onClick={rowDataDetails}>
-                        <span className="btn-inner--icon">
-                          <i className="ni ni-badge" />
-                        </span>
-                      </Button>
-                      <Button className="btn-icon btn-2" color="danger" type="button" onClick={rowDataDetails}>
-                        <span className="btn-inner--icon">
-                          <i className="ni ni-fat-remove" />
-                        </span>
-                      </Button>
-                      </>);
+  //   return (  <>
+  //   <Button className="btn-icon btn-2" type="button" color="info" onClick={rowDataDetails}>
+  //                       <span className="btn-inner--icon">
+  //                         <i className="ni ni-badge" />
+  //                       </span>
+  //                     </Button>
+  //                     <Button className="btn-icon btn-2" color="danger" type="button" onClick={rowDataDetails}>
+  //                       <span className="btn-inner--icon">
+  //                         <i className="ni ni-fat-remove" />
+  //                       </span>
+  //                     </Button>
+  //                     </>);
         
   
-  }
+  // }
 
   //const [alert, setAlert] = React.useState(null);
   //const componentRef = React.useRef(null);
@@ -251,12 +258,6 @@ function CareMembersPage(props) {
                     style: { width:'50px' }
                   },
                   {
-                    dataField: "managementGroup",
-                    text: "Man Group",
-                    sort: true,
-                    style: { width:'50px' }
-                  },
-                  {
                     dataField: "companyCode",
                     text: "companyCode",
                     sort: true,
@@ -277,11 +278,6 @@ function CareMembersPage(props) {
                     text: "onboardingDate",
                     sort: true,
                   },
-                  {  
-                    dataField: 'action',    
-                    text:'',
-                    formatter: formatActionButtonCell
-                }
                 ]}
                 search
               >
