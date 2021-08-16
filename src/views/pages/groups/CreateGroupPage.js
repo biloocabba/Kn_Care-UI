@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from  "react-redux";
 import {createGroup} from "actions/groups"
 import {user_initialState} from "../../../initialStates/user"
 import AsyncSelect from 'react-select/async';
+import SelectMemberPaginate from "./SelectMemberPaginate";
 
 // reactstrap components
 import {
@@ -54,6 +55,18 @@ function CreateGroupPage() {
 
   const [group, setGroup] = useState(initialGroupState)
   const [submitted, setSubmitted] = useState(false);
+
+  const optionsRegion = [
+    { value: "EE", label: 'Estonia' },
+    { value: "FI" ,label:"Finland"},
+   
+];
+    const [region, setRegion] = useState(optionsRegion[0]);
+    const [currentCountry, setCurrentCountry] = useState(null);
+    const onchangeSelect = (item) => {
+    setCurrentCountry(null);
+    setRegion(item);
+};
 
   const handleInputChange = event => {
     const { name, value } = event.target;
@@ -231,7 +244,35 @@ function CreateGroupPage() {
                                   options={members}
                                   isMulti
                                 /> */}
+                        <div className="my-3">
 
+                        <Select
+                                  value={region}
+                                  onChange={onchangeSelect}
+                                  options={optionsRegion}
+                                  getOptionValue={(option) => option.value}
+                                  getOptionLabel={(option) => option.value}
+                              />
+
+
+                        </div>
+
+
+                        <div className="my-3">
+
+
+                        <SelectMemberPaginate
+                                    regionName={region.value}
+                                    value={currentCountry}
+                                    onChange={(country) => setCurrentCountry(country)}
+                                  />
+
+                          
+                        </div>
+                       
+
+
+{/* 
                           <AsyncSelect
                                   isMulti
                                   cacheOptions
@@ -239,7 +280,8 @@ function CreateGroupPage() {
                                   loadOptions={promiseOptions}
                                   onChange={handleChangeMembers}
                                   isClearable
-                                />
+                                  value={options.filter(obj => members.includes(obj.value))}
+                                /> */}
                         </FormGroup>
                       </Col>                    
                     </Row>
