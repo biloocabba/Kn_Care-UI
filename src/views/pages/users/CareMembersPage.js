@@ -25,8 +25,9 @@ import {
   retrieveCareMembers,
   findCareMembersByInternationalName,
   findCareMembersByBusinessUnit,
-  findCareMembersByCostCenter,
-  findCareMembersByCountry
+  findCareMembersByCompanyCode,
+  findCareMembersByCountry,
+  findCareMembersByOnBoardDate
 } from "../../../actions/careMembers";
 import {
   Button,
@@ -79,8 +80,9 @@ function CareMembersPage(props) {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchInternationalName, setSearchInternationalName] = useState("");
   const [searchBusinessUnit, setSearchBusinessUnit] = useState("");
-  const [searchCostCenter, setSearchCostCenter] = useState("");
+  const [searchCompanyCode, setSearchCompanyCode] = useState("");
   const [searchCountry, setSearchCountry] = useState("");
+  const [searchOnBoardDate, setSearchOnBoardDate] = useState("");
 
   const careMembers = useSelector(state => state.careMembers);
   const dispatch = useDispatch();
@@ -99,14 +101,19 @@ function CareMembersPage(props) {
     setSearchBusinessUnit(searchBusinessUnit);
   };
 
-  const onChangeSearchCostCenter = e => {
-    const searchCostCenter = e.target.value;
-    setSearchCostCenter(searchCostCenter);
+  const onChangeSearchCompanyCode = e => {
+    const searchCompanyCode = e.target.value;
+    setSearchCompanyCode(searchCompanyCode);
   };
 
   const onChangeSearchCountry = e => {
     const searchCountry = e.target.value;
     setSearchCountry(searchCountry);
+  };
+
+  const onChangeSearchOnBoardDate = e => {
+    const searchOnboardingDate = e.target.value;
+    setSearchOnBoardDate(searchOnboardingDate);
   };
 
   const refreshData = () => {
@@ -129,9 +136,9 @@ function CareMembersPage(props) {
     dispatch(findCareMembersByBusinessUnit(searchBusinessUnit));
   };
 
-  const findByCostCenter = () => {
+  const findByCompanyCode = () => {
     refreshData();
-    dispatch(findCareMembersByCostCenter(searchCostCenter));
+    dispatch(findCareMembersByCompanyCode(searchCompanyCode));
   };
 
   const findByCountry = () => {
@@ -139,11 +146,17 @@ function CareMembersPage(props) {
     dispatch(findCareMembersByCountry(searchCountry));
   };
 
+  const findByOnBoardDate = () => {
+    refreshData();
+    dispatch(findCareMembersByOnBoardDate(searchOnBoardDate));
+  };
+
   const findByAllParameters = () => {
     findByInternationalName();
     findByBusinessUnit();
-    findByCostCenter();
+    findByCompanyCode();
     findByCountry();
+    findByOnBoardDate();
   }
 
   const rowDataDetails = (e)=> {   
@@ -282,7 +295,13 @@ function CareMembersPage(props) {
                     dataField: "country",
                     text: "country",
                     sort: true,
-                  },{  
+                  },
+                  {
+                    dataField: "onboardingDate",
+                    text: "onboardingDate",
+                    sort: true,
+                  },
+                  {  
                     dataField: 'action',    
                     text:'',
                     formatter: formatActionButtonCell
@@ -325,9 +344,9 @@ function CareMembersPage(props) {
                       <label>
                         <SearchBar
                           className="form-control-sm"
-                          placeholder="Cost Center"
-                          value={searchCostCenter}
-                          onChange={onChangeSearchCostCenter}
+                          placeholder="CompanyCode"
+                          value={searchCompanyCode}
+                          onChange={onChangeSearchCompanyCode}
                         />
                       </label>
                     </div>
@@ -341,6 +360,19 @@ function CareMembersPage(props) {
                           placeholder="Country"
                           value={searchCountry}
                           onChange={onChangeSearchCountry}
+                        />
+                      </label>
+                    </div>
+                    <div
+                      id="datatable-basic_filter"
+                      className="dataTables_filter px-4 pb-1"
+                    >
+                      <label>
+                        <SearchBar
+                          className="form-control-sm"
+                          placeholder="Onboarding Date"
+                          value={searchOnBoardDate}
+                          onChange={onChangeSearchOnBoardDate}
                         />
                       </label>
                     </div>

@@ -12,20 +12,25 @@ const findByBusinessUnit = businessUnit => {
   return http.get(`/careMembers?businessUnit=${businessUnit}`);
 };
 
-const findByCostCenter = costCenter => {
-  return http.get(`/careMembers?costCenter=${costCenter}`);
+const findByCompanyCode = companyCode => {
+  return http.get(`/careMembers?companyCode=${companyCode}`);
 };
 
 const findByCountry = country => {
   return http.get(`/careMembers?country=${country}`);
 };
 
+const findByOnBoardDate = onBoardDate => {
+  return http.get(`/careMembers?onboardingDate=${onBoardDate}`);
+};
+
 const careMembersService = {
   getAllCareMembers,
   findByInternationalName,
   findByBusinessUnit,
-  findByCostCenter,
-  findByCountry
+  findByCompanyCode,
+  findByCountry,
+  findByOnBoardDate
 };
   
 export default careMembersService;

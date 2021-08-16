@@ -42,9 +42,9 @@ export const findCareMembersByBusinessUnit = (businessUnit) => async (dispatch) 
     }
 };
 
-export const findCareMembersByCostCenter = (costCenter) => async (dispatch) => {
+export const findCareMembersByCompanyCode = (companyCode) => async (dispatch) => {
     try {
-      const res = await careMembersDataService.findByCostCenter(costCenter);
+      const res = await careMembersDataService.findByCompanyCode(companyCode);
   
       dispatch({
         type: RETRIEVE_CARE_MEMBERS,
@@ -66,4 +66,17 @@ export const findCareMembersByCountry = (country) => async (dispatch) => {
     } catch (err) {
       console.log(err);
     }
+};
+
+export const findCareMembersByOnBoardDate = (onBoardDate) => async (dispatch) => {
+  try {
+    const res = await careMembersDataService.findByOnBoardDate(onBoardDate);
+
+    dispatch({
+      type: RETRIEVE_CARE_MEMBERS,
+      payload: res.data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
