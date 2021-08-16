@@ -15,6 +15,7 @@
 
 */
 import React, { useState, useEffect } from "react";
+import { Redirect } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 // reactstrap components
@@ -39,13 +40,14 @@ import {
 import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
 
 import {
-    CREATE_BEST_PRACTICE
-} from "../../../redux/actions/bestPractices/types";
+  createBestPractice,
+} from "../../../redux/actions/bestPractices/bestPractice";
 
 //only for development purposes!!!
 import { v4 as uuidv4 } from "uuid";
 
 function CreateBestPracticePage() {
+  const [created, setCreated] = useState(false);
   const dispatch = useDispatch();
   const initialState = {
     id: null,
@@ -61,17 +63,15 @@ function CreateBestPracticePage() {
   //ToDo: find a way to suppress this warning
 
   const saveBestPractice = () => {
-    //console.log("button click!");
-    dispatch({
-      type: CREATE_BEST_PRACTICE,
-      payload: content
-    });
+    dispatch(createBestPractice(content.title, content.description));
     setContent({id:uuidv4(), content:""}); /* Only for development purposes
     we need to generate a new UUID for a new post */
+    setCreated(true);
   }
 
   return (
     <>
+      {created === true ? <Redirect to={"/admin/search-best-practices"} /> : null}
        <GradientEmptyHeader name="Best Practices"  />
        <Container className="mt--6" fluid>    
        <Row>
@@ -103,7 +103,7 @@ function CreateBestPracticePage() {
           </Col>         
         </Row>
         <Row>
-          <Button color="primary" type="button" onClick={saveBestPractice}>
+          <Button color="primary" type="submit" onClick={saveBestPractice}>
             Save
           </Button>
         </Row>
