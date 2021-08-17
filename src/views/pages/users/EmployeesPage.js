@@ -241,50 +241,50 @@ function Employees(props) {
                 keyField="firstName"
                 columns={[
                   {
-                    dataField: 'firstName',
+                    dataField: 'content.firstName',
                     text: 'First Name',
                     hidden: true,
                   },
                   {
-                    dataField: 'lastName',
+                    dataField: 'content.lastName',
                     text: 'lastName',
                     hidden: true,
                   },
                   {
-                    dataField: 'internationalName',
+                    dataField: 'content.internationalName',
                     text: 'int Name',
                     sort: true,
                   },
                   {
-                    dataField: 'title',
+                    dataField: 'content.title',
                     text: 'title',
                     sort: true,
                     style: { width: '50px' },
                   },
                   {
-                    dataField: 'businessUnit',
+                    dataField: 'content.businessUnit',
                     text: 'bUnit',
                     sort: true,
                     style: { width: '50px' },
                   },
                   {
-                    dataField: 'companyCode',
+                    dataField: 'content.companyCode',
                     text: 'companyCode',
                     sort: true,
                     style: { width: '50px' },
                   },
                   {
-                    dataField: 'costCenter',
+                    dataField: 'content.costCenter',
                     text: 'costCenter',
                     sort: true,
                   },
                   {
-                    dataField: 'country',
+                    dataField: 'content.office.country',
                     text: 'country',
                     sort: true,
                   },
                   {
-                    dataField: "hiringDate",
+                    dataField: "content.createdAt",
                     text: "hiringDate",
                     sort: true,
                   },
