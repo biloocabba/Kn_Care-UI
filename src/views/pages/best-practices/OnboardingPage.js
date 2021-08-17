@@ -14,9 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RETRIEVE_BEST_PRACTICES, UPDATE_BEST_PRACTICE, DELETE_BEST_PRACTICE } from "../../../redux/actions/bestPractices/types";
+import React from "react";
 // react plugin that prints a given react component
 import ReactToPrint from "react-to-print";
 // react component for creating dynamic tables
@@ -32,28 +30,14 @@ import {
   Card,
   CardHeader,
   Container,
-  Modal,
   Row,
   Col,
   UncontrolledTooltip,
-  Table,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Form,
-  Input,
-  FormGroup,
-  Label
 } from "reactstrap";
-
-import {
-  retrieveBestPractices,
-} from "../../../redux/actions/bestPractices/bestPractice";
 // core components
 import SimpleHeader from "components/Headers/SimpleHeader.js";
-import { PageStatus } from "../../../types/pageStatus";
-import { CustomLoader } from "../../../components/Loader/CustomLoader"
 
+import { dataTable } from "variables/general";
 
 const pagination = paginationFactory({
   page: 1,
@@ -85,10 +69,7 @@ const pagination = paginationFactory({
 
 const { SearchBar } = Search;
 
-
-
-
-function ReactBSTables(props) {
+function ReactBSTables() {
   const [alert, setAlert] = React.useState(null);
   const componentRef = React.useRef(null);
   // this function will copy to clipboard an entire table,
@@ -130,37 +111,6 @@ function ReactBSTables(props) {
     );
   };
 
-  const bestPractices = useSelector(state => state.bestPractices);
-  const [pageStatus, setPageStatus] = useState({ pageStatus: PageStatus.Loading, statusCode: -1 });
-  const dispatch = useDispatch();
-
-  bestPractices.forEach(bestPractice => {
-    if (bestPractice.description.length > 50) {
-      bestPractice.description = bestPractice.description.substring(0, 50) + '...';
-    }
-  });
-
-  useEffect(() => {
-    dispatch(retrieveBestPractices());
-    setPageStatus({ pageStatus: PageStatus.Ok, statusCode: 0 });
-  }, [dispatch]);
-
-
-
-  const ViewBestPractice = e => {
-    var { id } = e.target;
-    props.history.push("/admin/best-practice/" + id);
-  }
-
-  const formatActionButtonCell = (cell, row) => {
-    return (
-      <>
-        <Button id={row.id} className="btn-icon btn-2" type="button" onClick={e => ViewBestPractice(e)}>
-          View
-        </Button>
-      </>);
-  }
-
   return (
     <>
       {alert}
@@ -169,25 +119,119 @@ function ReactBSTables(props) {
         <Row>
           <div className="col">
             <Card>
+              <CardHeader>
+                <h3 className="mb-0">React Bootstrap Table 2</h3>
+                <p className="text-sm mb-0">
+                  This is an exmaple of data table using the well known
+                  react-bootstrap-table2 plugin. This is a minimal setup in
+                  order to get started fast.
+                </p>
+              </CardHeader>
               <ToolkitProvider
-                data={bestPractices}
-                keyField="id"
+                data={dataTable}
+                keyField="name"
                 columns={[
                   {
-                    dataField: "title",
-                    text: "Title",
+                    dataField: "name",
+                    text: "Name",
                     sort: true,
                   },
                   {
-                    dataField: "description",
-                    text: "Description",
+                    dataField: "position",
+                    text: "Position",
                     sort: true,
                   },
                   {
-                    dataField: "action",
-                    text: "",
-                    formatter: formatActionButtonCell
-                  }
+                    dataField: "office",
+                    text: "Office",
+                    sort: true,
+                  },
+                  {
+                    dataField: "age",
+                    text: "Age",
+                    sort: true,
+                  },
+                  {
+                    dataField: "start_date",
+                    text: "Start date",
+                    sort: true,
+                  },
+                  {
+                    dataField: "salary",
+                    text: "Salary",
+                    sort: true,
+                  },
+                ]}
+                search
+              >
+                {(props) => (
+                  <div className="py-4 table-responsive">
+                    <div
+                      id="datatable-basic_filter"
+                      className="dataTables_filter px-4 pb-1"
+                    >
+                      <label>
+                        Search:
+                        <SearchBar
+                          className="form-control-sm"
+                          placeholder=""
+                          {...props.searchProps}
+                        />
+                      </label>
+                    </div>
+                    <BootstrapTable
+                      {...props.baseProps}
+                      bootstrap4={true}
+                      pagination={pagination}
+                      bordered={false}
+                    />
+                  </div>
+                )}
+              </ToolkitProvider>
+            </Card>
+            <Card>
+              <CardHeader>
+                <h3 className="mb-0">Action buttons</h3>
+                <p className="text-sm mb-0">
+                  This is an exmaple of data table using the well known
+                  react-bootstrap-table2 plugin. This is a minimal setup in
+                  order to get started fast.
+                </p>
+              </CardHeader>
+              <ToolkitProvider
+                data={dataTable}
+                keyField="name"
+                columns={[
+                  {
+                    dataField: "name",
+                    text: "Name",
+                    sort: true,
+                  },
+                  {
+                    dataField: "position",
+                    text: "Position",
+                    sort: true,
+                  },
+                  {
+                    dataField: "office",
+                    text: "Office",
+                    sort: true,
+                  },
+                  {
+                    dataField: "age",
+                    text: "Age",
+                    sort: true,
+                  },
+                  {
+                    dataField: "start_date",
+                    text: "Start date",
+                    sort: true,
+                  },
+                  {
+                    dataField: "salary",
+                    text: "Salary",
+                    sort: true,
+                  },
                 ]}
                 search
               >
@@ -257,7 +301,6 @@ function ReactBSTables(props) {
                       </Row>
                     </Container>
                     <BootstrapTable
-                      hover
                       ref={componentRef}
                       {...props.baseProps}
                       bootstrap4={true}
@@ -271,9 +314,6 @@ function ReactBSTables(props) {
             </Card>
           </div>
         </Row>
-        <div className="d-flex justify-content-center">
-          <CustomLoader {...pageStatus} />
-        </div>
       </Container>
     </>
   );
