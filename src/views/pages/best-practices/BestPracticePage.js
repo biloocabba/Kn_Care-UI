@@ -25,6 +25,9 @@ import {
     deleteBestPractice
 } from "../../../redux/actions/bestPractices/bestPractice";
 import BestPracticeService from "services/BestPracticeService";
+import { confirmAlert } from "react-confirm-alert";
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
 
 
 const BestPracticePage = (props) => {
@@ -32,7 +35,6 @@ const BestPracticePage = (props) => {
     const [currentBestPractice, setCurrentBestPractice] = useState(initialState);
     const [disableEdit, setDisableEdit] = useState(true);
 
-    console.log(currentBestPractice);
     const dispatch = useDispatch();
 
     const getBestPractice = id => {
@@ -69,13 +71,29 @@ const BestPracticePage = (props) => {
     };
 
     const removeBestPractice = () => {
-        dispatch(deleteBestPractice(currentBestPractice.id))
-            .then(() => {
-                props.history.push("/admin/search-best-practices");
-            })
-            .catch(e => {
-                console.log(e);
-            });
+        confirmAlert({
+            title: "Confirmation",
+            message: "Are you sure you want to remove this best practice?",
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => {
+                        dispatch(deleteBestPractice(currentBestPractice.id))
+                            .then(() => {
+                                props.history.push("/admin/search-best-practices");
+                            })
+                            .catch(e => {
+                                console.log(e);
+                            });
+                    }
+                },
+                {
+                    label: 'No',
+                    onClick: () => { }
+                }
+            ]
+        });
+
     };
 
 
@@ -84,20 +102,20 @@ const BestPracticePage = (props) => {
 
     return (
         <>
-            <SimpleHeader name={currentBestPractice.title} parentName="Best Practices" />
+            <SimpleHeader name={currentBestPractice.title || ""} parentName="Best Practices" />
             <Container className="mt-6 ml-6 container-sm" fluid>
                 <Row>
                     <Col className="order-xl-1">
                         <FormGroup>
                             <label className="form-control-label">Title</label>
-                            <Input name="title" value={currentBestPractice.title} disabled={disableEdit} onChange={handleInputChange} />
+                            <Input name="title" value={currentBestPractice.title || ""} disabled={disableEdit} onChange={handleInputChange} />
                         </FormGroup>
                     </Col>
                 </Row><Row>
                     <Col className="order-xl-1">
                         <FormGroup>
                             <label className="form-control-label">Description</label>
-                            <Input name="description" value={currentBestPractice.description} disabled={disableEdit} onChange={handleInputChange} />
+                            <Input name="description" value={currentBestPractice.description || ""} disabled={disableEdit} onChange={handleInputChange} />
                         </FormGroup>
                     </Col>
                 </Row>

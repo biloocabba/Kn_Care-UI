@@ -51,8 +51,9 @@ import {
 } from "../../../redux/actions/bestPractices/bestPractice";
 // core components
 import SimpleHeader from "components/Headers/SimpleHeader.js";
+import { PageStatus } from "../../../types/pageStatus";
+import { CustomLoader } from "../../../components/Loader/CustomLoader"
 
-//import { dataTable } from "variables/general";
 
 const pagination = paginationFactory({
   page: 1,
@@ -83,40 +84,6 @@ const pagination = paginationFactory({
 });
 
 const { SearchBar } = Search;
-
-/*function ReactBSTables() {
-  return(
-    <>
-      <Table striped>
-        <thead>
-          <tr>
-            <th>id</th>
-            <th>Content</th>
-          </tr>
-        </thead>
-        <tbody>
-          {bestPractices.map(bestPractice => {
-            return(
-              <tr key={bestPractice.id}>
-                <td>{bestPractice.id}</td>
-                <td>{bestPractice.title}</td>
-                <td>
-                  <ButtonGroup>
-                    <Button onClick={() => handleEditClick(bestPractice)}>Edit</Button>
-                    <Button
-                    classname="badge badge-danger mr-2" onClick={() => removeBestPractice(bestPractice.id)}>
-                      Delete
-                    </Button>
-                  </ButtonGroup>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </Table>
-      {renderModal()}
-    </>);
-}*/
 
 
 
@@ -164,77 +131,29 @@ function ReactBSTables(props) {
   };
 
   const bestPractices = useSelector(state => state.bestPractices);
+  const [pageStatus, setPageStatus] = useState({ pageStatus: PageStatus.Loading, statusCode: -1 });
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(retrieveBestPractices());
-}, [dispatch]);
+    setPageStatus({ pageStatus: PageStatus.Ok, statusCode: 0 });
+  }, [dispatch]);
 
-
-  const removeBestPractice = id => {
-    dispatch({
-      type: DELETE_BEST_PRACTICE,
-      payload: { id }
-    });
-  }
-  // const handleSaveClick = () => {
-  //   dispatch({
-  //     type: UPDATE_BEST_PRACTICE,
-  //     payload: localBestPractice
-  //   });
-  //   toggle();
-  // }
-
-  // const handleEditClick = bestPractice => {
-  //   setLocalBestPractice(bestPractice);
-  //   toggle();
-  // }
-
-  // const renderModal = () => {
-  //     return(
-  //       <Modal isOpen={modal} toggle={toggle}>
-  //         <ModalHeader toggle={toggle}>Edit post</ModalHeader>
-  //         <ModalBody>
-  //           <Form>
-  //             <FormGroup>
-  //               <Label for="id">Id</Label>
-  //               <Input type="text" disabled id="id" value={localBestPractice.id}/>
-  //             </FormGroup>
-  //             <FormGroup>
-  //               <Label for="title">Title</Label>
-  //               <Input type="text" id="title" value={localBestPractice.title}
-  //               onChange={e => setLocalBestPractice({...localBestPractice, title: e.target.value})}/>
-  //             </FormGroup>
-  //             <FormGroup>
-  //               <Label for="content">Post</Label>
-  //               <Input type="textarea" id="content" value={localBestPractice.content}
-  //               onChange={e => setLocalBestPractice({...localBestPractice, content: e.target.value})}/>
-  //             </FormGroup>
-  //           </Form>
-  //         </ModalBody>
-  //         <ModalFooter>
-  //           <Button onClick={() => handleSaveClick()}>Save Changes</Button>
-  //           <Button onClick={toggle}>Cancel</Button>
-  //         </ModalFooter>
-  //       </Modal>
-  //     );
-  // }
 
   const ViewBestPractice = e => {
-    var {id} = e.target;
+    var { id } = e.target;
     props.history.push("/admin/best-practice/" + id);
   }
 
-  const formatActionButtonCell =(cell, row)=>{  
-    console.log(`row ${row.id}`);
+  const formatActionButtonCell = (cell, row) => {
     return (
       <>
         <Button id={row.id} className="btn-icon btn-2" type="button" onClick={e => ViewBestPractice(e)}>
           View
         </Button>
-        </>);
-        
-  
+      </>);
+
+
   }
 
   return (
@@ -269,7 +188,7 @@ function ReactBSTables(props) {
                   },
                   {
                     dataField: "action",
-                    text:"",
+                    text: "",
                     formatter: formatActionButtonCell
                   }
                 ]}
@@ -355,6 +274,9 @@ function ReactBSTables(props) {
             </Card>
           </div>
         </Row>
+        <div className="d-flex justify-content-center">
+          <CustomLoader {...pageStatus} />
+        </div>
       </Container>
     </>
   );
