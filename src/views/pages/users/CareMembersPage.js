@@ -132,7 +132,9 @@ function CareMembersPage(props) {
   };
 
   const findByOnBoardDate = () => {
-    dispatch(findCareMembersByOnBoardDate(searchOnBoardDate));
+    if (searchBusinessUnit !== null) {
+      dispatch(findCareMembersByOnBoardDate(searchOnBoardDate));
+    }
   };
 
   const findByAllParameters = () => {
