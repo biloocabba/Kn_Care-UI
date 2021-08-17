@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 // react plugin that prints a given react component
 // react component for creating dynamic tables
 import BootstrapTable from 'react-bootstrap-table-next'
@@ -28,7 +28,15 @@ import { Button, Card, CardHeader, Container, Row } from 'reactstrap'
 import GradientEmptyHeader from 'components/Headers/GradientEmptyHeader.js'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteUser, reterieveEmployees } from '../../../actions/employee.js'
+import {
+  retrieveEmployees,
+  deleteUser,
+  findEmployeesByInternationalName,
+  findEmployeesByBusinessUnit,
+  findEmployeesByCompanyCode,
+  findEmployeesByCountry,
+  findEmployeesByHiringDate
+} from "../../../actions/employee";
 
 const pagination = paginationFactory({
   page: 1,
@@ -61,8 +69,79 @@ const pagination = paginationFactory({
 const { SearchBar } = Search
 
 function Employees(props) {
-  const users = useSelector((state) => state.employees )
-  const dispatch = useDispatch()
+  const [searchInternationalName, setSearchInternationalName] = useState("");
+  const [searchBusinessUnit, setSearchBusinessUnit] = useState("");
+  const [searchCompanyCode, setSearchCompanyCode] = useState("");
+  const [searchCountry, setSearchCountry] = useState("");
+  const [searchHiringDate, setSearchHiringDate] = useState("");
+
+  const employees = useSelector(state => state.employees);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(retrieveEmployees())
+  }, [dispatch])
+
+  const onChangeSearchInternationalName = e => {
+    const searchInternationalName = e.target.value;
+    setSearchInternationalName(searchInternationalName);
+  };
+
+  const onChangeSearchBusinessUnit = e => {
+    const searchBusinessUnit = e.target.value;
+    setSearchBusinessUnit(searchBusinessUnit);
+  };
+
+  const onChangeSearchCompanyCode = e => {
+    const searchCompanyCode = e.target.value;
+    setSearchCompanyCode(searchCompanyCode);
+  };
+
+  const onChangeSearchCountry = e => {
+    const searchCountry = e.target.value;
+    setSearchCountry(searchCountry);
+  };
+
+  const onChangeSearchHiringDate = e => {
+    const searchHiringDate = e.target.value;
+    setSearchHiringDate(searchHiringDate);
+  };
+
+  const findByInternationalName = () => {
+    if (searchCompanyCode !== null) {
+      dispatch(findEmployeesByInternationalName(searchInternationalName));
+    }
+  };
+
+  const findByBusinessUnit = () => {
+    if (searchBusinessUnit !== null) {
+      dispatch(findEmployeesByBusinessUnit(searchBusinessUnit));
+    }  
+  };
+
+  const findByCompanyCode = () => {
+    if (searchCompanyCode !== null) {
+      dispatch(findEmployeesByCompanyCode(searchCompanyCode));
+    }
+  };
+
+  const findByCountry = () => {
+    if (searchCountry !== null) {
+      dispatch(findEmployeesByCountry(searchCountry));
+    }
+  };
+
+  const findByHiringDate = () => {
+    dispatch(findEmployeesByHiringDate(searchHiringDate));
+  };
+
+  const findByAllParameters = () => {
+    findByInternationalName();
+    findByBusinessUnit();
+    findByCompanyCode();
+    findByCountry();
+    findByHiringDate();
+  }
 
   const employeeDetails = (e) => {
     var { id } = e.target
@@ -74,10 +153,6 @@ function Employees(props) {
     console.log(id)
     dispatch(deleteUser(id))
   }
-
-  useEffect(() => {
-    dispatch(reterieveEmployees())
-  }, [dispatch])
 
   const formatActionButtonCell = (cell, row) => {
     return (
@@ -162,7 +237,7 @@ function Employees(props) {
                 <p className="text-sm mb-0">Kn Employees from PDM</p>
               </CardHeader>
               <ToolkitProvider
-                data={users} //employees
+                data={employees}
                 keyField="firstName"
                 columns={[
                   {
@@ -187,14 +262,8 @@ function Employees(props) {
                     style: { width: '50px' },
                   },
                   {
-                    dataField: 'businessUnit.name',
+                    dataField: 'businessUnit',
                     text: 'bUnit',
-                    sort: true,
-                    style: { width: '50px' },
-                  },
-                  {
-                    dataField: 'managementGroup',
-                    text: 'Man Group',
                     sort: true,
                     style: { width: '50px' },
                   },
@@ -215,6 +284,11 @@ function Employees(props) {
                     sort: true,
                   },
                   {
+                    dataField: "hiringDate",
+                    text: "hiringDate",
+                    sort: true,
+                  },
+                  {
                     dataField: 'action',
                     text: '',
                     formatter: formatActionButtonCell,
@@ -229,20 +303,80 @@ function Employees(props) {
                       className="dataTables_filter px-4 pb-1"
                     >
                       <label>
-                        Search:
                         <SearchBar
                           className="form-control-sm"
-                          placeholder=""
-                          {...props.searchProps}
+                          placeholder="International Name"
+                          value={searchInternationalName}
+                          onChange={onChangeSearchInternationalName}
                         />
                       </label>
                     </div>
+                    <div
+                      id="datatable-basic_filter"
+                      className="dataTables_filter px-4 pb-1"
+                    >
+                      <label>
+                        <SearchBar
+                          className="form-control-sm"
+                          placeholder="Business Unit"
+                          value={searchBusinessUnit}
+                          onChange={onChangeSearchBusinessUnit}
+                        />
+                      </label>
+                    </div>
+                    <div
+                      id="datatable-basic_filter"
+                      className="dataTables_filter px-4 pb-1"
+                    >
+                      <label>
+                        <SearchBar
+                          className="form-control-sm"
+                          placeholder="CompanyCode"
+                          value={searchCompanyCode}
+                          onChange={onChangeSearchCompanyCode}
+                        />
+                      </label>
+                    </div>
+                    <div
+                      id="datatable-basic_filter"
+                      className="dataTables_filter px-4 pb-1"
+                    >
+                      <label>
+                        <SearchBar
+                          className="form-control-sm"
+                          placeholder="Country"
+                          value={searchCountry}
+                          onChange={onChangeSearchCountry}
+                        />
+                      </label>
+                    </div>
+                    <div
+                      id="datatable-basic_filter"
+                      className="dataTables_filter px-4 pb-1"
+                    >
+                      <label>
+                        <SearchBar
+                          className="form-control-sm"
+                          placeholder="Hiring Date"
+                          value={searchHiringDate}
+                          onChange={onChangeSearchHiringDate}
+                        />
+                      </label>
+                    </div>
+                    <div className="input-group-append">
+                      <button
+                        className="btn btn-info"
+                        type="button"
+                        onClick={findByAllParameters}
+                      >
+                        Search
+                      </button>
+                    </div>  
                     <BootstrapTable
                       {...props.baseProps}
                       bootstrap4={true}
                       pagination={pagination}
                       bordered={false}
-                      deleteRow={true}
                     />
                   </div>
                 )}
