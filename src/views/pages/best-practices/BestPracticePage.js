@@ -21,14 +21,17 @@ import {
 } from "reactstrap";
 
 import {
-    retrieveSingleBestPractice,
-  } from "../../../redux/actions/bestPractices/bestPractice";
+    updateBestPractice,
+    deleteBestPractice
+} from "../../../redux/actions/bestPractices/bestPractice";
 import BestPracticeService from "services/BestPracticeService";
 
 
 const BestPracticePage = (props) => {
 
     const [currentBestPractice, setCurrentBestPractice] = useState(initialState);
+    const [disableEdit, setDisableEdit] = useState(true);
+
     console.log(currentBestPractice);
     const dispatch = useDispatch();
 
@@ -42,32 +45,59 @@ const BestPracticePage = (props) => {
                 console.log(e);
             });
     };
-  
+
     useEffect(() => {
         getBestPractice(props.match.params.id);
     }, [props.match.params.id]);
 
-    
-    
-    
+    const handleInputChange = event => {
+        const { name, value } = event.target;
+        console.log(name + "  " + value);
+        setCurrentBestPractice({ ...currentBestPractice, [name]: value });
+    };
+
+
+    const updateContent = () => {
+        dispatch(updateBestPractice(currentBestPractice.id, currentBestPractice))
+            .then(response => {
+                console.log(response);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+        setDisableEdit(!disableEdit);
+    };
+
+    const removeBestPractice = () => {
+        dispatch(deleteBestPractice(currentBestPractice.id))
+            .then(() => {
+                props.history.push("/admin/search-best-practices");
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    };
+
+
+
 
 
     return (
         <>
             <SimpleHeader name={currentBestPractice.title} parentName="Best Practices" />
-            <Container className="mt-6 ml-6" fluid>
+            <Container className="mt-6 ml-6 container-sm" fluid>
                 <Row>
                     <Col className="order-xl-1">
                         <FormGroup>
                             <label className="form-control-label">Title</label>
-                            <p>{currentBestPractice.title}</p>
+                            <Input name="title" value={currentBestPractice.title} disabled={disableEdit} onChange={handleInputChange} />
                         </FormGroup>
                     </Col>
                 </Row><Row>
                     <Col className="order-xl-1">
                         <FormGroup>
                             <label className="form-control-label">Description</label>
-                            <p>{currentBestPractice.description}</p>
+                            <Input name="description" value={currentBestPractice.description} disabled={disableEdit} onChange={handleInputChange} />
                         </FormGroup>
                     </Col>
                 </Row>
@@ -79,15 +109,18 @@ const BestPracticePage = (props) => {
                         </FormGroup>
                     </Col>
                 </Row>
-                <Button id="details" className="btn-icon btn-2" type="button" color="info" onClick={() => console.log("Details page is not yet implemented!")}>
+                <Button id="edit" className="btn btn-info" type="button" onClick={() => setDisableEdit(!disableEdit)}>
                     <span className="btn-inner--icon">
-                        <i className="ni ni-badge" />
+                        Edit
                     </span>
                 </Button>
-                <Button id="remove" className="btn-icon btn-2" color="danger" type="button">
+                <Button id="remove" className="btn-icon btn-2" color="danger" type="button" onClick={removeBestPractice}>
                     <span className="btn-inner--icon">
                         <i className="ni ni-fat-remove" />
                     </span>
+                </Button>
+                <Button id="update" className="btn btn-success float-right" type="button" hidden={disableEdit} onClick={updateContent}>
+                    Save
                 </Button>
             </Container>
 
