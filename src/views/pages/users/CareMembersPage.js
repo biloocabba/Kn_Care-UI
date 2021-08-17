@@ -233,51 +233,51 @@ function CareMembersPage(props) {
                 keyField="firstName"
                 columns={[
                   {
-                    dataField: "firstName",
+                    dataField: "employee.firstName",
                     text: "First Name",
                     hidden : true,
                   },
                   {
-                    dataField: "lastName",
+                    dataField: "employee.lastName",
                     text: "lastName",
                     hidden : true,
                   },
                   {
-                    dataField: "internationalName",
+                    dataField: "employee.internationalName",
                     text: "int Name",
                     sort: true                    
                   },
                   {
-                    dataField: "title",
+                    dataField: "employee.title",
                     text: "title",
                     sort: true ,
                     style: { width:'50px' }                   
                   },
                   {
-                    dataField: "businessUnit",
+                    dataField: "employee.businessUnit",
                     text: "bUnit",
                     sort: true,
                     style: { width:'50px' }
                   },
                   {
-                    dataField: "companyCode",
+                    dataField: "employee.companyCode",
                     text: "companyCode",
                     sort: true,
                     style: { width:'50px' }
                   },
                   {
-                    dataField: "costCenter",
+                    dataField: "employee.costCenter",
                     text: "costCenter",
                     sort: true,
                   },
                   {
-                    dataField: "country",
+                    dataField: "employee.office.country",
                     text: "country",
                     sort: true,
                   },
                   {
-                    dataField: "onboardingDate",
-                    text: "onboardingDate",
+                    dataField: "onBoardDate",
+                    text: "onBoardDate",
                     sort: true,
                   },
                 ]}
