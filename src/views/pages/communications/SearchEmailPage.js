@@ -135,7 +135,7 @@ function ReactBSTables(props) {
 
   const EditDraft = e => {
     var {id} = e.target;
-    props.history.push("/admin/create-email/"+id);
+    props.history.push("/admin/email-details/"+id);
   }
 
   const formatActionButtonCell =(cell, row)=>{  

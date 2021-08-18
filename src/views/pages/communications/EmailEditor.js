@@ -15,7 +15,6 @@
 
 */
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
@@ -49,34 +48,9 @@ import {
 } from "reactstrap";
 // core components
 
-function CreateEmailPage(props) {
+function EmailEditor(props) {
 
-  let { id } = useParams();
-
-  const initialEmailState = {
-    id:"",
-    subject:"",
-    content:"",
-    attachments:null,
-    createdBy:1,
-    recipients:[],
-    recipientGroups:[]
-  };
-
-  const [emailState, setEmailState] = useState(initialEmailState);
-
-  useEffect(()=>{
-    if(id !== ":id" && id !== undefined){
-      const fetchData = async () => {
-        const result = await EmailService.getOne(id);
-        if(result.status === 200){
-          //setEmailState(result.data);
-          setEmailState(result.data);
-        }
-      }
-      fetchData();
-    }
-  }, [id]);
+  const [emailState, setEmailState] = useState(props.initialEmailState);
 
   //mock options until real API requests can be made
   //fetching groups and individual recipients is unavailable
@@ -247,4 +221,4 @@ function CreateEmailPage(props) {
   );
 }
 
-export default CreateEmailPage;
+export default EmailEditor;
