@@ -20,12 +20,7 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 //import ReactBSAlert from "react-bootstrap-sweetalert";
 import {
-  retrieveCareMembers,
-  findCareMembersByInternationalName,
-  findCareMembersByBusinessUnit,
-  findCareMembersByCompanyCode,
-  findCareMembersByCountry,
-  findCareMembersByOnBoardDate
+  searchCareMembers
 } from "../../../actions/careMembers";
 import {
   //Button,
@@ -78,9 +73,9 @@ function CareMembersPage(props) {
   const careMembers = useSelector(state => state.careMembers);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(retrieveCareMembers())
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(retrieveCareMembers())
+  // }, [dispatch])
 
   const onChangeSearchInternationalName = e => {
     const searchInternationalName = e.target.value;
@@ -107,6 +102,7 @@ function CareMembersPage(props) {
     setSearchOnBoardDate(searchOnboardingDate);
   };
 
+  /*
   const findByInternationalName = () => {
     if (searchCompanyCode !== null) {
       dispatch(findCareMembersByInternationalName(searchInternationalName));
@@ -136,13 +132,24 @@ function CareMembersPage(props) {
       dispatch(findCareMembersByOnBoardDate(searchOnBoardDate));
     }
   };
-
+*/
   const findByAllParameters = () => {
+
+      let filters ={
+      internationalName:searchInternationalName,
+      businessUnitId: searchBusinessUnit,
+      nationalityId:searchCountry
+     
+    }
+
+    dispatch(searchCareMembers(filters));
+    /*
     findByInternationalName();
     findByBusinessUnit();
     findByCompanyCode();
     findByCountry();
     findByOnBoardDate();
+    */
   }
 
   // const rowDataDetails = (e)=> {   

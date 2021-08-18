@@ -4,6 +4,11 @@ const getAllCareMembers = () => {
   return http.get("/careMembers");
 };
 
+const searchCareMembers = (params) => {
+  return http.get("/careMembers",{params});
+};
+
+/*
 const findByInternationalName = internationalName => {
     return http.get(`/careMembers?internationalName=${internationalName}`);
 };
@@ -23,14 +28,11 @@ const findByCountry = country => {
 const findByOnBoardDate = onBoardDate => {
   return http.get(`/careMembers?onboardingDate=${onBoardDate}`);
 };
+*/
 
 const careMembersService = {
   getAllCareMembers,
-  findByInternationalName,
-  findByBusinessUnit,
-  findByCompanyCode,
-  findByCountry,
-  findByOnBoardDate
+  searchCareMembers
 };
   
 export default careMembersService;

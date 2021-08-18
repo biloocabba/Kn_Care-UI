@@ -1,8 +1,20 @@
 import {
     RETRIEVE_CARE_MEMBERS,
   } from "./types/careMember";
-import careMembersDataService from "../services/careMembersService";
+import careMembersService from "../services/careMembersService";
 
+export const searchCareMembers = (filters) => async (dispatch) => {
+  try {
+    const res = await careMembersService.searchCareMembers(filters);
+
+    dispatch({
+      type: RETRIEVE_CARE_MEMBERS,
+      payload: res.data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+/*
 export const retrieveCareMembers = () => async (dispatch) => {
     try {
       const res = await careMembersDataService.getAllCareMembers();
@@ -79,4 +91,5 @@ export const findCareMembersByOnBoardDate = (onBoardDate) => async (dispatch) =>
   } catch (err) {
     console.log(err);
   }
+  */
 };
