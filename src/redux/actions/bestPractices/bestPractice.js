@@ -3,10 +3,13 @@ import {
     RETRIEVE_BEST_PRACTICES,
     UPDATE_BEST_PRACTICE,
     DELETE_BEST_PRACTICE,
-    RETRIEVE_SINGLE_BEST_PRACTICE
+    RETRIEVE_SINGLE_BEST_PRACTICE,
+    API_SEND_START,
+    API_SEND_END
 } from "./types";
 
 import BestPracticeService from "../../../services/BestPracticeService"
+import { PageStatus } from "types/pageStatus";
 
 export const createBestPractice = (title, description, content) => async (dispatch) => {
     try {
@@ -25,12 +28,23 @@ export const createBestPractice = (title, description, content) => async (dispat
 
 export const retrieveBestPractices = () => async (dispatch) => {
     try {
+        dispatch({
+            type: API_SEND_START,
+            payload: PageStatus.Loading
+        });
+
         const res = await BestPracticeService.getAll();
 
         dispatch({
             type: RETRIEVE_BEST_PRACTICES,
-            payload: res.data.content,
+            payload: res.data.content
         });
+
+        dispatch({
+            type: API_SEND_END,
+            payload: PageStatus.Ok
+        });
+
     } catch (err) {
         console.log(err);
     }
@@ -76,3 +90,27 @@ export const deleteBestPractice = (id) => async (dispatch) => {
         console.log(err);
     }
 };
+
+// export const apiCallStarts = () => async (dispatch) => {
+//     try {
+//         dispatch({
+//             type: API_SEND_START,
+//             payload: "Loading..",
+//         });
+
+//     } catch (err) {
+//         console.log(err);
+//     }
+// };
+
+// export const apiCallEnds = () => async (dispatch) => {
+//     try {
+//         dispatch({
+//             type: API_SEND_END,
+//             payload: "Ok..",
+//         });
+
+//     } catch (err) {
+//         console.log(err);
+//     }
+// };

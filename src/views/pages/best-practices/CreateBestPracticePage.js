@@ -37,21 +37,19 @@ import {
 //only for development purposes!!!
 import { v4 as uuidv4 } from "uuid";
 
+const initialState = {
+  id: null,
+  title: "",
+  description: "",
+  content:""
+};
+
 function CreateBestPracticePage() {
   const [created, setCreated] = useState(false);
   const dispatch = useDispatch();
-  const initialState = {
-    id: null,
-    title: "",
-    description: "",
-    content:""
-  };
+  
   const [content, setContent] = useState(initialState);
 
-  useEffect(()=>{
-    setContent({...content, id: uuidv4()});
-  },[]);//the array should stay as is. We want this effect to only run once on purpose
-  //ToDo: find a way to suppress this warning
 
   const saveBestPractice = () => {
     dispatch(createBestPractice(content.title, content.description));

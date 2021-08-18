@@ -47,6 +47,8 @@ import {
 } from "reactstrap";
 
 import {
+  apiCallEnds,
+  apiCallStarts,
   retrieveBestPractices,
 } from "../../../redux/actions/bestPractices/bestPractice";
 // core components
@@ -131,21 +133,27 @@ function ReactBSTables(props) {
   };
 
   const bestPractices = useSelector(state => state.bestPractices);
-  const [pageStatus, setPageStatus] = useState({ pageStatus: PageStatus.Loading, statusCode: -1 });
   const dispatch = useDispatch();
 
+
+  const status = useSelector(state=>state.pageStatus);
+  const pageStatus = { pageStatus: status, statusCode: -1 };
+  
+
+  useEffect(() => {
+    const loadData = async () => {
+      await dispatch(retrieveBestPractices())
+    }
+    loadData();
+  }, [dispatch]);
+
+
+  // limit description respresintation to 50 characters to fit it on the page
   bestPractices.forEach(bestPractice => {
     if (bestPractice.description.length > 50) {
       bestPractice.description = bestPractice.description.substring(0, 50) + '...';
     }
   });
-
-  useEffect(() => {
-    dispatch(retrieveBestPractices());
-    setPageStatus({ pageStatus: PageStatus.Ok, statusCode: 0 });
-  }, [dispatch]);
-
-
 
   const ViewBestPractice = e => {
     var { id } = e.target;
