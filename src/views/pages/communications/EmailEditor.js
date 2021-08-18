@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
@@ -181,35 +181,7 @@ function EmailEditor(props) {
                             onChange={e => setEmailState({...emailState, subject:e.target.value})}
                           />
                     </FormGroup>
-                    <ReactQuill value={emailState.content} onChange={e=>{
-                      /*This random assignment does not have any logical meaning, however, 
-                        it has a side effect of somehow updating emailState. This state
-                        update won't show up at first with react-devtools, but when you
-                        change some other fields (subject, recipient, recipient group),
-                        you will notice that emailState.content has also been updated.
-                        
-                        This is of course not a good final solution but rather a workaround
-                        to a bug that's probably somewhere in ReactQuill's source code.
-                        Maybe I myself wrote a bug elsewhere, but after looking at my own
-                        code for hours, I couldn't find an error in my code.
-                        
-                        I'm using this workaround as a last resort because I cannot waste more
-                        time on this bug.*/
-                      let newEmailState = emailState;
-                      newEmailState.content = e;
-
-                      /*with this console log you can see the state being changed
-                      because react-devtools doesn't show it right after emailState.content
-                      has changed, but only after something else has also changed*/
-                      console.log(emailState);
-                      /* 
-                        This assignment should be the way to change emailState.content,
-                        but it also overrides emailState.id and emailState.subject with 
-                        empty strings for some strange reason. I couldn't find a proper
-                        solution.
-                      */
-                      //setEmailState({...emailState, content:e});
-                      }}/>
+                    <ReactQuill value={emailState.content} onChange={e=>setEmailState({...emailState, content:e})}/>
                   </div>
                 </Form>
               </CardBody>
