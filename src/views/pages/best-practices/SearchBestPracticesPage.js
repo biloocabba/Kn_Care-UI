@@ -131,30 +131,57 @@ function SearchBestPracticePage() {
   const [searchRate, setSearchRate] = useState('')
   const [searchTitle, setSearchTitle] = useState('')
 
-  // this should happen on click after selecting the filters
-  // useEffect(() => {
-  //   dispatch(reterieveBestPractices())
-  // }, [dispatch])
+  //this should happen on click after selecting the filters
+  useEffect(() => {
+    dispatch(reterieveBestPractices())
+  }, [dispatch])
 
-  const findByTime = () => {
-    dispatch(findBestPracticesByTime(searchTime))
-  }
+  useEffect(() => {
+    const findByTime = () => {
+      if (!searchTime && searchTime.length === 0) {
+        dispatch(findBestPracticesByTime(searchTime))
+      }
+    }
+    findByTime()
+  }, [dispatch, searchTime])
 
-  const findByAuthor = () => {
-    dispatch(findBestPracticesByAuthor(searchAuthor))
-  }
+  useEffect(() => {
+    const findByAuthor = () => {
+      if (!searchAuthor && searchAuthor.length === 0) {
+        dispatch(findBestPracticesByAuthor(searchAuthor))
+      }
+    }
+    findByAuthor()
+  }, [dispatch, searchAuthor])
 
-  const findByTag = () => {
-    dispatch(findBestPracticesByTag(searchTag))
-  }
+  useEffect(() => {
+    const findByTag = () => {
+      if (!searchTag && searchTag.length === 0) {
+        dispatch(findBestPracticesByTag(searchTag))
+      }
+    }
 
-  const findByRate = () => {
-    dispatch(findBestPracticesByRate(searchRate))
-  }
+    findByTag()
+  }, [dispatch, searchTag])
 
-  const findByTitle = () => {
-    dispatch(findBestPracticesByTitle(searchTitle))
-  }
+  useEffect(() => {
+    const findByRate = () => {
+      if (!searchRate && searchRate.length === 0) {
+        dispatch(findBestPracticesByRate(searchRate))
+      }
+    }
+
+    findByRate()
+  }, [dispatch, searchRate])
+
+  useEffect(() => {
+    const findByTitle = () => {
+      if (!searchTitle && searchTitle.length === 0) {
+        dispatch(findBestPracticesByTitle(searchTitle))
+      }
+    }
+    findByTitle()
+  }, [dispatch, searchTitle])
 
   return (
     <>
@@ -165,90 +192,67 @@ function SearchBestPracticePage() {
           <div className="col">
             <Card className="my-3 p-3">
               <h5>Filter</h5>
-              <div class="d-flex justify-content-start">
-                <Select2
-                  className="form-control"
-                  options={{
-                    placeholder: 'Search Time',
-                  }}
-                  onChange={(event) => setSearchTime(event.target.value)}
-                  value={searchTime}
-                  data={[
-                    { id: '1', text: 'Time' },
-                    { id: '2', text: 'Time' },
-                    { id: '3', text: 'Time' },
-                    { id: '4', text: 'Time' },
-                    { id: '5', text: 'Time' },
-                    { id: '6', text: 'Time' },
-                  ]}
-                />
-
-                <Select2
-                  className="form-control"
-                  options={{
-                    placeholder: 'Search Author',
-                  }}
-                  onChange={(event) => setSearchAuthor(event.target.value)}
-                  value={searchAuthor}
-                  data={[
-                    { id: '1', text: 'Author' },
-                    { id: '2', text: 'Author' },
-                    { id: '3', text: 'Author' },
-                    { id: '4', text: 'Author' },
-                    { id: '5', text: 'Author' },
-                    { id: '6', text: 'Author' },
-                  ]}
-                />
-
-                <Select2
-                  className="form-control"
-                  options={{
-                    placeholder: 'Search Tag',
-                  }}
-                  onChange={(event) => setSearchTag(event.target.value)}
-                  value={searchTag}
-                  data={[
-                    { id: '1', text: 'Tag' },
-                    { id: '2', text: 'Tag' },
-                    { id: '3', text: 'Tag' },
-                    { id: '4', text: 'Tag' },
-                    { id: '5', text: 'Tag' },
-                    { id: '6', text: 'Tag' },
-                  ]}
-                />
-                <Select2
-                  className="form-control"
-                  options={{
-                    placeholder: 'Search Rate',
-                  }}
-                  onChange={(event) => setSearchRate(event.target.value)}
-                  value={searchRate}
-                  data={[
-                    { id: '1', text: 'Rate' },
-                    { id: '2', text: 'Rate' },
-                    { id: '3', text: 'Rate' },
-                    { id: '4', text: 'Rate' },
-                    { id: '5', text: 'Rate' },
-                    { id: '6', text: 'Rate' },
-                  ]}
-                />
-
-                <Select2
-                  className="form-control"
-                  options={{
-                    placeholder: 'Search Title',
-                  }}
-                  onChange={(event) => setSearchTitle(event.target.value)}
-                  value={searchTitle}
-                  data={[
-                    { id: '1', text: 'Title' },
-                    { id: '2', text: 'Title' },
-                    { id: '3', text: 'Title' },
-                    { id: '4', text: 'Title' },
-                    { id: '5', text: 'Title' },
-                    { id: '6', text: 'Title' },
-                  ]}
-                />
+              <div className="py-4 table-responsive">
+                <div
+                  id="datatable-basic_filter"
+                  className="dataTables_filter px-3 pb-1"
+                >
+                  <label>
+                    <SearchBar
+                      className="form-control-sm"
+                      placeholder="Time"
+                      onChange={(e) => setSearchTime(e.target.value)}
+                    />
+                  </label>
+                </div>
+                <div
+                  id="datatable-basic_filter"
+                  className="dataTables_filter px-3 pb-1"
+                >
+                  <label>
+                    <SearchBar
+                      className="form-control-sm"
+                      placeholder="Author"
+                      onChange={(e) => setSearchAuthor(e.target.value)}
+                    />
+                  </label>
+                </div>
+                <div
+                  id="datatable-basic_filter"
+                  className="dataTables_filter px-3 pb-1"
+                >
+                  <label>
+                    <SearchBar
+                      className="form-control-sm"
+                      placeholder="Tag"
+                      onChange={(e) => setSearchTag(e.target.value)}
+                    />
+                  </label>
+                </div>
+                <div
+                  id="datatable-basic_filter"
+                  className="dataTables_filter px-3 pb-1"
+                >
+                  <label>
+                    <SearchBar
+                      className="form-control-sm"
+                      placeholder="Rate"
+                      onChange={(e) => setSearchRate(e.target.value)}
+                    />
+                  </label>
+                </div>
+                <div
+                  id="datatable-basic_filter"
+                  className="dataTables_filter px-3 pb-1"
+                >
+                  <label>
+                    <SearchBar
+                      className="form-control-sm"
+                      placeholder="Title"
+                      onChange={(e) => setSearchTitle(e.target.value)}
+                    />
+                  </label>
+                </div>
               </div>
             </Card>
             <Card>
