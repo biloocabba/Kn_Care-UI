@@ -30,30 +30,17 @@ import {
   Button,
   ButtonGroup,
   Card,
-  CardHeader,
   Container,
-  Modal,
   Row,
   Col,
   UncontrolledTooltip,
-  Table,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Form,
-  Input,
-  FormGroup,
-  Label
 } from "reactstrap";
 
 import {
-  apiCallEnds,
-  apiCallStarts,
   retrieveBestPractices,
 } from "../../../redux/actions/bestPractices/bestPractice";
 // core components
 import SimpleHeader from "components/Headers/SimpleHeader.js";
-import { PageStatus } from "../../../types/pageStatus";
 import { CustomLoader } from "../../../components/Loader/CustomLoader"
 
 
@@ -150,7 +137,7 @@ function ReactBSTables(props) {
 
   // limit description respresintation to 50 characters to fit it on the page
   bestPractices.forEach(bestPractice => {
-    if (bestPractice.description.length > 50) {
+    if (bestPractice.description!== null && bestPractice.description.length > 50) {
       bestPractice.description = bestPractice.description.substring(0, 50) + '...';
     }
   });

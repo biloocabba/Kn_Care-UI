@@ -2,12 +2,14 @@ import React, { useState, useRef } from "react";
 import { Redirect } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import SimpleReactValidator from 'simple-react-validator';
+import http from '../../../http-common';
 
 // reactstrap components
 import {
   Button,
   FormGroup,
   Input,
+  Label,
   Container,
   Row,
   Col,
@@ -19,14 +21,12 @@ import {
   createBestPractice,
 } from "../../../redux/actions/bestPractices/bestPractice";
 
-//only for development purposes!!!
-import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
   id: null,
   title: "",
   description: "",
-  content: ""
+  content: null
 };
 
 function CreateBestPracticePage() {
@@ -45,6 +45,17 @@ function CreateBestPracticePage() {
     const { name, value } = e.target;
     setContent({ ...content, [name]: value });
     simpleValidator.current.showMessageFor(name);
+    console.log(content);
+  }
+
+  const fileUpload = async (e)=>{
+    let formData = new FormData();
+    formData.append("file", e.target.files[0]);
+    const res = await http.post("/practices/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }});
+      console.log(res.data);
   }
 
   const saveBestPractice = () => {
@@ -77,7 +88,8 @@ function CreateBestPracticePage() {
               />
             </FormGroup>
           </Col>
-        </Row><Row>
+        </Row>
+        <Row>
           <Col className="order-xl-1">
             <FormGroup>
               <label className="form-control-label">Description</label>
@@ -86,9 +98,16 @@ function CreateBestPracticePage() {
                 name="description"
                 type="textarea"
                 rows="5"
-                onChange={handleInputChange} 
-                />
-                <p className="float-right">{content.description.length} / 1000</p>
+                onChange={handleInputChange}
+              />
+              <p className="float-right">{content.description.length} / 1000</p>
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col className="order-xl-1">
+            <FormGroup>
+              <Input type="file" name="content" onChange={fileUpload}/>
             </FormGroup>
           </Col>
         </Row>
@@ -98,7 +117,9 @@ function CreateBestPracticePage() {
           </Button>
         </Row>
       </Container>
+      
     </>
+    
   );
 }
 
