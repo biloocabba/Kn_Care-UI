@@ -41,15 +41,8 @@ import {
 // core components
 import SimpleHeader from 'components/Headers/SimpleHeader.js'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  reterieveBestPractices,
-  findBestPracticesByTime,
-  findBestPracticesByAuthor,
-  findBestPracticesByTag,
-  findBestPracticesByRate,
-  findBestPracticesByTitle,
-} from 'actions/bestPractices'
 import Select2 from 'react-select2-wrapper'
+import { searchBestPractices } from 'actions/bestPractices'
 
 const pagination = paginationFactory({
   page: 1,
@@ -131,57 +124,24 @@ function SearchBestPracticePage() {
   const [searchRate, setSearchRate] = useState('')
   const [searchTitle, setSearchTitle] = useState('')
 
-  //this should happen on click after selecting the filters
-  useEffect(() => {
-    dispatch(reterieveBestPractices())
-  }, [dispatch])
+  
+  // //this should happen on click after selecting the filters
+  // useEffect(() => {
+  //   dispatch(reterieveBestPractices())
+  // }, [dispatch])
 
-  useEffect(() => {
-    const findByTime = () => {
-      if (!searchTime && searchTime.length === 0) {
-        dispatch(findBestPracticesByTime(searchTime))
-      }
-    }
-    findByTime()
-  }, [dispatch, searchTime])
+  const searchFilters = {
+    searchTime: searchTime,
+    searchAuthor: searchAuthor,
+    searchTag: searchTag,
+    searchRate: searchRate,
+    searchTitle: searchTitle,
+  }
 
-  useEffect(() => {
-    const findByAuthor = () => {
-      if (!searchAuthor && searchAuthor.length === 0) {
-        dispatch(findBestPracticesByAuthor(searchAuthor))
-      }
-    }
-    findByAuthor()
-  }, [dispatch, searchAuthor])
-
-  useEffect(() => {
-    const findByTag = () => {
-      if (!searchTag && searchTag.length === 0) {
-        dispatch(findBestPracticesByTag(searchTag))
-      }
-    }
-
-    findByTag()
-  }, [dispatch, searchTag])
-
-  useEffect(() => {
-    const findByRate = () => {
-      if (!searchRate && searchRate.length === 0) {
-        dispatch(findBestPracticesByRate(searchRate))
-      }
-    }
-
-    findByRate()
-  }, [dispatch, searchRate])
-
-  useEffect(() => {
-    const findByTitle = () => {
-      if (!searchTitle && searchTitle.length === 0) {
-        dispatch(findBestPracticesByTitle(searchTitle))
-      }
-    }
-    findByTitle()
-  }, [dispatch, searchTitle])
+  const makeSearch = () => {
+    // console.log(searchTime)
+    console.log(searchFilters)
+  }
 
   return (
     <>
@@ -190,75 +150,10 @@ function SearchBestPracticePage() {
       <Container className="mt--6" fluid>
         <Row>
           <div className="col">
-            <Card className="my-3 p-3">
-              <h5>Filter</h5>
-              <div className="py-4 table-responsive">
-                <div
-                  id="datatable-basic_filter"
-                  className="dataTables_filter px-3 pb-1"
-                >
-                  <label>
-                    <SearchBar
-                      className="form-control-sm"
-                      placeholder="Time"
-                      onChange={(e) => setSearchTime(e.target.value)}
-                    />
-                  </label>
-                </div>
-                <div
-                  id="datatable-basic_filter"
-                  className="dataTables_filter px-3 pb-1"
-                >
-                  <label>
-                    <SearchBar
-                      className="form-control-sm"
-                      placeholder="Author"
-                      onChange={(e) => setSearchAuthor(e.target.value)}
-                    />
-                  </label>
-                </div>
-                <div
-                  id="datatable-basic_filter"
-                  className="dataTables_filter px-3 pb-1"
-                >
-                  <label>
-                    <SearchBar
-                      className="form-control-sm"
-                      placeholder="Tag"
-                      onChange={(e) => setSearchTag(e.target.value)}
-                    />
-                  </label>
-                </div>
-                <div
-                  id="datatable-basic_filter"
-                  className="dataTables_filter px-3 pb-1"
-                >
-                  <label>
-                    <SearchBar
-                      className="form-control-sm"
-                      placeholder="Rate"
-                      onChange={(e) => setSearchRate(e.target.value)}
-                    />
-                  </label>
-                </div>
-                <div
-                  id="datatable-basic_filter"
-                  className="dataTables_filter px-3 pb-1"
-                >
-                  <label>
-                    <SearchBar
-                      className="form-control-sm"
-                      placeholder="Title"
-                      onChange={(e) => setSearchTitle(e.target.value)}
-                    />
-                  </label>
-                </div>
-              </div>
-            </Card>
             <Card>
               <CardHeader>
                 <h3 className="mb-0">Best Practices</h3>
-                <p className="text-sm mb-0"></p>
+                <p className="text-sm mb-0">Add Filters</p>
               </CardHeader>
               <ToolkitProvider
                 data={bestPractices}
@@ -293,14 +188,79 @@ function SearchBestPracticePage() {
                       id="datatable-basic_filter"
                       className="dataTables_filter px-4 pb-1"
                     >
-                      <label>
-                        Search:
-                        <SearchBar
-                          className="form-control-sm"
-                          placeholder=""
-                          {...props.searchProps}
-                        />
-                      </label>
+                      <div
+                  id="datatable-basic_filter"
+                  className="dataTables_filter px-3 pb-1"
+                >
+                  <label>
+                    <SearchBar
+                      className="form-control-sm"
+                      placeholder="Time"
+                      onChange={(e) => setSearchTime(e.target.value)}
+                      value={searchTime}
+                    />
+                  </label>
+                </div>
+                <div
+                  id="datatable-basic_filter"
+                  className="dataTables_filter px-3 pb-1"
+                >
+                  <label>
+                    <SearchBar
+                      className="form-control-sm"
+                      placeholder="Author"
+                      onChange={(e) => setSearchAuthor(e.target.value)}
+                      value={searchAuthor}
+                    />
+                  </label>
+                </div>
+                <div
+                  id="datatable-basic_filter"
+                  className="dataTables_filter px-3 pb-1"
+                >
+                  <label>
+                    <SearchBar
+                      className="form-control-sm"
+                      placeholder="Tag"
+                      onChange={(e) => setSearchTag(e.target.value)}
+                      value={searchTag}
+                    />
+                  </label>
+                </div>
+                <div
+                  id="datatable-basic_filter"
+                  className="dataTables_filter px-3 pb-1"
+                >
+                  <label>
+                    <SearchBar
+                      className="form-control-sm"
+                      placeholder="Rate"
+                      onChange={(e) => setSearchRate(e.target.value)}
+                      value={searchRate}
+                    />
+                  </label>
+                </div>
+                <div
+                  id="datatable-basic_filter"
+                  className="dataTables_filter px-3 pb-1"
+                >
+                  <label>
+                    <SearchBar
+                      className="form-control-sm"
+                      placeholder="Title"
+                      onChange={(e) => setSearchTitle(e.target.value)}
+                      value={searchTitle}
+                    />
+                  </label>
+                </div>
+                <Button
+                  type="button"
+                  color="info"
+                  href="#pablo"
+                  onClick={makeSearch}
+                >
+                  Search
+                </Button>
                     </div>
                     <BootstrapTable
                       {...props.baseProps}
