@@ -4,8 +4,8 @@ const getAll = () => {
   return http.get('/best-practices')
 }
 
-const search = (params) => {
-  return http.get(`/best-practices?param=${params}`);
+const search = (queryParams) => {
+  return http.get(`/best-practices?${queryParams}`);
 }
 
 const bestPracticeService = {

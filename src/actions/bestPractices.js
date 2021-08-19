@@ -12,9 +12,13 @@ export const reterieveBestPractices = () => async (dispatch) => {
     }
   }
 
-  export const searchBestPractices = (params) => async (dispatch) => {
+  export const searchBestPractices = (searchFilters) => async (dispatch) => {
     try {
-      const res = await bestPracticeService.search(params)
+      // convert object to a query string
+      const queryParams = new URLSearchParams(searchFilters);
+
+      const res = await bestPracticeService.search(queryParams)
+
       console.log(res)
       dispatch({ type: RETERIEVE_BEST_PRACTICES, payload: res.data })
     } catch (error) {
