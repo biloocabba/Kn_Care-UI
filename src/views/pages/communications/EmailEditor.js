@@ -15,6 +15,7 @@
 
 */
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
@@ -50,6 +51,7 @@ import {
 
 function EmailEditor(props) {
 
+  let history = useHistory();
   const [emailState, setEmailState] = useState(props.initialEmailState);
 
   //mock options until real API requests can be made
@@ -66,12 +68,16 @@ function EmailEditor(props) {
 
   const handleSend = () => {
     EmailService.sendMail(emailState);
-    props.history.push("/admin/search-email");
+    history.push("/admin/search-email");
   }
 
   const handleSaveAsDraft = () => {
     EmailService.saveAsDraft(emailState.id,emailState.createdBy);
-    props.history.push("/admin/search-email");
+    history.push("/admin/search-email");
+  }
+
+  const handleDiscard = () => {
+    history.push("/admin/search-email");
   }
 
   return (
@@ -91,7 +97,7 @@ function EmailEditor(props) {
                       <Button
                         color="danger"
                         href="#pablo"
-                        onClick={(e) => e.preventDefault()}
+                        onClick={handleDiscard}
                         size="sm"
                       >
                         Discard
