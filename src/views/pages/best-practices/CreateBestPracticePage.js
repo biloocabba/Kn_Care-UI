@@ -1,22 +1,7 @@
-/*!
-
-=========================================================
-* Argon Dashboard PRO React - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-pro-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { Redirect } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import SimpleReactValidator from 'simple-react-validator';
 
 // reactstrap components
 import {
@@ -41,62 +26,78 @@ const initialState = {
   id: null,
   title: "",
   description: "",
-  content:""
+  content: ""
 };
 
 function CreateBestPracticePage() {
+  const simpleValidator = useRef(new SimpleReactValidator());
+
   const [created, setCreated] = useState(false);
   const dispatch = useDispatch();
-  
+  const [, forceUpdate] = useState();
+
+
   const [content, setContent] = useState(initialState);
 
 
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setContent({ ...content, [name]: value });
+    simpleValidator.current.showMessageFor(name);
+  }
+
   const saveBestPractice = () => {
-    dispatch(createBestPractice(content.title, content.description));
-    setContent({id:uuidv4(), content:""}); /* Only for development purposes
-    we need to generate a new UUID for a new post */
-    setCreated(true);
+    const formValid = simpleValidator.current.allValid()
+    if (formValid) {
+      dispatch(createBestPractice(content.title, content.description));
+      setCreated(true);
+    }
+    else {
+      simpleValidator.current.showMessages();
+      forceUpdate(1);
+    }
   }
 
   return (
     <>
       {created === true ? <Redirect to={"/admin/search-best-practices"} /> : null}
-       <GradientEmptyHeader name="Best Practices"  />
-       <Container className="mt--6" fluid>    
-       <Row>
+      <GradientEmptyHeader name="Best Practices" />
+      <Container className="mt--6" fluid>
+        <Row>
           <Col className="order-xl-1">
             <FormGroup>
               <label className="form-control-label">Title</label>
-              <Input type="text" onChange={e => setContent({...content, title: e.target.value})}/>
+              {simpleValidator.current.message('title', content.title, 'required|min:3|max:50')}
+              <Input
+                type="text"
+                name="title"
+                onChange={handleInputChange}
+                onBlur={() => simpleValidator.current.showMessageFor('title')}
+              />
             </FormGroup>
           </Col>
         </Row><Row>
           <Col className="order-xl-1">
             <FormGroup>
               <label className="form-control-label">Description</label>
-              <Input type="text" onChange={e => setContent({...content, description: e.target.value})}/>
+              {simpleValidator.current.message('description', content.description, 'required|max:1000')}
+              <Input
+                name="description"
+                type="textarea"
+                rows="5"
+                onChange={handleInputChange} 
+                />
+                <p className="float-right">{content.description.length} / 1000</p>
             </FormGroup>
           </Col>
         </Row>
-        <Row>     
-          <Col className="order-xl-1" xl="12">
-          <FormGroup>
-            <label className="form-control-label">Best Practice</label>
-            <Input
-                  id="input-postal-code" 
-                  type="textarea"
-                  rows="20"
-                  onChange={e => setContent({...content, content: e.target.value})}
-                />
-            </FormGroup>
-          </Col>         
-        </Row>
         <Row>
           <Button color="primary" type="submit" onClick={saveBestPractice}>
-            Save
+            Create
           </Button>
         </Row>
-        </Container>
+      </Container>
     </>
   );
 }

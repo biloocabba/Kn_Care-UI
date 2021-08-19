@@ -136,9 +136,9 @@ function ReactBSTables(props) {
   const dispatch = useDispatch();
 
 
-  const status = useSelector(state=>state.pageStatus);
+  const status = useSelector(state => state.pageStatus);
   const pageStatus = { pageStatus: status, statusCode: -1 };
-  
+
 
   useEffect(() => {
     const loadData = async () => {
@@ -177,6 +177,9 @@ function ReactBSTables(props) {
         <Row>
           <div className="col">
             <Card>
+              <div className="d-flex justify-content-center">
+                <CustomLoader {...pageStatus} />
+              </div>
               <ToolkitProvider
                 data={bestPractices}
                 keyField="id"
@@ -279,9 +282,6 @@ function ReactBSTables(props) {
             </Card>
           </div>
         </Row>
-        <div className="d-flex justify-content-center">
-          <CustomLoader {...pageStatus} />
-        </div>
       </Container>
     </>
   );

@@ -1,23 +1,13 @@
-import React, { useEffect, useSelector, useState } from "react";
+import React, { useEffect, useState } from "react";
 import initialState from "redux/initialState";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { Card, CardHeader, Container, Row } from "reactstrap";
+import { Container, Row } from "reactstrap";
 import SimpleHeader from "components/Headers/SimpleHeader.js";
 import {
     Button,
-    ButtonGroup,
-    Modal,
     Col,
-    UncontrolledTooltip,
-    Table,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    Form,
     Input,
     FormGroup,
-    Label
 } from "reactstrap";
 
 import {
@@ -54,7 +44,6 @@ const BestPracticePage = (props) => {
 
     const handleInputChange = event => {
         const { name, value } = event.target;
-        console.log(name + "  " + value);
         setCurrentBestPractice({ ...currentBestPractice, [name]: value });
     };
 

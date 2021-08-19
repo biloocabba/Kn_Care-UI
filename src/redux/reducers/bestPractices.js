@@ -16,13 +16,6 @@ const bestPracticesReducer = (bestPractices = initialState, action) => {
             return [...bestPractices, payload];
         case RETRIEVE_BEST_PRACTICES:
             return payload;
-        case RETRIEVE_SINGLE_BEST_PRACTICE:
-            bestPractices.forEach(bestPractice => {
-                if(bestPractice.id === payload.id){
-                    return {...bestPractice}
-                }
-            });
-            return null; //should be some sort of a not found exception
         case UPDATE_BEST_PRACTICE:
             return bestPractices.map(bestPractice => {
                 if(bestPractice.id === payload.id){

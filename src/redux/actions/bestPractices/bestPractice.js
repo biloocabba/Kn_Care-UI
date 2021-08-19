@@ -3,7 +3,6 @@ import {
     RETRIEVE_BEST_PRACTICES,
     UPDATE_BEST_PRACTICE,
     DELETE_BEST_PRACTICE,
-    RETRIEVE_SINGLE_BEST_PRACTICE,
     API_SEND_START,
     API_SEND_END
 } from "./types";
@@ -45,19 +44,6 @@ export const retrieveBestPractices = () => async (dispatch) => {
             payload: PageStatus.Ok
         });
 
-    } catch (err) {
-        console.log(err);
-    }
-};
-
-export const retrieveSingleBestPractice = (id) => async (dispatch) => {
-    try {
-        const res = await BestPracticeService.get(id);
-
-        dispatch({
-            type: RETRIEVE_SINGLE_BEST_PRACTICE,
-            payload: res.data,
-        });
     } catch (err) {
         console.log(err);
     }
