@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import SimpleReactValidator from 'simple-react-validator';
 import http from '../../../http-common';
+import './site.css';
 
 // reactstrap components
 import {
@@ -48,15 +49,16 @@ function CreateBestPracticePage() {
     console.log(content);
   }
 
-  const fileUpload = async (e)=>{
-    let formData = new FormData();
-    formData.append("file", e.target.files[0]);
-    const res = await http.post("/practices/upload", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      }});
-      console.log(res.data);
-  }
+  // const fileUpload = async (e) => {
+  //   let formData = new FormData();
+  //   formData.append("file", e.target.files[0]);
+  //   const res = await http.post("/practices/upload", formData, {
+  //     headers: {
+  //       "Content-Type": "multipart/form-data",
+  //     }
+  //   });
+  //   console.log(res.data);
+  // }
 
   const saveBestPractice = () => {
     const formValid = simpleValidator.current.allValid()
@@ -107,7 +109,14 @@ function CreateBestPracticePage() {
         <Row>
           <Col className="order-xl-1">
             <FormGroup>
-              <Input type="file" name="content" onChange={fileUpload}/>
+              {/* <Input type="file" name="content" onChange={fileUpload} /> */}
+              <div className="file-input">
+                <input type="file" id="file" className="file" />
+                <label for="file">
+                  Select file
+                  <p className="file-name"></p>
+                </label>
+              </div>
             </FormGroup>
           </Col>
         </Row>
@@ -117,9 +126,9 @@ function CreateBestPracticePage() {
           </Button>
         </Row>
       </Container>
-      
+
     </>
-    
+
   );
 }
 
