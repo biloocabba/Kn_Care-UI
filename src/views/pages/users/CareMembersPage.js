@@ -18,18 +18,15 @@ import React, { useState, useEffect } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-//import ReactBSAlert from "react-bootstrap-sweetalert";
 import {
   searchCareMembers
 } from "../../../actions/careMembers";
 import {
-  //Button,
   Card,
   CardHeader,
   Container,
   Row,
 } from "reactstrap";
-// core components
 import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
 import { useDispatch, useSelector } from  "react-redux";
 
@@ -73,10 +70,6 @@ function CareMembersPage(props) {
   const careMembers = useSelector(state => state.careMembers);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(retrieveCareMembers())
-  // }, [dispatch])
-
   const onChangeSearchInternationalName = e => {
     const searchInternationalName = e.target.value;
     setSearchInternationalName(searchInternationalName);
@@ -98,128 +91,20 @@ function CareMembersPage(props) {
   };
 
   const onChangeSearchOnBoardDate = e => {
-    const searchOnboardingDate = e.target.value;
-    setSearchOnBoardDate(searchOnboardingDate);
+    const searchOnboardDate = e.target.value;
+    setSearchOnBoardDate(searchOnboardDate);
   };
 
-  /*
-  const findByInternationalName = () => {
-    if (searchCompanyCode !== null) {
-      dispatch(findCareMembersByInternationalName(searchInternationalName));
-    }
-  };
-
-  const findByBusinessUnit = () => {
-    if (searchBusinessUnit !== null) {
-      dispatch(findCareMembersByBusinessUnit(searchBusinessUnit));
-    }  
-  };
-
-  const findByCompanyCode = () => {
-    if (searchCompanyCode !== null) {
-      dispatch(findCareMembersByCompanyCode(searchCompanyCode));
-    }
-  };
-
-  const findByCountry = () => {
-    if (searchCountry !== null) {
-      dispatch(findCareMembersByCountry(searchCountry));
-    }
-  };
-
-  const findByOnBoardDate = () => {
-    if (searchBusinessUnit !== null) {
-      dispatch(findCareMembersByOnBoardDate(searchOnBoardDate));
-    }
-  };
-*/
   const findByAllParameters = () => {
-
-      let filters ={
+    let filters ={
       internationalName:searchInternationalName,
       businessUnitId: searchBusinessUnit,
-      nationalityId:searchCountry
-     
+      nationalityId:searchCountry,
+      companyCode:searchCompanyCode,
+      onBoardDate:searchOnBoardDate
     }
-
     dispatch(searchCareMembers(filters));
-    /*
-    findByInternationalName();
-    findByBusinessUnit();
-    findByCompanyCode();
-    findByCountry();
-    findByOnBoardDate();
-    */
   }
-
-  // const rowDataDetails = (e)=> {   
-  //   //console.log(e.target);
-  //   var { id} = e.target;
-  //   console.log("See Details for Id: "+id);
-  //   //props.history.push('/admin/users/care-member-details/'+id);
-  //   props.history.push('/admin/users/care-member-details/1');
-  // }
-
-  
-  // const formatActionButtonCell =(cell, row)=>{  
-        
-  //   return (  <>
-  //   <Button className="btn-icon btn-2" type="button" color="info" onClick={rowDataDetails}>
-  //                       <span className="btn-inner--icon">
-  //                         <i className="ni ni-badge" />
-  //                       </span>
-  //                     </Button>
-  //                     <Button className="btn-icon btn-2" color="danger" type="button" onClick={rowDataDetails}>
-  //                       <span className="btn-inner--icon">
-  //                         <i className="ni ni-fat-remove" />
-  //                       </span>
-  //                     </Button>
-  //                     </>);
-        
-  
-  // }
-
-  //const [alert, setAlert] = React.useState(null);
-  //const componentRef = React.useRef(null);
-
-  // this function will copy to clipboard an entire table,
-  // so you can paste it inside an excel or csv file
-  // const copyToClipboardAsTable = (el) => {
-  //   var body = document.body,
-  //     range,
-  //     sel;
-  //   if (document.createRange && window.getSelection) {
-  //     range = document.createRange();
-  //     sel = window.getSelection();
-  //     sel.removeAllRanges();
-  //     try {
-  //       range.selectNodeContents(el);
-  //       sel.addRange(range);
-  //     } catch (e) {
-  //       range.selectNode(el);
-  //       sel.addRange(range);
-  //     }
-  //     document.execCommand("copy");
-  //   } else if (body.createTextRange) {
-  //     range = body.createTextRange();
-  //     range.moveToElementText(el);
-  //     range.select();
-  //     range.execCommand("Copy");
-  //   }
-  //   setAlert(
-  //     <ReactBSAlert
-  //       success
-  //       style={{ display: "block", marginTop: "-100px" }}
-  //       title="Good job!"
-  //       onConfirm={() => setAlert(null)}
-  //       onCancel={() => setAlert(null)}
-  //       confirmBtnBsStyle="info"
-  //       btnSize=""
-  //     >
-  //       Copied to clipboard!
-  //     </ReactBSAlert>
-  //   );
-  // };
 
   return (
     <>
@@ -240,45 +125,45 @@ function CareMembersPage(props) {
                 keyField="firstName"
                 columns={[
                   {
-                    dataField: "employee.firstName",
+                    dataField: "firstName",
                     text: "First Name",
                     hidden : true,
                   },
                   {
-                    dataField: "employee.lastName",
+                    dataField: "lastName",
                     text: "lastName",
                     hidden : true,
                   },
                   {
-                    dataField: "employee.internationalName",
+                    dataField: "internationalName",
                     text: "int Name",
                     sort: true                    
                   },
                   {
-                    dataField: "employee.title",
+                    dataField: "title",
                     text: "title",
                     sort: true ,
                     style: { width:'50px' }                   
                   },
                   {
-                    dataField: "employee.businessUnit",
+                    dataField: "businessUnit",
                     text: "bUnit",
                     sort: true,
                     style: { width:'50px' }
                   },
                   {
-                    dataField: "employee.companyCode",
+                    dataField: "companyCode",
                     text: "companyCode",
                     sort: true,
                     style: { width:'50px' }
                   },
                   {
-                    dataField: "employee.costCenter",
+                    dataField: "costCenter",
                     text: "costCenter",
                     sort: true,
                   },
                   {
-                    dataField: "employee.office.country",
+                    dataField: "country",
                     text: "country",
                     sort: true,
                   },
