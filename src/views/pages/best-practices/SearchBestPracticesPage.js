@@ -16,7 +16,6 @@
 */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RETRIEVE_BEST_PRACTICES, UPDATE_BEST_PRACTICE, DELETE_BEST_PRACTICE } from "../../../redux/actions/bestPractices/types";
 // react plugin that prints a given react component
 import ReactToPrint from "react-to-print";
 // react component for creating dynamic tables
@@ -38,9 +37,9 @@ import {
 
 import {
   retrieveBestPractices,
-} from "../../../redux/actions/bestPractices/bestPractice";
+} from "../../../actions/bestPractice";
 // core components
-import SimpleHeader from "components/Headers/SimpleHeader.js";
+import SimpleHeader from "components/Headers/SimpleHeader";
 import { CustomLoader } from "../../../components/Loader/CustomLoader"
 
 
@@ -129,7 +128,7 @@ function ReactBSTables(props) {
 
   useEffect(() => {
     const loadData = async () => {
-      await dispatch(retrieveBestPractices())
+      await dispatch(retrieveBestPractices());
     }
     loadData();
   }, [dispatch]);

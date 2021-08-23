@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import initialState from "redux/initialState";
+import initialState from "../../../initialStates/BestPracticeInitialState";
 import { useDispatch } from "react-redux";
 import { Container, Row } from "reactstrap";
 import SimpleHeader from "components/Headers/SimpleHeader.js";
@@ -13,8 +13,8 @@ import {
 import {
     updateBestPractice,
     deleteBestPractice
-} from "../../../redux/actions/bestPractices/bestPractice";
-import BestPracticeService from "services/BestPracticeService";
+} from "../../../actions/bestPractice";
+import BestPracticeService from "../../../services/BestPracticeService";
 import { confirmAlert } from "react-confirm-alert";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 

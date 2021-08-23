@@ -50,6 +50,7 @@
     "react-uuid": "^1.0.2",
     "reactstrap": "8.9.0",
     "redux-devtools-extension": "^2.13.9",
+    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "select2": "4.0.13",
     "simple-react-validator": "^1.6.1",

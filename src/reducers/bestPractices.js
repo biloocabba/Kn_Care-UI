@@ -3,12 +3,11 @@ import {
     RETRIEVE_BEST_PRACTICES,
     UPDATE_BEST_PRACTICE,
     DELETE_BEST_PRACTICE,
-    RETRIEVE_SINGLE_BEST_PRACTICE
-} from "../actions/bestPractices/types";
-import initialState from "../initialState";
+} from "../actions/types/index"
+import BestPracticeInitialState from "../initialStates/BestPracticeInitialState";
 //const initialState = [];
 
-const bestPracticesReducer = (bestPractices = initialState, action) => {
+const bestPracticesReducer = (bestPractices = BestPracticeInitialState, action) => {
     const { type, payload } = action;
 
     switch(type){

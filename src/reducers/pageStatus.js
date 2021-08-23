@@ -2,7 +2,7 @@ import { PageStatus } from "types/pageStatus";
 import {
     API_SEND_START,
     API_SEND_END
-} from "../actions/bestPractices/types";
+} from "../actions/types/index";
 const pageStatusReducer = (pageStatus = PageStatus.Ok, action) => {
     const { type, payload } = action;
 

@@ -1,14 +1,21 @@
 import {
     CREATE_BEST_PRACTICE,
-    RETRIEVE_BEST_PRACTICES,
     UPDATE_BEST_PRACTICE,
+    ADD_ATTACHMENT_TO_BEST_PRACTICE,
+    DELETE_ATTACHMENT_FROM_BEST_PRACTICE,
     DELETE_BEST_PRACTICE,
+    SEARCH_BEST_PRACTICE,
+    RATE_BEST_PRACTICE,
+    TAG_BEST_PRACTICE,
+    SHARE_BEST_PRACTICE,
+    RETRIEVE_BEST_PRACTICES,
     API_SEND_START,
     API_SEND_END
-} from "./types";
 
-import BestPracticeService from "../../../services/BestPracticeService"
-import { PageStatus } from "types/pageStatus";
+} from "./types/index";
+
+import BestPracticeService from "../services/BestPracticeService";
+import { PageStatus } from "../types/pageStatus"
 
 export const createBestPractice = (title, description, content) => async (dispatch) => {
     try {
@@ -76,27 +83,3 @@ export const deleteBestPractice = (id) => async (dispatch) => {
         console.log(err);
     }
 };
-
-// export const apiCallStarts = () => async (dispatch) => {
-//     try {
-//         dispatch({
-//             type: API_SEND_START,
-//             payload: "Loading..",
-//         });
-
-//     } catch (err) {
-//         console.log(err);
-//     }
-// };
-
-// export const apiCallEnds = () => async (dispatch) => {
-//     try {
-//         dispatch({
-//             type: API_SEND_END,
-//             payload: "Ok..",
-//         });
-
-//     } catch (err) {
-//         console.log(err);
-//     }
-// };

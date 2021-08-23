@@ -20,7 +20,7 @@ import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
 
 import {
   createBestPractice,
-} from "../../../redux/actions/bestPractices/bestPractice";
+} from "../../../actions/bestPractice"
 
 
 const initialState = {
@@ -49,16 +49,16 @@ function CreateBestPracticePage() {
     console.log(content);
   }
 
-  // const fileUpload = async (e) => {
-  //   let formData = new FormData();
-  //   formData.append("file", e.target.files[0]);
-  //   const res = await http.post("/practices/upload", formData, {
-  //     headers: {
-  //       "Content-Type": "multipart/form-data",
-  //     }
-  //   });
-  //   console.log(res.data);
-  // }
+  const fileUpload = async (e) => {
+    let formData = new FormData();
+    formData.append("file", e.target.files[0]);
+    const res = await http.post("/practices/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }
+    });
+    console.log(res.data);
+  }
 
   const saveBestPractice = () => {
     const formValid = simpleValidator.current.allValid()
@@ -112,7 +112,7 @@ function CreateBestPracticePage() {
               {/* <Input type="file" name="content" onChange={fileUpload} /> */}
               <div className="file-input">
                 <input type="file" id="file" className="file" />
-                <label for="file">
+                <label htmlFor="file">
                   Select file
                   <p className="file-name"></p>
                 </label>
