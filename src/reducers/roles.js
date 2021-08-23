@@ -1,7 +1,8 @@
-import { CREATE_ROLE, 
-    DEACTIVATE_ROLE, 
-    EDIT_ROLE,
-     } from "actions/types/role";
+import {
+    CREATE_ROLE,
+    DEACTIVATE_ROLE,
+    EDIT_ROLE, RETRIEVE_ROLES,
+} from "actions/types/index.js";
 
 const initialState = [];
 
@@ -10,13 +11,16 @@ const roleReducer = (roles = initialState, action) => {
 
     switch (type) {
         case CREATE_ROLE:
-            return;
+            return [...roles, payload];
 
         case DEACTIVATE_ROLE:
             return;
 
         case EDIT_ROLE:
             return;
+
+        case RETRIEVE_ROLES:
+            return payload;
             
         default:
             return roles;

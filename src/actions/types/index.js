@@ -40,6 +40,7 @@ export const SHARE_BEST_PRACTICE = "SHARE_BEST_PRACTICE";
 export const CREATE_ROLE = "CREATE_ROLE";
 export const DEACTIVATE_ROLE = "DEACTIVATE_ROLE";
 export const EDIT_ROLE = "EDIT_ROLE";
+export const RETRIEVE_ROLES = "RETRIEVE_ROLES"
 
 //Care Captain - Training Management Actions
 export const ASSIGN_CARE_USER_TO_TRAININGS = "ASSIGN_CARE_USER_TO_TRAININGS";
