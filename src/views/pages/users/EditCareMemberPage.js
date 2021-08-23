@@ -31,19 +31,22 @@ import {
 } from "reactstrap";
 
 import {useParams} from "react-router-dom";
-import { employees } from "./EmployeesData.js";
+
+import { useSelector } from 'react-redux'
 
 // core components
 import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
 
 function EditCareMemberPage(props) {
 
-  let { id } = useParams(); //see in routes path: "/users/employee-details/:id",
-  let employee =employees[0] //.filter(emp => emp.id===id)[0];
+  let { id } = useParams(); //see in routes path: "/users/careMember-details/:id",
+ 
+  const careMembers = useSelector((state) => state.careMembers)
+  let careMember = careMembers.find((careMember) => careMember.id === parseInt(id))
  
   return (
     <>
-      <GradientEmptyHeader name="Employees"  />
+      <GradientEmptyHeader name="careMembers"  />
       <Container className="mt--6" fluid>    
         <Row>     
           <Col className="order-xl-1" xl="12">
@@ -86,13 +89,13 @@ function EditCareMemberPage(props) {
                         <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="input-first-name"
+                            htmlFor="input-onboard-date"
                           >
                             Onboard Date
                           </label>
                           <Input                            
-                            id="input-first-name"
-                            value="12/12/2020"
+                            id="input-onboard-date"
+                            value={careMember.onBoardDate}
                             disabled = {true}       
                             type="text"                            
                           />
@@ -102,13 +105,13 @@ function EditCareMemberPage(props) {
                         <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="input-last-name"
+                            htmlFor="input-offboard-date"
                           >
                             Auto Offboard Date
                           </label>
                           <Input                           
-                            id="input-last-name"
-                            value="12/12/2021"
+                            id="input-offboard-date"
+                            value={careMember.offBoardDate}
                             onChange={e => e.preventDefault}                           
                             type="text"
                           />
@@ -144,7 +147,7 @@ function EditCareMemberPage(props) {
                           </label>
                           <Input
                             id="input-email"
-                            value={employee.country}
+                            value={careMember.country}
                             onChange={e => e.preventDefault}        
                             type="email"
                           />
@@ -172,7 +175,7 @@ function EditCareMemberPage(props) {
                           </label>
                           <Input                            
                             id="input-first-name"
-                            value={employee.firstName}
+                            value={careMember.firstName}
                             type="text"
                             disabled = {true}
                           />
@@ -188,7 +191,7 @@ function EditCareMemberPage(props) {
                           </label>
                           <Input                           
                             id="input-last-name"
-                            value={employee.lastName}
+                            value={careMember.lastName}
                             disabled = {true}
                             type="text"
                           />
@@ -208,7 +211,7 @@ function EditCareMemberPage(props) {
                           </label>
                           <Input                           
                             id="input-username"
-                            value={employee.internationalName}
+                            value={careMember.internationalName}
                             disabled = {true}
                             type="text"                         
                           />
@@ -224,7 +227,7 @@ function EditCareMemberPage(props) {
                           </label>
                           <Input
                             id="input-email"
-                            value={employee.email}
+                            value={careMember.email}
                             disabled = {true}
                             type="email"
                           />
@@ -250,7 +253,7 @@ function EditCareMemberPage(props) {
                             Address
                           </label>
                           <Input
-                            defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
+                            value={careMember.address}
                             id="input-address"
                             placeholder="Home Address"
                             type="text"
@@ -268,7 +271,7 @@ function EditCareMemberPage(props) {
                             City
                           </label>
                           <Input
-                            defaultValue="New York"
+                            value={careMember.city}
                             id="input-city"
                             placeholder="City"
                             type="text"
@@ -284,7 +287,7 @@ function EditCareMemberPage(props) {
                             Country
                           </label>
                           <Input
-                            defaultValue="United States"
+                             value={careMember.country}
                             id="input-country"
                             placeholder="Country"
                             type="text"
@@ -300,9 +303,9 @@ function EditCareMemberPage(props) {
                             Postal code
                           </label>
                           <Input
+                            value={careMember.postalCode}
                             id="input-postal-code"
                             placeholder="Postal code"
-                            type="number"
                           />
                         </FormGroup>
                       </Col>
@@ -318,7 +321,7 @@ function EditCareMemberPage(props) {
                           <label className="form-control-label">Title</label>
                           <Input
                                 id="title"
-                                value={employee.title}
+                                value={careMember.title}
                                 disabled = {true}
                                 type="text"
                               />
@@ -341,7 +344,7 @@ function EditCareMemberPage(props) {
                           <label className="form-control-label">Company Code</label>
                           <Input
                                 id="input-postal-code"
-                                value={employee.companyCode}
+                                value={careMember.companyCode}
                                 disabled = {true}
                                 type="text"
                               />
@@ -355,7 +358,7 @@ function EditCareMemberPage(props) {
                             <label className="form-control-label">Business Unit</label>
                             <Input
                                   id="input-postal-code"
-                                  value={employee.businessUnit}
+                                  value={careMember.businessUnit}
                                   disabled = {true}
                                   type="text"
                                 />
@@ -367,7 +370,7 @@ function EditCareMemberPage(props) {
                             <label className="form-control-label">Cost Center</label>
                             <Input
                                   id="input-postal-code"
-                                  value={employee.costCenter}
+                                  value={careMember.costCenter}
                                   disabled = {true}
                                   type="text"
                                 />
@@ -378,7 +381,7 @@ function EditCareMemberPage(props) {
                             <label className="form-control-label">Management Group</label>
                             <Input
                                   id="input-postal-code"
-                                  value={employee.managementGroup}
+                                  value={careMember.managementGroup}
                                   disabled = {true}
                                   type="text"
                                 />
