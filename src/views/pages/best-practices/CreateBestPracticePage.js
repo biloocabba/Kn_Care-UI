@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { Redirect } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import SimpleReactValidator from 'simple-react-validator';
-import http from '../../../http-common';
+import BestPracticeService from "../../../services/BestPracticeService";
 import './site.css';
 
 // reactstrap components
@@ -34,7 +34,7 @@ function CreateBestPracticePage() {
   const simpleValidator = useRef(new SimpleReactValidator());
 
   const [created, setCreated] = useState(false);
-  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({});
   const [, forceUpdate] = useState();
 
 
@@ -46,25 +46,25 @@ function CreateBestPracticePage() {
     const { name, value } = e.target;
     setContent({ ...content, [name]: value });
     simpleValidator.current.showMessageFor(name);
-    console.log(content);
   }
 
   const fileUpload = async (e) => {
     let formData = new FormData();
     formData.append("file", e.target.files[0]);
-    const res = await http.post("/practices/upload", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      }
-    });
-    console.log(res.data);
+    formData.append("title", content.title);
+    formData.append("description", content.description);
+    setFormData(formData);
+    
   }
 
   const saveBestPractice = () => {
     const formValid = simpleValidator.current.allValid()
     if (formValid) {
-      dispatch(createBestPractice(content.title, content.description));
-      setCreated(true);
+      BestPracticeService.create(formData)
+            .then(setCreated(true))
+            .catch(e => {
+                console.log(e);
+            });
     }
     else {
       simpleValidator.current.showMessages();
@@ -109,14 +109,14 @@ function CreateBestPracticePage() {
         <Row>
           <Col className="order-xl-1">
             <FormGroup>
-              {/* <Input type="file" name="content" onChange={fileUpload} /> */}
-              <div className="file-input">
+              <Input type="file" name="content" onChange={fileUpload} />
+              {/* <div className="file-input">
                 <input type="file" id="file" className="file" />
                 <label htmlFor="file">
                   Select file
                   <p className="file-name"></p>
                 </label>
-              </div>
+              </div> */}
             </FormGroup>
           </Col>
         </Row>

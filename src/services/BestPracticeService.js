@@ -8,9 +8,18 @@ const get = id => {
   return http.get(`/practices/${id}`);
 };
 
-const create = data => {
-  return http.post("/practices", data);
-};
+// const create = data => {
+//   return http.post("/practices", data);
+// };
+
+const create = (formData) => {
+  return http.post("/practices", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    }
+  });
+}
+
 
 const update = (id, data) => {
   return http.put(`/practices/${id}`, data);
