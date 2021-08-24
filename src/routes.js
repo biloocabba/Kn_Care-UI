@@ -52,6 +52,7 @@ import ArchivePage from "views/pages/communications/ArchivePage.js"
 import ChartsPage from "views/pages/dashboards/ChartsPage.js"
 import WorldOverviewPage from "views/pages/dashboards/WorldOverviewPage.js"
 import CreateCareMemberPage from "views/pages/users/CreateCareMemberPage";
+import CreateRolePage from "views/pages/roles/CreateRolePage";
 
 
 const routes = [
@@ -303,6 +304,21 @@ const routes = [
         name: "profile",
         miniName: "WV",
         component: Profile,
+        layout: "/admin",
+      },
+    ],
+  },
+  {
+    collapse: true,
+    name: "Roles",
+    icon: "ni ni-circle-08 text-info",
+    state: "rolesCollapse",
+    views: [
+      {
+        path: "/new-role",
+        name: "Create New",
+        miniName: "NR",
+        component: CreateRolePage,
         layout: "/admin",
       },
     ],

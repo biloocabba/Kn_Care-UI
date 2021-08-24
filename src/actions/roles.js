@@ -5,11 +5,20 @@ import {
     RETRIEVE_ROLES
 } from "./types";
 
-import roleService from "../services/roleServie"
+import roleService from "../services/roleService"
 
-export const createRole = (data) => {
+export const createRole = (data) => async (dispatch) => {
     console.log(data)
-    return { type: CREATE_ROLE, payload: data }
+    try {
+        const res = await roleService.create(data)
+        dispatch({
+            type: CREATE_ROLE, payload: res.data
+        });
+        return Promise.resolve(res.data)
+    }  catch (err) {
+        console.log(err)
+        return Promise.reject(err);
+    }
 }
 
 

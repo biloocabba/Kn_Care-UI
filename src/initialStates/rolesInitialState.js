@@ -4,9 +4,9 @@ export const role_initialState = [ {
     rankedBefore: null,
     rankedAfter: null,
     active: true,
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-    rank: ""
+    createdAt: '28.07.2021',
+    updatedAt: '28.07.2021',
+    rank: 20
 },
 {
     id: 2,
@@ -14,8 +14,8 @@ export const role_initialState = [ {
     rankedBefore: null,
     rankedAfter: null,
     active: true,
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-    rank: ""
+    createdAt: '28.07.2021',
+    updatedAt: '28.07.2021',
+    rank: 10
 }
 ];

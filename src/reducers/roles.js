@@ -14,10 +14,28 @@ const roleReducer = (roles = initialState, action) => {
             return [...roles, payload];
 
         case DEACTIVATE_ROLE:
-            return;
+            return roles.map((role) => {
+                if (role.id === payload.id) {
+                    return {
+                        ...role,
+                        active: !role.active,
+                    };
+                } else {
+                    return role;
+                }});
 
         case EDIT_ROLE:
-            return;
+            return roles.map(role => {
+                if(role.id === payload.id){
+                    return {
+                        ...role,
+                        ...payload
+                    };
+                } else {
+                    return role
+                }
+            });
+
 
         case RETRIEVE_ROLES:
             return payload;
