@@ -118,106 +118,106 @@ const dataGroup = [
 
     {
       id: 8238328,
-      groupName: "Alpha Star",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Alpha Star",
+      description: "lorem ipsum dolor sit amet",
       active: true
     },
     {
       id: 8238329,
-      groupName: "Alaska",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Alaska",
+      description: "lorem ipsum dolor sit amet",
       active: false
       
 
     },
     {
       id: 8238330,
-      groupName: "Kim Chi",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Kim Chi",
+      description: "lorem ipsum dolor sit amet",
       active: true
     },
     {
       id: 8238332,
-      groupName: "Trixie",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Trixie",
+      description: "lorem ipsum dolor sit amet",
       active: true
     },
     {
       id: 8238328,
-      groupName: "Alpha Star",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Alpha Star",
+      description: "lorem ipsum dolor sit amet",
       active: true
     },
     {
       id: 8238329,
-      groupName: "Alaska",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Alaska",
+      description: "lorem ipsum dolor sit amet",
       active: false
       
 
     },
     {
       id: 8238330,
-      groupName: "Kim Chi",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Kim Chi",
+      description: "lorem ipsum dolor sit amet",
       active: true
     },
     {
       id: 8238332,
-      groupName: "Trixie",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Trixie",
+      description: "lorem ipsum dolor sit amet",
       active: true
     },
     {
       id: 8238333,
-      groupName: "Alpha Star",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Alpha Star",
+      description: "lorem ipsum dolor sit amet",
       active: true
     },
     {
       id: 8238334,
-      groupName: "Alaska",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Alaska",
+      description: "lorem ipsum dolor sit amet",
       active: true
       
 
     },
     {
       id: 8238335,
-      groupName: "Kim Chi",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Kim Chi",
+      description: "lorem ipsum dolor sit amet",
       active: true
     },
     {
       id: 8238336,
-      groupName: "Trixie",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Trixie",
+      description: "lorem ipsum dolor sit amet",
       active: true
     },
     {
       id: 8238327,
-      groupName: "Alpha Star",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Alpha Star",
+      description: "lorem ipsum dolor sit amet",
       active: true
     },
     {
       id: 8238328,
-      groupName: "Alaska",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Alaska",
+      description: "lorem ipsum dolor sit amet",
       active: true
       
 
     },
     {
       id: 8238330,
-      groupName: "Kim Chi",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Kim Chi",
+      description: "lorem ipsum dolor sit amet",
       active: true
     },
     {
       id: 8238332,
-      groupName: "Trixie",
-      groupDesc: "lorem ipsum dolor sit amet",
+      name: "Trixie",
+      description: "lorem ipsum dolor sit amet",
       active: true
     }
   ]
