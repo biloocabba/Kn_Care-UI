@@ -98,9 +98,6 @@ function EditGroupPage(props) {
   const [group, setGroup] = useState(currentGroup)
   const [collapse, setCollapse] = useState(false);
 
-
-  console.log(group.members)
-
   let numOfMembers = group.members.length;
   return (
     <>

@@ -109,7 +109,6 @@ function GroupsPage(props) {
   }
 
   const groups = useSelector(state => state.groups);
-  console.log(groups);
 
   const [alert, setAlert] = React.useState(null);
   const componentRef = React.useRef(null);
