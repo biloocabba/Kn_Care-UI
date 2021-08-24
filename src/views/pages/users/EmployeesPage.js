@@ -14,28 +14,16 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useState, useEffect } from "react";
-// react plugin that prints a given react component
-// react component for creating dynamic tables
+import React, { useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next'
 import paginationFactory from 'react-bootstrap-table2-paginator'
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit'
-// react component used to create sweet alerts
-import ReactBSAlert from 'react-bootstrap-sweetalert'
-// reactstrap components
 import { Button, Card, CardHeader, Container, Row } from 'reactstrap'
-// core components
 import GradientEmptyHeader from 'components/Headers/GradientEmptyHeader.js'
-
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  retrieveEmployees,
+  searchEmployees,
   deleteUser,
-  findEmployeesByInternationalName,
-  findEmployeesByBusinessUnit,
-  findEmployeesByCompanyCode,
-  findEmployeesByCountry,
-  findEmployeesByHiringDate
 } from "../../../actions/employee";
 
 const pagination = paginationFactory({
@@ -78,10 +66,6 @@ function Employees(props) {
   const employees = useSelector(state => state.employees);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(retrieveEmployees())
-  }, [dispatch])
-
   const onChangeSearchInternationalName = e => {
     const searchInternationalName = e.target.value;
     setSearchInternationalName(searchInternationalName);
@@ -107,40 +91,15 @@ function Employees(props) {
     setSearchHiringDate(searchHiringDate);
   };
 
-  const findByInternationalName = () => {
-    if (searchCompanyCode !== null) {
-      dispatch(findEmployeesByInternationalName(searchInternationalName));
-    }
-  };
-
-  const findByBusinessUnit = () => {
-    if (searchBusinessUnit !== null) {
-      dispatch(findEmployeesByBusinessUnit(searchBusinessUnit));
-    }  
-  };
-
-  const findByCompanyCode = () => {
-    if (searchCompanyCode !== null) {
-      dispatch(findEmployeesByCompanyCode(searchCompanyCode));
-    }
-  };
-
-  const findByCountry = () => {
-    if (searchCountry !== null) {
-      dispatch(findEmployeesByCountry(searchCountry));
-    }
-  };
-
-  const findByHiringDate = () => {
-    dispatch(findEmployeesByHiringDate(searchHiringDate));
-  };
-
   const findByAllParameters = () => {
-    findByInternationalName();
-    findByBusinessUnit();
-    findByCompanyCode();
-    findByCountry();
-    findByHiringDate();
+    let filters ={
+      internationalName:searchInternationalName,
+      businessUnitId: searchBusinessUnit,
+      nationalityId:searchCountry,
+      companyCode:searchCompanyCode,
+      hiringDate:searchHiringDate
+    }
+    dispatch(searchEmployees(filters));
   }
 
   const employeeDetails = (e) => {
@@ -183,47 +142,6 @@ function Employees(props) {
     )
   }
 
-  const [alert, setAlert] = React.useState(null)
-  const componentRef = React.useRef(null)
-  // this function will copy to clipboard an entire table,
-  // so you can paste it inside an excel or csv file
-  const copyToClipboardAsTable = (el) => {
-    var body = document.body,
-      range,
-      sel
-    if (document.createRange && window.getSelection) {
-      range = document.createRange()
-      sel = window.getSelection()
-      sel.removeAllRanges()
-      try {
-        range.selectNodeContents(el)
-        sel.addRange(range)
-      } catch (e) {
-        range.selectNode(el)
-        sel.addRange(range)
-      }
-      document.execCommand('copy')
-    } else if (body.createTextRange) {
-      range = body.createTextRange()
-      range.moveToElementText(el)
-      range.select()
-      range.execCommand('Copy')
-    }
-    setAlert(
-      <ReactBSAlert
-        success
-        style={{ display: 'block', marginTop: '-100px' }}
-        title="Good job!"
-        onConfirm={() => setAlert(null)}
-        onCancel={() => setAlert(null)}
-        confirmBtnBsStyle="info"
-        btnSize=""
-      >
-        Copied to clipboard!
-      </ReactBSAlert>
-    )
-  }
-
   return (
     <>
       {alert}
@@ -241,50 +159,50 @@ function Employees(props) {
                 keyField="firstName"
                 columns={[
                   {
-                    dataField: 'content.firstName',
+                    dataField: 'firstName',
                     text: 'First Name',
                     hidden: true,
                   },
                   {
-                    dataField: 'content.lastName',
+                    dataField: 'lastName',
                     text: 'lastName',
                     hidden: true,
                   },
                   {
-                    dataField: 'content.internationalName',
+                    dataField: 'internationalName',
                     text: 'int Name',
                     sort: true,
                   },
                   {
-                    dataField: 'content.title',
+                    dataField: 'title',
                     text: 'title',
                     sort: true,
                     style: { width: '50px' },
                   },
                   {
-                    dataField: 'content.businessUnit',
+                    dataField: 'businessUnit',
                     text: 'bUnit',
                     sort: true,
                     style: { width: '50px' },
                   },
                   {
-                    dataField: 'content.companyCode',
+                    dataField: 'companyCode',
                     text: 'companyCode',
                     sort: true,
                     style: { width: '50px' },
                   },
                   {
-                    dataField: 'content.costCenter',
+                    dataField: 'costCenter',
                     text: 'costCenter',
                     sort: true,
                   },
                   {
-                    dataField: 'content.office.country',
+                    dataField: 'country',
                     text: 'country',
                     sort: true,
                   },
                   {
-                    dataField: "content.createdAt",
+                    dataField: "hiringDate",
                     text: "hiringDate",
                     sort: true,
                   },

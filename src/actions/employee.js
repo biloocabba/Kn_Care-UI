@@ -21,61 +21,13 @@ export const retrieveEmployees = () => async (dispatch) => {
   }
 }
 
-export const findEmployeesByInternationalName = (internationalName) => async (dispatch) => {
+export const searchEmployees = (filters) => async (dispatch) => {
   try {
-    const res = await employeeService.findByInternationalName(internationalName);
+    const queryParams = new URLSearchParams(filters);
 
-    dispatch({
-      type: RETRIEVE_EMPLOYEES,
-      payload: res.data,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
+    const res = await employeeService.searchEmployees(queryParams);
 
-export const findEmployeesByBusinessUnit = (businessUnit) => async (dispatch) => {
-  try {
-    const res = await employeeService.findByBusinessUnit(businessUnit);
-
-    dispatch({
-      type: RETRIEVE_EMPLOYEES,
-      payload: res.data,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-export const findEmployeesByCompanyCode = (companyCode) => async (dispatch) => {
-  try {
-    const res = await employeeService.findByCompanyCode(companyCode);
-
-    dispatch({
-      type: RETRIEVE_EMPLOYEES,
-      payload: res.data,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-export const findEmployeesByCountry = (country) => async (dispatch) => {
-  try {
-    const res = await employeeService.findByCountry(country);
-
-    dispatch({
-      type: RETRIEVE_EMPLOYEES,
-      payload: res.data,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-export const findEmployeesByHiringDate = (hiringDate) => async (dispatch) => {
-  try {
-    const res = await employeeService.findByHiringDate(hiringDate);
+    console.log(res)
 
     dispatch({
       type: RETRIEVE_EMPLOYEES,

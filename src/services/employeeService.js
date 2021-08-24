@@ -1,36 +1,16 @@
 import http from './http-common'
 
-const getAll = () => {
+const getAllEmployees = () => {
   return http.get('/employees')
 }
 
-const findByInternationalName = internationalName => {
-  return http.get(`/employees?internationalName=${internationalName}`);
-};
-
-const findByBusinessUnit = businessUnit => {
-  return http.get(`/employees?businessUnit=${businessUnit}`);
-};
-
-const findByCompanyCode = companyCode => {
-  return http.get(`/employees?companyCode=${companyCode}`);
-};
-
-const findByCountry = country => {
-  return http.get(`/employees?country=${country}`);
-};
-
-const findByHiringDate = hiringDate => {
-  return http.get(`/employees?hiringDate=${hiringDate}`);
+const searchEmployees = (queryParams) => {
+  return http.get(`/employees?${queryParams}`);
 };
 
 const employeeService = {
-  getAll,
-  findByInternationalName,
-  findByBusinessUnit,
-  findByCompanyCode,
-  findByCountry,
-  findByHiringDate
-}
+  getAllEmployees,
+  searchEmployees
+};
 
 export default employeeService
