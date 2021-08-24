@@ -82,6 +82,30 @@
                         "enabled": true,
                         "randomResponse": false,
                         "sequentialResponse": false
+                    },
+                    {
+                        "uuid": "",
+                        "documentation": "",
+                        "method": "get",
+                        "endpoint": "api/v1/practices/:id",
+                        "responses": [
+                            {
+                                "uuid": "",
+                                "body": "{\n            \"id\": 10,\n            \"title\": \"test title\",\n            \"description\": \"test description\",\n            \"content\": \"test content\"\n        }",
+                                "latency": 0,
+                                "statusCode": 200,
+                                "label": "",
+                                "headers": [],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [],
+                                "rulesOperator": "OR",
+                                "disableTemplating": false
+                            }
+                        ],
+                        "enabled": true,
+                        "randomResponse": false,
+                        "sequentialResponse": false
                     }
                 ],
                 "proxyMode": false,

@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { Redirect } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import SimpleReactValidator from 'simple-react-validator';
-import http from '../../../http-common';
+import BestPracticeService from "../../../services/BestPracticeService";
 import './site.css';
 
 // reactstrap components
@@ -34,7 +34,7 @@ function CreateBestPracticePage() {
   const simpleValidator = useRef(new SimpleReactValidator());
 
   const [created, setCreated] = useState(false);
-  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({});
   const [, forceUpdate] = useState();
 
 
@@ -46,16 +46,25 @@ function CreateBestPracticePage() {
     const { name, value } = e.target;
     setContent({ ...content, [name]: value });
     simpleValidator.current.showMessageFor(name);
-    console.log(content);
   }
 
-
+  const fileUpload = async (e) => {
+    let formData = new FormData();
+    formData.append("file", e.target.files[0]);
+    formData.append("title", content.title);
+    formData.append("description", content.description);
+    setFormData(formData);
+    
+  }
 
   const saveBestPractice = () => {
     const formValid = simpleValidator.current.allValid()
     if (formValid) {
-      dispatch(createBestPractice(content.title, content.description));
-      setCreated(true);
+      BestPracticeService.create(formData)
+            .then(setCreated(true))
+            .catch(e => {
+                console.log(e);
+            });
     }
     else {
       simpleValidator.current.showMessages();

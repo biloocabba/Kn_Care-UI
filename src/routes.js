@@ -130,6 +130,13 @@ const routes = [
     ],
   },
   {
+    collapse: false,  
+    global:true, 
+    path:"/best-practice/:id",
+    component: BestPracticeView,
+    layout: "/admin",
+  },
+  {
     collapse: true,
     name: "Communications",
     icon: "ni ni-email-83 text-info",
