@@ -1,18 +1,11 @@
 import { combineReducers } from "redux";
-import users from "./users";
-import groups from "./groups"
-import bestPractices from "./bestPractices";
-import roles from "./roles";
-import trainings from './trainings';
-import careMembers from "./careMembers";
+import employeesReducer from "./employees.js";
+import careMembersReducer from './careMembers.js';
+import groupsReducer from './groups.js';
+
 
 export const rootReducer = combineReducers({
-    users: users,
-    groups: groups,
-    bestPractices: bestPractices,
-    roles: roles,
-    trainings: trainings,
-    careMembers: careMembers,
-  }
-);
-  
+    employees: employeesReducer,
+    careMembers: careMembersReducer,
+    groups:groupsReducer
+  });

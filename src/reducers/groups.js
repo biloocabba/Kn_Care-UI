@@ -1,34 +1,78 @@
-import { CREATE_GROUP, 
-    DEACTIVATE_GROUP, 
-    ADD_CAREMEMBER_TO_GROUP,
-    REMOVE_CAREMEMBER_FROM_GROUP, 
-    SEARCH_GROUP
-     } from "actions/types/group";
+import {
+  CREATE_GROUP,
+  RETRIEVE_GROUPS,
+  DEACTIVATE_GROUP,
+  ADD_CAREMEMBER_TO_GROUP,
+  REMOVE_CAREMEMBER_FROM_GROUP,
+  SEARCH_GROUP,
+  UPDATE_GROUP
+  } from "../actions/types";
 
-const initialState = [];
-
-const groupReducer = (groups = initialState, action) => {
+const initialState = []
+  
+  function groupsReducer(groups = initialState, action) {
     const { type, payload } = action;
-
     switch (type) {
-        case CREATE_GROUP:
-            return;
+      case CREATE_GROUP:
+        return [...groups, payload];
+  
+      case RETRIEVE_GROUPS:
+        return payload;
 
+      
         case DEACTIVATE_GROUP:
-            return;
+          return groups.map((group) => {
+          if (group.id === payload.id) {
+            return {
+              ...group,
+              active: !group.active,
+            };
+          } else {
+            return group;
+          }});
 
-        case ADD_CAREMEMBER_TO_GROUP:
-            return;
+          case UPDATE_GROUP:
+            return groups.map(group => {
+                if(group.id === payload.id){
+                    return {
+                        ...group,
+                        ...payload
+                    };
+                } else {
+                    return group;
+                }
+            });
 
-        case REMOVE_CAREMEMBER_FROM_GROUP:
-            return;
+        // case ADD_CAREMEMBER_TO_GROUP: 
+        // return groups.map((group) => {
+        //   if(group.id === payload.id){
+        //     return {
+        //       ...group,
+        //       members: {...payload.members}
+        //     }
+        //   } else {
+        //     return group;
+        //   }});
+        
 
-        case SEARCH_GROUP:
-            return;
-    
-        default:
-            return groups;
+        // case REMOVE_CAREMEMBER_FROM_GROUP: {
+        //   return groups.map((group) => {
+        //   if(group.id === payload.id){
+        //     return {
+        //       ...group,
+        //       members: group.members.filter(( {id}) => !payload.members.includes(id) ) 
+        //     }
+        //   } else {
+        //     return group;
+        //   }
+        // })}
+  
+      default:
+        return groups;
     }
-}
+  };
 
-export default groupReducer
+  //add reducer to add members
+  
+  export default groupsReducer;
+  

@@ -36,6 +36,7 @@ import EditCareMemberPage from "views/pages/users/EditCareMemberPage.js";
 import EmployeesPage from "views/pages/users/EmployeesPage.js"
 import EmployeeDetailsPage from "views/pages/users/EmployeeDetailsPage.js";
 import CreateGroupPage from "views/pages/groups/CreateGroupPage.js"
+import EditGroupPage from "views/pages/groups/EditGroupPage";
 import GroupsPage from "views/pages/groups/GroupsPage.js"
 
 import CreateBestPracticePage from "views/pages/best-practices/CreateBestPracticePage.js"
@@ -50,7 +51,7 @@ import ArchivePage from "views/pages/communications/ArchivePage.js"
 
 import ChartsPage from "views/pages/dashboards/ChartsPage.js"
 import WorldOverviewPage from "views/pages/dashboards/WorldOverviewPage.js"
-import CreateUserPage from './views/pages/users/CreateUserPage';
+import CreateCareMemberPage from "views/pages/users/CreateCareMemberPage";
 
 
 const routes = [
@@ -72,13 +73,6 @@ const routes = [
         name: "Care Members",
         miniName: "CM",
         component: CareMembersPage,
-        layout: "/admin",
-      },
-      {
-        path: "/new-user",
-        name: "Create New",
-        miniName: "CM",
-        component: CreateUserPage,
         layout: "/admin",
       },
     ],
@@ -104,6 +98,13 @@ const routes = [
         layout: "/admin",
       },
     ],
+  },
+  {
+    collapse: false,  
+    global:true, 
+    path: "/group-member-details/:id",
+    component: EditGroupPage,
+    layout: "/admin"
   },
   {
     collapse: true,
@@ -212,6 +213,13 @@ const routes = [
     path: "/users/care-member-details/:id",
     component: EditCareMemberPage,
     layout: "/admin"
+  },
+  {
+    collapse: false,  
+    global:true, 
+    path: "/users/new-care-member/:id",
+    component: CreateCareMemberPage,
+    layout: "/admin",
   },
   {
     collapse: true,

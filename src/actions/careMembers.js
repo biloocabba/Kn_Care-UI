@@ -1,21 +1,38 @@
 import {
-    RETRIEVE_CARE_MEMBERS,
-  } from "./types/careMember";
-import careMembersService from "../services/careMembersService";
+  CREATE_CARE_MEMBER,
+} from './types'
 
-export const searchCareMembers = (filters) => async (dispatch) => {
+import careMemberService from '../services/careMemberService'
+import { toast } from 'react-toastify';
+
+
+export const createCareMember = (data) => async (dispatch) => {
+
+  console.log(data)
+  
+  const { country, employee, offBoardDate, onBoardDate, role } = data
+
   try {
-    const queryParams = new URLSearchParams(filters);
+    const res = await careMemberService.create({
+     country,
+     employee,
+     offBoardDate,
+     onBoardDate,
+     role
+    })
 
-    const res = await careMembersService.searchCareMembers(queryParams);
+    dispatch({ type: CREATE_CARE_MEMBER, payload: res.data })
+
+    if(res.status === 201){
+      toast.success("Care Member Created Successfully")
+    }
 
     console.log(res)
 
-    dispatch({
-      type: RETRIEVE_CARE_MEMBERS,
-      payload: res.data,
-    });
-  } catch (err) {
-    console.log(err);
+    return Promise.resolve(res.data)
+  } catch (error) {
+    console.log(error)
+    return Promise.reject(error)
   }
-};
+}
+
