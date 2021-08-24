@@ -49,16 +49,7 @@ function CreateBestPracticePage() {
     console.log(content);
   }
 
-  const fileUpload = async (e) => {
-    let formData = new FormData();
-    formData.append("file", e.target.files[0]);
-    const res = await http.post("/practices/upload", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      }
-    });
-    console.log(res.data);
-  }
+
 
   const saveBestPractice = () => {
     const formValid = simpleValidator.current.allValid()
@@ -103,20 +94,6 @@ function CreateBestPracticePage() {
                 onChange={handleInputChange}
               />
               <p className="float-right">{content.description.length} / 1000</p>
-            </FormGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col className="order-xl-1">
-            <FormGroup>
-              {/* <Input type="file" name="content" onChange={fileUpload} /> */}
-              <div className="file-input">
-                <input type="file" id="file" className="file" />
-                <label htmlFor="file">
-                  Select file
-                  <p className="file-name"></p>
-                </label>
-              </div>
             </FormGroup>
           </Col>
         </Row>
