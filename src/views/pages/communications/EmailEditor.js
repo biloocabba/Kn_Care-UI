@@ -23,7 +23,7 @@ import makeAnimated from 'react-select/animated';
 
 import SimpleHeader from "components/Headers/SimpleHeader.js";
 
-import EmailService from "services/EmailService";
+import emailService from "services/emailService";
 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"
@@ -67,12 +67,12 @@ function EmailEditor(props) {
   ];
 
   const handleSend = () => {
-    EmailService.sendMail(emailState);
+    emailService.sendMail(emailState);
     history.push("/admin/search-email");
   }
 
   const handleSaveAsDraft = () => {
-    EmailService.saveAsDraft(emailState.id,emailState.createdBy);
+    emailService.saveAsDraft(emailState);
     history.push("/admin/search-email");
   }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import EmailService from "services/EmailService";
+import emailService from "services/emailService";
 import EmailEditor from "./EmailEditor";
 
 function EmailDetailsPage(){
@@ -14,7 +14,7 @@ function EmailDetailsPage(){
     });
 
     useEffect(() => {
-        EmailService.getOne(id)
+        emailService.getOne(id)
         .then(response => setInitialEmailState(response.data))
         .catch(error => setError({isActive: true, error: error}));
     }, [id]);

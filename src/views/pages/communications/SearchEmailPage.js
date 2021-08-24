@@ -9,7 +9,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 import React, { useState, useEffect } from "react";
-import EmailService from "services/EmailService";
+import emailService from "services/emailService";
 // react plugin that prints a given react component
 import ReactToPrint from "react-to-print";
 // react component for creating dynamic tables
@@ -127,7 +127,7 @@ function ReactBSTables(props) {
   const [emails, setEmails] = useState(initialEmailState);
 
   useEffect(() => {
-    EmailService.getAll()
+    emailService.getAll()
     .then(response => {
         setEmails(response.data);
     });

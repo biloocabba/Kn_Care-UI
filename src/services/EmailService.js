@@ -12,13 +12,8 @@ const sendMail = email => {
     console.log("sending not yet implemented at the backend");
 }
 
-const saveAsDraft = (emailId, memberId) => {
-    return http.post("emails/:emailId/participants/:memberId",undefined,{
-        params: {
-            emailId: emailId,
-            memberId: memberId
-        }
-    });
+const saveAsDraft = (emailState) => {
+    return http.post("emails",emailState);
 };
 
 const EmailService = {
