@@ -25,6 +25,10 @@ function MapsHeader({ name, setMapData }) {
   // const careMembers = useSelector(state => state.careMembers);
   const dispatch = useDispatch();
 
+  const getMap = (e, action) => {
+    e.preventDefault();
+    setMapData(dispatch(action));
+  }
 
   return (
     <>
@@ -54,25 +58,25 @@ function MapsHeader({ name, setMapData }) {
               </Col>
               <Col className="mt-6 mt-md-0 text-md-right" lg="6" xs="5">
                 <Button className="btn-neutral"
-                  onClick={() => setMapData(dispatch({ type: ALL_ACTIVE_MEMBERS }))}
+                  onClick={(e) => getMap(e, {type: ALL_ACTIVE_MEMBERS})}
                   color="default"
                   size="sm">
                   Active Care Members
                 </Button>
                 <Button className="btn-neutral"
-                  onClick={() => setMapData(dispatch({ type: NEW_MEMBERS }))}
+                  onClick={(e) => getMap(e, {type: NEW_MEMBERS})}
                   color="default"
                   size="sm">
                   New Care Members
                 </Button>
                 <Button className="btn-neutral"
-                  onClick={() => setMapData(dispatch({ type: SELF_RESIGNED_MEMBERS }))}
+                  onClick={(e) => getMap(e, { type: SELF_RESIGNED_MEMBERS })}
                   color="default"
                   size="sm">
                   Self resigned last year
                 </Button>
                 <Button className="btn-neutral"
-                  onClick={() => setMapData(dispatch({ type: AUTO_OFFBOARDED_MEMBERS }))}
+                  onClick={(e) => getMap(e, { type: AUTO_OFFBOARDED_MEMBERS })}
                   color="default"
                   size="sm">
                   Automatic offboarded last year

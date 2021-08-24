@@ -9,15 +9,18 @@ import {
 function mapKpisReducer(kpis = initialState, action) {
     const { type } = action;
 
-    console.log("HERE");
-    //console.log([...kpis]);
-
+    // kpis is not iterable?
+    console.log([...kpis]);
+  
     const getLastYear = new Date().getFullYear() - 1;
     var mapData = {};
 
     switch (type) {
         case ALL_ACTIVE_MEMBERS:
+            console.log("ALL ACTIVE");
+            // kpis.forEach is not a function?
             kpis.forEach(kpi => {
+                console.log(kpi);
                 if (kpi.offBoardedDate != null) {
                     mapData[kpi.country] += 1;
                 }
@@ -26,6 +29,7 @@ function mapKpisReducer(kpis = initialState, action) {
             return mapData
 
         case NEW_MEMBERS:
+            console.log("NEW MEMBERS");
             kpis.forEach(kpi => {
                 if (Date.parse(kpi.onBoardedDate) >= getLastYear) {
                     mapData[kpi.country] += 1;
@@ -35,6 +39,7 @@ function mapKpisReducer(kpis = initialState, action) {
 
 
         case SELF_RESIGNED_MEMBERS:
+            console.log("SELF RESIGNED");
             kpis.forEach(kpi => {
                 if (Date.parse(kpi.offBoardedDate) >= getLastYear && kpi.selfResigned) {
                     mapData[kpi.country] += 1;
@@ -44,6 +49,7 @@ function mapKpisReducer(kpis = initialState, action) {
 
 
         case AUTO_OFFBOARDED_MEMBERS:
+            console.log("AUTO OFFBOARDED");
             kpis.forEach(kpi => {
                 if (Date.parse(kpi.offBoardedDate) >= getLastYear && !kpi.selfResigned) {
                     mapData[kpi.country] += 1;
