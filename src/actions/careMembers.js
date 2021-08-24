@@ -9,7 +9,7 @@ export const searchCareMembers = (filters) => async (dispatch) => {
 
     const res = await careMembersService.searchCareMembers(queryParams);
 
-    console.log("/careMembers?" + {queryParams})
+    console.log(res)
 
     dispatch({
       type: RETRIEVE_CARE_MEMBERS,
