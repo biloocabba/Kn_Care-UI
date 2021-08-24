@@ -14,20 +14,24 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from 'react'
-// react plugin that prints a given react component
-// react component for creating dynamic tables
-import BootstrapTable from 'react-bootstrap-table-next'
-import paginationFactory from 'react-bootstrap-table2-paginator'
-import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit'
-// react component used to create sweet alerts
+import React, { useState } from "react";
+import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory from "react-bootstrap-table2-paginator";
+import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import {
+  searchCareMembers
+} from "../../../actions/careMembers";
+import {
+  Input,
+  Button,
+  Card,
+  CardHeader,
+  Container,
+  Row,
+} from "reactstrap";
 import ReactBSAlert from 'react-bootstrap-sweetalert'
-// reactstrap components
-import { Button, Card, CardHeader, Container, Row } from 'reactstrap'
-// core components
-import GradientEmptyHeader from 'components/Headers/GradientEmptyHeader.js'
-
-import { useSelector } from 'react-redux'
+import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
+import { useDispatch, useSelector } from  "react-redux";
 
 const pagination = paginationFactory({
   page: 1,
@@ -60,6 +64,52 @@ const pagination = paginationFactory({
 const { SearchBar } = Search
 
 function CareMembersPage(props) {
+
+  const [searchInternationalName, setSearchInternationalName] = useState("");
+  const [searchBusinessUnit, setSearchBusinessUnit] = useState("");
+  const [searchCompanyCode, setSearchCompanyCode] = useState("");
+  const [searchCountry, setSearchCountry] = useState("");
+  const [searchOnBoardDate, setSearchOnBoardDate] = useState("");
+
+  const careMembers = useSelector(state => state.careMembers);
+  const dispatch = useDispatch();
+
+  const onChangeSearchInternationalName = e => {
+    const searchInternationalName = e.target.value;
+    setSearchInternationalName(searchInternationalName);
+  };
+
+  const onChangeSearchBusinessUnit = e => {
+    const searchBusinessUnit = e.target.value;
+    setSearchBusinessUnit(searchBusinessUnit);
+  };
+
+  const onChangeSearchCompanyCode = e => {
+    const searchCompanyCode = e.target.value;
+    setSearchCompanyCode(searchCompanyCode);
+  };
+
+  const onChangeSearchCountry = e => {
+    const searchCountry = e.target.value;
+    setSearchCountry(searchCountry);
+  };
+
+  const onChangeSearchOnBoardDate = e => {
+    const searchOnboardDate = e.target.value;
+    setSearchOnBoardDate(searchOnboardDate);
+  };
+
+  const findByAllParameters = () => {
+    let filters ={
+      internationalName:searchInternationalName,
+      businessUnitId: searchBusinessUnit,
+      nationalityId:searchCountry,
+      companyCode:searchCompanyCode,
+      onBoardDate:searchOnBoardDate
+    }
+    dispatch(searchCareMembers(filters));
+  }
+
   const rowDataDetails = (e) => {
     //console.log(e.target);
     var { id } = e.target
@@ -97,7 +147,6 @@ function CareMembersPage(props) {
 
   const [alert, setAlert] = React.useState(null)
   const componentRef = React.useRef(null)
-  const careMembers = useSelector((state) => state.careMembers)
 
   // this function will copy to clipboard an entire table,
   // so you can paste it inside an excel or csv file
@@ -154,12 +203,16 @@ function CareMembersPage(props) {
               </CardHeader>
               <ToolkitProvider
                 data={careMembers}
-                keyField="firstName"
+                keyField="id"
                 columns={[
                   {
-                    dataField: 'firstName',
-                    text: 'First Name',
+                    dataField: 'id',
+                    text: 'id',
                     hidden: true,
+                  },
+                  {
+                    dataField: 'firstName',
+                    text: 'First Name',                   
                   },
                   {
                     dataField: 'lastName',
@@ -220,14 +273,75 @@ function CareMembersPage(props) {
                       className="dataTables_filter px-4 pb-1"
                     >
                       <label>
-                        Search:
-                        <SearchBar
+                        <Input
                           className="form-control-sm"
-                          placeholder=""
-                          {...props.searchProps}
+                          placeholder="International Name"
+                          value={searchInternationalName}
+                          onChange={onChangeSearchInternationalName}
                         />
                       </label>
                     </div>
+                    <div
+                      id="datatable-basic_filter"
+                      className="dataTables_filter px-4 pb-1"
+                    >
+                      <label>
+                        <Input
+                          className="form-control-sm"
+                          placeholder="Business Unit"
+                          value={searchBusinessUnit}
+                          onChange={onChangeSearchBusinessUnit}
+                        />
+                      </label>
+                    </div>
+                    <div
+                      id="datatable-basic_filter"
+                      className="dataTables_filter px-4 pb-1"
+                    >
+                      <label>
+                        <Input
+                          className="form-control-sm"
+                          placeholder="CompanyCode"
+                          value={searchCompanyCode}
+                          onChange={onChangeSearchCompanyCode}
+                        />
+                      </label>
+                    </div>
+                    <div
+                      id="datatable-basic_filter"
+                      className="dataTables_filter px-4 pb-1"
+                    >
+                      <label>
+                        <Input
+                          className="form-control-sm"
+                          placeholder="Country"
+                          value={searchCountry}
+                          onChange={onChangeSearchCountry}
+                        />
+                      </label>
+                    </div>
+                    <div
+                      id="datatable-basic_filter"
+                      className="dataTables_filter px-4 pb-1"
+                    >
+                      <label>
+                        <Input
+                          className="form-control-sm"
+                          placeholder="Onboarding Date"
+                          value={searchOnBoardDate}
+                          onChange={onChangeSearchOnBoardDate}
+                        />
+                      </label>
+                    </div>
+                    <div className="input-group-append">
+                      <button
+                        className="btn btn-info"
+                        type="button"
+                        onClick={findByAllParameters}
+                      >
+                        Search
+                      </button>
+                    </div>  
                     <BootstrapTable
                       {...props.baseProps}
                       bootstrap4={true}
