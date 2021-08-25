@@ -43,6 +43,7 @@ import CreateBestPracticePage from "views/pages/best-practices/CreateBestPractic
 import SearchBestPracticesPage from "views/pages/best-practices/SearchBestPracticesPage.js"
 
 import CreateEmailPage from "views/pages/communications/CreateEmailPage.js"
+import SearchEmailDraftsPage from "views/pages/communications/SearchEmailDraftPage";
 import SendNotificationPage from "views/pages/communications/SendNotificationPage.js"
 import CreateEmailTemplatePage from "views/pages/communications/CreateEmailTemplatePage.js"
 import SearchTemplatePage from "views/pages/communications/SearchTemplatePage.js"
@@ -139,6 +140,13 @@ const routes = [
         name: "Create Email",
         miniName: "CE",
         component: CreateEmailPage,
+        layout: "/admin",
+      },
+      {
+        path: "/search-email-draft",
+        name: "Search Email Draft",
+        miniName: "SED",
+        component: SearchEmailDraftsPage,
         layout: "/admin",
       },
       {
