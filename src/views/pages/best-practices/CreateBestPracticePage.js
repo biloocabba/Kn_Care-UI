@@ -13,6 +13,10 @@ import {
   Container,
   Row,
   Col,
+  Card,
+  CardBody,
+  CardText,
+  CardTitle
 } from "reactstrap";
 // core components
 import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
@@ -58,15 +62,19 @@ function CreateBestPracticePage() {
   const fileUpload = (files) => {
     toggle();
     formData.delete("file");
-    formData.delete("content");
     formData.append("file", files[0]);
-    formData.append("content", content.title);
-    formData.append("content", content.description);
     setErrorAlert(false);
     forceUpdate(formData.get("file").name);
   }
 
+  const removeFile = () => {
+    formData.delete("file");
+    forceUpdate(1);
+  }
+
   const saveBestPractice = () => {
+    formData.append("content", content.title);
+    formData.append("content", content.description);
     const formValid = simpleValidator.current.allValid()
     if (formValid) {
       BestPracticeService.create(formData)
@@ -140,13 +148,26 @@ function CreateBestPracticePage() {
                     <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
                   </svg>
                 </Files>
-                <div className="file-name">
-                  <p className="mt-2">{formData.entries("file").next().done ? "" : formData.get("file").name}</p>
-                </div>
+                {/* <div className="file-name d-flex" hidden={formData.entries("file").next().done}> */}
+                {/* <p className="mt-2">{formData.entries("file").next().done ? "" : formData.get("file").name}</p> */}
+
               </div>
+              {/* </div> */}
             </FormGroup>
           </Col>
         </Row>
+        <div className="uploaded-file">
+          <Row>
+            <Col sm="10">
+              <Card hidden={formData.entries("file").next().done}>
+                <CardBody>
+                    <Button close onClick={removeFile}/>
+                  <CardText tag="h5">{formData.entries().next().done ? "" : formData.get("file").name}</CardText>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </div>
         <Row>
           <Button color="primary" type="submit" onClick={saveBestPractice}>
             Create

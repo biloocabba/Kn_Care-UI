@@ -10,4 +10,7 @@
   border-radius: 5px;
   }
 
-  
+  .uploaded-file{
+    width: 30%;
+    height: 50%;
+  }
