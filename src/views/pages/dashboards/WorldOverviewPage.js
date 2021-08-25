@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useState } from "react";
+import React from "react";
 // react plugin for creating vector maps
 import { VectorMap } from "react-jvectormap";
 
@@ -22,15 +22,16 @@ import { VectorMap } from "react-jvectormap";
 import { Card, CardBody, Container, Row } from "reactstrap";
 // core components
 import MapsHeader from "components/Headers/MapsHeader";
+import { useDispatch, useSelector } from "react-redux";
 
 
 
 function Vector() {
-  const [mapData, setMapData] = useState({});
+  const mapState = useSelector(state => state.mapKpis);
 
   return (
     <>
-      <MapsHeader name="World view" setMapData={setMapData} />
+      <MapsHeader name="World view"/>
       <Container className="mt--6" fluid>
         <Row>
           <div className="col">
@@ -63,34 +64,10 @@ function Vector() {
                       cursor: "pointer"
                     }
                   }}
-                  // markerStyle={{
-                  //   initial: {
-                  //     fill: "#fb6340",
-                  //     "stroke-width": 0,
-                  //   },
-                  //   hover: {
-                  //     fill: "#11cdef",
-                  //     "stroke-width": 0,
-                  //   },
-                  // }}
-                  // markers={[
-                  //   {
-                  //     latLng: [41.9, 12.45],
-                  //     name: "Vatican City",
-                  //   },
-                  //   {
-                  //     latLng: [43.73, 7.41],
-                  //     name: "Monaco",
-                  //   },
-                  //   {
-                  //     latLng: [35.88, 14.5],
-                  //     name: "Malta",
-                  //   },
-                  // ]}
                   series={{
                     regions: [
                       {
-                        values: mapData,
+                        values: mapState,
                         scale: ["#ced4da", "#043c7c"],
                         normalizeFunction: "polynomial",
                       },
@@ -98,8 +75,8 @@ function Vector() {
                   }}
                   onRegionTipShow={
                     function name(e, label, code) {
-                      if (mapData[code] != undefined) {
-                        label.html(label.html() +' - '+ mapData[code]);
+                      if (mapState[code] != undefined) {
+                        label.html(label.html() +' - '+ mapState[code]);
                       }
                     }
                   }

@@ -1,4 +1,4 @@
-export const initialState = [
+const initialState = [
     {
         country: "US",
         onBoardDate: "2020-07-07",
@@ -90,3 +90,5 @@ export const initialState = [
         selfResigned: null
     }
 ];
+
+export default initialState;
