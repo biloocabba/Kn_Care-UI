@@ -1,21 +1,15 @@
 /*!
-
 =========================================================
 * Argon Dashboard PRO React - v1.2.0
 =========================================================
-
 * Product Page: https://www.creative-tim.com/product/argon-dashboard-pro-react
 * Copyright 2021 Creative Tim (https://www.creative-tim.com)
-
 * Coded by Creative Tim
-
 =========================================================
-
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
 */
-import React, {useState, useEffect} from "react";
-import { useDispatch, useSelector } from  "react-redux";
+import React, { useState, useEffect } from "react";
+import emailService from "services/emailService";
 // react plugin that prints a given react component
 import ReactToPrint from "react-to-print";
 // react component for creating dynamic tables
@@ -24,7 +18,6 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 // react component used to create sweet alerts
 import ReactBSAlert from "react-bootstrap-sweetalert";
-
 // reactstrap components
 import {
   Button,
@@ -32,20 +25,21 @@ import {
   Card,
   CardHeader,
   Container,
+  Modal,
   Row,
   Col,
   UncontrolledTooltip,
-  InputGroupButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
+  Table,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Form,
+  Input,
+  FormGroup,
+  Label
 } from "reactstrap";
 // core components
 import SimpleHeader from "components/Headers/SimpleHeader.js";
-
-import { retrieveGroups } from "../../../actions/groups";
-
-
 
 
 const pagination = paginationFactory({
@@ -79,37 +73,7 @@ const pagination = paginationFactory({
 const { SearchBar } = Search;
 
 
-
-
-
-const statusBadge = (status) => {
-
-  return( status ? <button> Yes </button> : <button> No</button>)
-}
-
-function GroupsPage(props) {
-
-  const formatActionButtonCell =(cell, row)=>{  
-      
-    return (    <>
-                    <Button id={row.id} className="btn-icon btn-2" type="button" color="info" onClick={groupDetails} >
-                        <span id={row.id} className="btn-inner--icon">
-                          <i id={row.id} className="ni ni-badge" />
-                        </span>                        
-                      </Button>
-
-                      </>);
-        
-  
-  }
-
-  const groupDetails = (e)=> {  
-    var { id} = e.target;
-    props.history.push('/admin/group-member-details/'+id);     
-  }
-
-  const groups = useSelector(state => state.groups);
-
+function ReactBSTables(props) {
   const [alert, setAlert] = React.useState(null);
   const componentRef = React.useRef(null);
   // this function will copy to clipboard an entire table,
@@ -151,91 +115,66 @@ function GroupsPage(props) {
     );
   };
 
-  const dispatch = useDispatch();
+  const initialEmailState = [{
+    id:"1",
+    subject:"Sample subject",
+    content:"Hello world!",
+    attachments:null,
+    createdBy:{},
+    recipients:null,
+    recipientGroups:null
+  }]
+  const [emails, setEmails] = useState(initialEmailState);
 
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  useEffect(() => {
+    emailService.getAll()
+    .then(response => {
+        setEmails(response.data);
+    });
+  }, []);
 
-  const toggleDropDown = () => setDropdownOpen(!dropdownOpen);
+  const EditDraft = e => {
+    var {id} = e.target;
+    props.history.push("/admin/email-details/"+id);
+  }
 
-
-  //this goes in a different story
-  // useEffect(() => {
-  //   dispatch(retrieveGroups());
-  // }, []);
-
-  
+  const formatActionButtonCell =(cell, row)=>{  
+    return (
+        <>
+            <Button id={row.id} className="btn-icon btn-2" type="button" onClick={e => EditDraft(e)}>
+                Edit
+            </Button>
+        </>
+    );
+  }
 
   return (
     <>
       {alert}
-      <SimpleHeader name="React Tables" parentName="Tables" />
+      <SimpleHeader name="Email search" parentName="Communications" />
       <Container className="mt--6" fluid>
         <Row>
           <div className="col">
-            <Card className="my-3 p-3">
-
-            <h5>Filter</h5>
-            <div class="d-flex justify-content-start">
-            <InputGroupButtonDropdown addonType="append" isOpen={dropdownOpen} toggle={toggleDropDown}>
-          <DropdownToggle caret>
-            Language
-          </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem value="english">English</DropdownItem>
-            <DropdownItem value="french">French</DropdownItem>
-            <DropdownItem value="estonian">Estonian</DropdownItem>
-            <DropdownItem value="french">Japanese</DropdownItem>
-          </DropdownMenu>
-        </InputGroupButtonDropdown>
-        <InputGroupButtonDropdown addonType="append" >
-          <DropdownToggle caret>
-            Created From
-          </DropdownToggle>
-          <DropdownMenu>
-           
-          </DropdownMenu>
-        </InputGroupButtonDropdown>
-
-
-            </div>
-
-            </Card>
             <Card>
-              <CardHeader>
-                <h3 className="mb-0">Groups</h3>
-                <p className="text-sm mb-0">
-                  This is an exmaple of data table using the well known
-                  react-bootstrap-table2 plugin. This is a minimal setup in
-                  order to get started fast.
-                </p>
-              </CardHeader>
               <ToolkitProvider
-                data={groups}
-                keyField="group"
-               
+                data={emails}
+                keyField="id"
                 columns={[
                   {
                     dataField: "id",
-                    text: "ID",
+                    text: "Id",
                     sort: true,
                   },
                   {
-                    dataField: "name",
-                    text: "Group Name",
+                    dataField: "subject",
+                    text: "Subject",
                     sort: true,
                   },
                   {
-                    dataField: "active",
-                    text: "Active",
-                    sort: true,
-                  },
-                  {  
-                    dataField: 'action',    
-                    text:'',
-                    formatter: formatActionButtonCell
-                },
-                
-                 
+                      dataField: "action",
+                      text:"",
+                      formatter: formatActionButtonCell
+                  }
                 ]}
                 search
               >
@@ -305,6 +244,7 @@ function GroupsPage(props) {
                       </Row>
                     </Container>
                     <BootstrapTable
+                      hover
                       ref={componentRef}
                       {...props.baseProps}
                       bootstrap4={true}
@@ -323,5 +263,4 @@ function GroupsPage(props) {
   );
 }
 
-
-export default GroupsPage;
+export default ReactBSTables;

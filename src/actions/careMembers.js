@@ -1,10 +1,28 @@
 import {
   CREATE_CARE_MEMBER,
+  RETRIEVE_CARE_MEMBERS,
 } from './types'
 
 import careMemberService from '../services/careMemberService'
 import { toast } from 'react-toastify';
 
+
+export const searchCareMembers = (filters) => async (dispatch) => {
+  try {
+    const queryParams = new URLSearchParams(filters);
+
+    const res = await careMemberService.searchCareMembers(queryParams);
+
+    console.log("/careMembers?" + {queryParams})
+
+    dispatch({
+      type: RETRIEVE_CARE_MEMBERS,
+      payload: res.data,
+    });
+  } catch (err) {
+    toast.error("Could not connect to server. Contact Administrator")
+  }
+};
 
 export const createCareMember = (data) => async (dispatch) => {
 

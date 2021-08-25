@@ -42,12 +42,15 @@ import GroupsPage from "views/pages/groups/GroupsPage.js"
 import CreateBestPracticePage from "views/pages/best-practices/CreateBestPracticePage.js"
 import SearchBestPracticesPage from "views/pages/best-practices/SearchBestPracticesPage.js"
 
-import CreateEmailPage from "views/pages/communications/CreateEmailPage.js"
+import CreateNewEmailPage from "views/pages/communications/CreateNewEmailPage";
+import EmailDetailsPage from "views/pages/communications/EmailDetailsPage";
+
 import SendNotificationPage from "views/pages/communications/SendNotificationPage.js"
 import CreateEmailTemplatePage from "views/pages/communications/CreateEmailTemplatePage.js"
 import SearchTemplatePage from "views/pages/communications/SearchTemplatePage.js"
 import EmailHistoryPage from "views/pages/communications/EmailHistoryPage.js"
 import ArchivePage from "views/pages/communications/ArchivePage.js"
+import SearchEmailPage from "views/pages/communications/SearchEmailPage";
 
 import ChartsPage from "views/pages/dashboards/ChartsPage.js"
 import WorldOverviewPage from "views/pages/dashboards/WorldOverviewPage.js"
@@ -147,7 +150,14 @@ const routes = [
         path: "/create-email",
         name: "Create Email",
         miniName: "CE",
-        component: CreateEmailPage,
+        component: CreateNewEmailPage,
+        layout: "/admin",
+      },
+      {
+        path: "/search-email",
+        name: "Search Email",
+        miniName: "SE",
+        component: SearchEmailPage,
         layout: "/admin",
       },
       {
@@ -210,15 +220,22 @@ const routes = [
     ],
   },
   {
+    collapse: false,
+    global: true,
+    path: "/email-details/:id",
+    component: EmailDetailsPage,
+    layout: "/admin"
+  },
+  {
     collapse: false,  
-    global:true, 
+    global: true, 
     path: "/users/employee-details/:id",
     component: EmployeeDetailsPage,
     layout: "/admin"
   },
   {
     collapse: false,  
-    global:true, 
+    global: true, 
     path: "/users/care-member-details/:id",
     component: EditCareMemberPage,
     layout: "/admin"
