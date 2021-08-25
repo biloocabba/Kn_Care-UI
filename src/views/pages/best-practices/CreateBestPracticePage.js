@@ -1,16 +1,15 @@
 import React, { useState, useRef } from "react";
 import { Redirect } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import SimpleReactValidator from 'simple-react-validator';
 import BestPracticeService from "../../../services/BestPracticeService";
-import './site.css';
+import Files from 'react-files'
 
 // reactstrap components
 import {
   Button,
   FormGroup,
   Input,
-  Label,
+  Tooltip,
   Container,
   Row,
   Col,
@@ -18,9 +17,6 @@ import {
 // core components
 import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
 
-import {
-  createBestPractice,
-} from "../../../actions/bestPractice"
 
 
 const initialState = {
@@ -34,12 +30,17 @@ function CreateBestPracticePage() {
   const simpleValidator = useRef(new SimpleReactValidator());
 
   const [created, setCreated] = useState(false);
-  const [formData, setFormData] = useState({});
+  const [formData,] = useState(new FormData());
   const [, forceUpdate] = useState();
+  const [errorAlert, setErrorAlert] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("Something went wrong");
+
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+
+  const toggle = () => setTooltipOpen(!tooltipOpen);
 
 
   const [content, setContent] = useState(initialState);
-
 
 
   const handleInputChange = (e) => {
@@ -48,23 +49,32 @@ function CreateBestPracticePage() {
     simpleValidator.current.showMessageFor(name);
   }
 
-  const fileUpload = async (e) => {
-    let formData = new FormData();
-    formData.append("file", e.target.files[0]);
-    formData.append("title", content.title);
-    formData.append("description", content.description);
-    setFormData(formData);
-    
+  const onFilesError = (error) => {
+    setErrorMessage(error.message);
+    setErrorAlert(true);
+  };
+
+
+  const fileUpload = (files) => {
+    toggle();
+    formData.delete("file");
+    formData.delete("content");
+    formData.append("file", files[0]);
+    formData.append("content", content.title);
+    formData.append("content", content.description);
+    setErrorAlert(false);
+    forceUpdate(formData.get("file").name);
   }
 
   const saveBestPractice = () => {
     const formValid = simpleValidator.current.allValid()
     if (formValid) {
       BestPracticeService.create(formData)
-            .then(setCreated(true))
-            .catch(e => {
-                console.log(e);
-            });
+        .then(setCreated(true))
+        .catch(e => {
+          setErrorAlert(true);
+          setErrorMessage(e);
+        });
     }
     else {
       simpleValidator.current.showMessages();
@@ -75,6 +85,9 @@ function CreateBestPracticePage() {
   return (
     <>
       {created === true ? <Redirect to={"/admin/search-best-practices"} /> : null}
+      <div class="alert alert-danger mt-3" role="alert" hidden={!errorAlert}>
+        <span>{errorMessage}</span>
+      </div>
       <GradientEmptyHeader name="Best Practices" />
       <Container className="mt--6" fluid>
         <Row>
@@ -107,16 +120,30 @@ function CreateBestPracticePage() {
           </Col>
         </Row>
         <Row>
-          <Col className="order-xl-1">
+          <Col>
             <FormGroup>
-              <Input type="file" name="content" onChange={fileUpload} />
-              {/* <div className="file-input">
-                <input type="file" id="file" className="file" />
-                <label htmlFor="file">
-                  Select file
-                  <p className="file-name"></p>
-                </label>
-              </div> */}
+              <div className="files" >
+                <Files
+                  className='files-dropzone'
+                  onChange={fileUpload}
+                  onError={onFilesError}
+                  accepts={['.jpg', '.pdf', 'audio/*', '.html']}
+                  multiple
+                  maxFileSize={10000000}
+                  minFileSize={0}
+                  clickable
+                >
+                  <Tooltip placement="right" isOpen={tooltipOpen} target="TooltipExample" toggle={toggle}>
+                    Attach files
+                  </Tooltip>
+                  <svg id="TooltipExample" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-paperclip" viewBox="0 0 16 16">
+                    <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
+                  </svg>
+                </Files>
+                <div className="file-name">
+                  <p className="mt-2">{formData.entries("file").next().done ? "" : formData.get("file").name}</p>
+                </div>
+              </div>
             </FormGroup>
           </Col>
         </Row>

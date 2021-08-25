@@ -39,6 +39,7 @@ import AuthLayout from './layouts/Auth.js'
 import store from './store'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './assets/css/site.css';
 
 ReactDOM.render(
   <Provider store={store}>
