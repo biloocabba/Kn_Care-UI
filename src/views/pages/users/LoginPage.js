@@ -129,6 +129,9 @@ function LoginPage(props) {
                         </InputGroupText>
                       </InputGroupAddon>
                       <Input
+                        value={email}
+                        onChange={onChangeEmail}
+                        name="email"
                         placeholder="Email"
                         type="email"
                         onFocus={() => setfocusedEmail(true)}
@@ -152,6 +155,9 @@ function LoginPage(props) {
                         type="password"
                         onFocus={() => setfocusedPassword(true)}
                         onBlur={() => setfocusedPassword(true)}
+                        value={password}
+                        onChange={onChangePassword}
+                        name="password"
                       />
                     </InputGroup>
                   </FormGroup>
@@ -169,10 +175,21 @@ function LoginPage(props) {
                     </label>
                   </div>
                   <div className="text-center">
-                    <Button className="my-4" color="info" type="button">
-                      Sign in
+                    <Button className="my-4" color="info" type="button" >
+                    {loading && (
+                <span className="spinner-border spinner-border-sm"></span>
+              )}
+                      <span>Sign in</span>
                     </Button>
                   </div>
+
+                  {message && (
+            <div className="form-group">
+              <div className="alert alert-danger" role="alert">
+                {message}
+              </div>
+            </div>
+          )}
                 </Form>
               </CardBody>
             </Card>

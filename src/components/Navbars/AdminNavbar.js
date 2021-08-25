@@ -15,6 +15,7 @@
 
 */
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 // nodejs library that concatenates classes
 import classnames from "classnames";
 // nodejs library to set properties for components
@@ -44,6 +45,8 @@ import {
   Col,
 } from "reactstrap";
 
+import { logout } from "../../actions/auth";
+
 function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
   // function that on mobile devices makes the search open
   const openSearch = () => {
@@ -72,9 +75,14 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
     }, 500);
   };
 
-    // takes route string as parameter
-    const pushToRoute = route => {
-  }
+  const dispatch = useDispatch();
+
+  const logOut = () => {
+    dispatch(logout());
+  };
+
+  
+
 
   return (
     <>
@@ -445,7 +453,7 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                   <DropdownItem divider />
                   <DropdownItem
                     href="/auth/login"
-                    onClick={(e) => e.preventDefault()}
+                    onClick={logOut}
                   >
                     <i className="ni ni-user-run" />
                     <span>Logout</span>

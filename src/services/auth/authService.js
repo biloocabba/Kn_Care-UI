@@ -1,9 +1,9 @@
 import http from '../http-common'
 
-const login = (username, password) => {
+const login = (email, password) => {
     return http
       .post("/signin", {
-        username,
+        email,
         password,
       })
       .then((response) => {
