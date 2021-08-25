@@ -72,6 +72,10 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
     }, 500);
   };
 
+    // takes route string as parameter
+    const pushToRoute = route => {
+  }
+
   return (
     <>
       <Navbar
@@ -440,7 +444,7 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                   </DropdownItem>
                   <DropdownItem divider />
                   <DropdownItem
-                    href="#pablo"
+                    href="/auth/login"
                     onClick={(e) => e.preventDefault()}
                   >
                     <i className="ni ni-user-run" />
