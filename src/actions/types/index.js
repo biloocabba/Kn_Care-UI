@@ -55,3 +55,11 @@ export const ALL_ACTIVE_MEMBERS = "ALL_ACTIVE_MEMBERS";
 export const NEW_MEMBERS = "NEW_MEMBERS";
 export const SELF_RESIGNED_MEMBERS = "SELF_RESIGNED_MEMBERS";
 export const AUTO_OFFBOARDED_MEMBERS = "AUTO_OFFBOARDED_MEMBERS";
+
+//message for authentication
+
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAIL = "LOGIN_FAIL";
+export const LOGOUT = "LOGOUT";
+export const SET_MESSAGE = "SET_MESSAGE";
+export const CLEAR_MESSAGE = "CLEAR_MESSAGE";

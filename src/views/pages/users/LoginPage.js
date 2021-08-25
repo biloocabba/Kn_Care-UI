@@ -14,7 +14,9 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {useState, useRef} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from 'react-router-dom';
 // nodejs library that concatenates classes
 import classnames from "classnames";
 // reactstrap components
@@ -33,14 +35,64 @@ import {
   Row,
   Col,
 } from "reactstrap";
+
+import { login } from "../../../actions/auth";
 // core components
 import AuthHeader from "components/Headers/AuthHeader.js";
 
 import CareLogoMin  from "assets/img/brand/CareLogoMin.png";
 
-function LoginPage() {
+function LoginPage(props) {
   const [focusedEmail, setfocusedEmail] = React.useState(false);
   const [focusedPassword, setfocusedPassword] = React.useState(false);
+
+  const form = useRef();
+  const checkBtn = useRef();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const { isLoggedIn } = useSelector(state => state.auth);
+  const { message } = useSelector(state => state.message);
+
+  const dispatch = useDispatch();
+
+  const onChangeEmail = (e) => {
+    const email = e.target.value;
+    setEmail(email);
+  };
+
+  const onChangePassword = (e) => {
+    const password = e.target.value;
+    setPassword(password);
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    setLoading(true);
+
+    form.current.validateAll();
+
+    if (checkBtn.current.context._errors.length === 0) {
+      dispatch(login(email, password))
+        .then(() => {
+          props.history.push("/admin/dashboard");
+          window.location.reload();
+        })
+        .catch(() => {
+          setLoading(false);
+        });
+    } else {
+      setLoading(false);
+    }
+  };
+
+  if (isLoggedIn) {
+    return <Redirect to="/profile" />;
+  }
+
 
 
 
