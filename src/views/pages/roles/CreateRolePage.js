@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
     Button,
     Card,
@@ -13,8 +13,10 @@ import {
 } from 'reactstrap'
 
 import {createRole} from '../../../actions/roles';
+import {retrieveRoles} from '../../../actions/roles';
 
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import AsyncSelect2 from "react-select2-wrapper";
 
 function CreateRolePage() {
     const initialState = {
@@ -28,6 +30,9 @@ function CreateRolePage() {
         rank: null
     };
 
+
+
+    const roles = useSelector(state => state.roles.roles);
     const [role, setRole] = useState(initialState);
     const [submitted, setSubmitted] = useState(false);
     const [selectedRankedBefore, setSelectedRankedBefore] = useState('')
@@ -42,12 +47,40 @@ function CreateRolePage() {
         setRole({ ...role, [name]: value });
     };
 
-    const saveRole = () => {
+    const handleFirstLevelChange = event => {
+            const { name, value } = event.target;
+            if (name.toString() === "after") {
+                setSelectedRankedAfter(value)
+            } else {
+                setSelectedRankedBefore(value)
+            }
+        };
+
+
+
+    useEffect(() => {
+        dispatch(retrieveRoles());
+    }, []);
+
+    const getRoles = () => {
+        let allRoles = []
+        for (const i in roles) {
+            allRoles.push(
+                {
+                    id: roles[i].id,
+                    text: roles[i].name,
+                })
+        }
+        return allRoles
+    }
+
+    const saveRole = (e) => {
+        e.preventDefault()
         const roleInfo = {
             id: null,
-            name: '',
-            rankedBefore: selectedRankedBefore,
-            rankedAfter: selectedRankedAfter,
+            name: role.name,
+            rankedBefore: role.rankedBefore,
+            rankedAfter: role.rankedAfter,
             active: true,
             createdAt: createdAt,
             updatedAt: updatedAt,
@@ -150,14 +183,18 @@ function CreateRolePage() {
                                                         >
                                                             Ranked Before
                                                         </label>
-                                                        <Input
-                                                            name="rankedBefore"
-                                                            value={role.rankedBefore}
+                                                        <AsyncSelect2
+                                                            className="form-control"
+                                                            name="before"
+                                                            value={selectedRankedBefore}
                                                             required
-                                                            id="input-ranked-before"
-                                                            placeholder="Ranked Before"
-                                                            type="text"
-                                                            onChange={handleInputChange}
+                                                            defaultValue="1"
+                                                            onChange={handleFirstLevelChange}
+                                                            options={{
+                                                                placeholder: 'Select Role',
+                                                            }}
+
+                                                            data={getRoles()}
                                                         />
                                                     </FormGroup>
                                                 </Col>
@@ -171,19 +208,20 @@ function CreateRolePage() {
                                                         >
                                                             Ranked After
                                                         </label>
-                                                        <Input
-                                                            name="rankedAfter"
-                                                            value={role.rankedAfter}
-                                                            required
-                                                            id="input-ranked-after"
-                                                            placeholder="Ranked After"
-                                                            type="text"
-                                                            onChange={handleInputChange}
+                                                        <AsyncSelect2
+                                                            className="form-control"
+                                                            defaultValue="1"
+                                                            name="after"
+                                                            value={selectedRankedAfter}
+                                                            options={{
+                                                                placeholder: 'Select Role',
+                                                            }}
+                                                            onChange={handleFirstLevelChange}
+                                                            data={getRoles()}
                                                         />
                                                     </FormGroup>
                                                 </Col>
                                             </Row>
-
 
                                         </div>
                                         <hr className="my-4" />
@@ -198,7 +236,7 @@ function CreateRolePage() {
                                         </div>
                                     </Form>
 
-                                )}
+                                 )}
                             </CardBody>
                         </Card>
                     </Col>

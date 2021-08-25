@@ -1,8 +1,8 @@
 export const role_initialState = [ {
     id: 1,
     name: "Admin",
-    rankedBefore: null,
-    rankedAfter: null,
+    rankedBefore: '',
+    rankedAfter: '',
     active: true,
     createdAt: '28.07.2021',
     updatedAt: '28.07.2021',
@@ -11,8 +11,8 @@ export const role_initialState = [ {
 {
     id: 2,
     name: "User",
-    rankedBefore: null,
-    rankedAfter: null,
+    rankedBefore: '',
+    rankedAfter: '',
     active: true,
     createdAt: '28.07.2021',
     updatedAt: '28.07.2021',
