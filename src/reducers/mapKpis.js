@@ -1,4 +1,3 @@
-// import initialState from "initialStates/mapKpi";
 import {
     ALL_ACTIVE_MEMBERS,
     NEW_MEMBERS,

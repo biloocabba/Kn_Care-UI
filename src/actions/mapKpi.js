@@ -1,20 +1,13 @@
-import initialState from "initialStates/mapKpi";
+import mapKpiService from "../services/mapKpiService";
 
 export const getMapData = (action) => async (dispatch) => {
-
-    var mapData = {};
-
     try {
-
+        const res = await mapKpiService.getAll();
         dispatch({
             type: action,
-            payload: initialState
+            payload: res.data
         });
-        
-        return Promise.resolve(mapData);
-
-    } catch (e) {
-        console.log(e)
-        return Promise.reject(e);
+    } catch (err) {
+        console.log(err);
     }
-}
+};
