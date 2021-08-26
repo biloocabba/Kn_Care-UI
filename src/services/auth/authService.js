@@ -2,12 +2,12 @@ import http from '../http-common'
 
 const login = (email, password) => {
     return http
-      .post("/signin", {
+      .post("/auth", {
         email,
         password,
       })
       .then((response) => {
-        if (response.data.accessToken) {
+        if (response.data.token) {
           localStorage.setItem("user", JSON.stringify(response.data));
         }
   

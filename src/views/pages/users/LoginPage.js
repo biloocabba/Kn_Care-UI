@@ -45,6 +45,27 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 
+
+const required = (value) => {
+  if (!value) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        This field is required!
+      </div>
+    );
+  }
+};
+
+const emailVal = value => {
+  if (!isEmail(value)) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        This is not a valid email.
+      </div>
+    );
+  }
+};
+
 function LoginPage(props) {
   const [focusedEmail, setfocusedEmail] = React.useState(false);
   const [focusedPassword, setfocusedPassword] = React.useState(false);
@@ -58,26 +79,8 @@ function LoginPage(props) {
 
   const { isLoggedIn } = useSelector(state => state.auth);
   const { message } = useSelector(state => state.message);
-
-  const required = value => {
-    if (!value) {
-      return (
-        <div className="alert alert-danger" role="alert">
-          This field is required!
-        </div>
-      );
-    }
-  };
   
-  const emailVal = value => {
-    if (!isEmail(value)) {
-      return (
-        <div className="alert alert-danger" role="alert">
-          This is not a valid email.
-        </div>
-      );
-    }
-  };
+ 
   
 
   const dispatch = useDispatch();
@@ -99,7 +102,7 @@ function LoginPage(props) {
 
     form.current.validateAll();
 
-    //for validation using react validation
+    // for validation using react validation
     if (checkBtn.current.context._errors.length === 0) {
       dispatch(login(email, password))
         .then(() => {
@@ -115,7 +118,7 @@ function LoginPage(props) {
   };
 
   if (isLoggedIn) {
-    return <Redirect to="/profile" />;
+    return <Redirect to="/dashboard" />;
   }
 
 
@@ -202,7 +205,7 @@ function LoginPage(props) {
                     </label>
                   </div>
                   <div className="text-center">
-                    <Button className="my-4" color="info" type="button" disabled={loading}>
+                    <Button className="my-4" color="info" type="button" onClick={handleLogin}>
                     {loading && (
                 <span className="spinner-border spinner-border-sm"></span>
               )}
@@ -217,6 +220,8 @@ function LoginPage(props) {
               </div>
             </div>
           )}
+
+<CheckButton style={{ display: "none" }} ref={checkBtn} />
                 </Form>
               </CardBody>
             </Card>
