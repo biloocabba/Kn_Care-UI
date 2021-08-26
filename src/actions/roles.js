@@ -8,7 +8,6 @@ import {
 import roleService from "../services/roleService"
 
 export const createRole = (data) => async (dispatch) => {
-    console.log(data)
     try {
         const res = await roleService.create(data)
         dispatch({

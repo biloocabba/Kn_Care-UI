@@ -21,24 +21,20 @@ import AsyncSelect2 from "react-select2-wrapper";
 function CreateRolePage() {
     const initialState = {
         id: null,
-        name: '',
-        rankedBefore: '',
-        rankedAfter: '',
+        name: "",
+        rankedBefore: "",
+        rankedAfter: "",
         active: true,
-        createdAt: '',
-        updatedAt: '',
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
         rank: null
     };
 
 
 
-    const roles = useSelector(state => state.roles.roles);
+    const roles = useSelector(state => state.roles);
     const [role, setRole] = useState(initialState);
     const [submitted, setSubmitted] = useState(false);
-    const [selectedRankedBefore, setSelectedRankedBefore] = useState('')
-    const [selectedRankedAfter, setSelectedRankedAfter] = useState('')
-    const createdAt = Date.now();
-    const updatedAt = Date.now();
 
     const dispatch = useDispatch();
 
@@ -46,17 +42,6 @@ function CreateRolePage() {
         const { name, value } = event.target;
         setRole({ ...role, [name]: value });
     };
-
-    const handleFirstLevelChange = event => {
-            const { name, value } = event.target;
-            if (name.toString() === "after") {
-                setSelectedRankedAfter(value)
-            } else {
-                setSelectedRankedBefore(value)
-            }
-        };
-
-
 
     useEffect(() => {
         dispatch(retrieveRoles());
@@ -69,6 +54,7 @@ function CreateRolePage() {
                 {
                     id: roles[i].id,
                     text: roles[i].name,
+                    rank: roles[i].rank
                 })
         }
         return allRoles
@@ -76,40 +62,41 @@ function CreateRolePage() {
 
     const saveRole = (e) => {
         e.preventDefault()
-        const roleInfo = {
-            id: null,
-            name: role.name,
-            rankedBefore: role.rankedBefore,
-            rankedAfter: role.rankedAfter,
-            active: true,
-            createdAt: createdAt,
-            updatedAt: updatedAt,
-            rank: null
-        }
-
-        dispatch(createRole(roleInfo))
-            .then(data => {
-                    setRole({
-                        id: null,
-                        name: data.name,
-                        rankedBefore: data.rankedBefore,
-                        rankedAfter: data.rankedAfter,
-                        active: data.active,
-                        createdAt: data.createdAt,
-                        updatedAt: data.updatedAt,
-                        rank: data.rank
-                    })
-                setSubmitted(true);
+        // ranking system should be implemented better with some check on the same rank, ranked before do not lower rank than ranked after and etc.
+        if (role.name .length > 0 && role.rankedAfter.length > 0 && role.rankedBefore.length > 0  ) {
+            let allRoles = getRoles()
+            let num = 0
+            for (const i in allRoles) {
+                if (allRoles[i].id.toString() === role.rankedBefore) {
+                    num += parseInt(allRoles[i].rank)
+                } if (allRoles[i].id.toString() === role.rankedAfter) {
+                    num += parseInt(allRoles[i].rank)
                 }
-
-            )
-            .catch(e => {
-                console.log(e);
-            });
+            }
+            role.rank = Math.ceil(num / 2)
+            dispatch(createRole(role))
+                .then(data => {
+                        setRole({
+                            id: null,
+                            name: data.name,
+                            rankedBefore: data.rankedBefore,
+                            rankedAfter: data.rankedAfter,
+                            active: data.active,
+                            createdAt: data.createdAt,
+                            updatedAt: data.updatedAt,
+                            rank: data.rank
+                        })
+                        setSubmitted(true);
+                    }
+                )
+                .catch(e => {
+                    console.log(e);
+                });
+        }
     }
 
     const newRole = () => {
-        setSubmitted(false);
+        window.location.reload()
     };
 
     return (
@@ -143,9 +130,9 @@ function CreateRolePage() {
                                 {submitted ? (
                                     <div>
                                         <h4>You submitted successfully!</h4>
-                                        <button className="btn btn-success" onClick={newRole}>
-                                            Add
-                                        </button>
+                                        <Button className="btn btn-success" onClick={newRole}>
+                                            Create new Role
+                                        </Button>
                                     </div>
                                 ) : (
                                     <Form>
@@ -185,11 +172,12 @@ function CreateRolePage() {
                                                         </label>
                                                         <AsyncSelect2
                                                             className="form-control"
-                                                            name="before"
-                                                            value={selectedRankedBefore}
+                                                            name="rankedBefore"
+                                                            id="rankedBefore"
+                                                            value={role.rankedBefore}
                                                             required
-                                                            defaultValue="1"
-                                                            onChange={handleFirstLevelChange}
+
+                                                            onChange={handleInputChange}
                                                             options={{
                                                                 placeholder: 'Select Role',
                                                             }}
@@ -210,13 +198,14 @@ function CreateRolePage() {
                                                         </label>
                                                         <AsyncSelect2
                                                             className="form-control"
-                                                            defaultValue="1"
-                                                            name="after"
-                                                            value={selectedRankedAfter}
+
+                                                            name="rankedAfter"
+                                                            id="rankedAfter"
+                                                            value={role.rankedAfter}
                                                             options={{
                                                                 placeholder: 'Select Role',
                                                             }}
-                                                            onChange={handleFirstLevelChange}
+                                                            onChange={handleInputChange}
                                                             data={getRoles()}
                                                         />
                                                     </FormGroup>
@@ -232,7 +221,7 @@ function CreateRolePage() {
 
                                         <div className="pl-lg-4">
 
-                                            <button onClick={saveRole} className="btn btn-success"> Submit </button>
+                                            <Button onClick={saveRole} className="btn btn-success"> Submit </Button>
                                         </div>
                                     </Form>
 

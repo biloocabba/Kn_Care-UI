@@ -20,7 +20,32 @@
                         "responses": [
                             {
                                 "uuid": "",
-                                "body": "{\n  \"roles\": [\n    {\n      \"id\": 1,\n      \"name\": \"None\",\n      \"rankedBefore\": \"\",\n      \"rankedAfter\": \"\",\n      \"active\": true,\n      \"createdAt\": \"28.07.2021\",\n      \"updatedAt\": \"28.07.2021\",\n      \"rank\": 0\n\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Admin\",\n      \"rankedBefore\": \"\",\n      \"rankedAfter\": \"\",\n      \"active\": true,\n      \"createdAt\": \"28.07.2021\",\n      \"updatedAt\": \"28.07.2021\",\n      \"rank\": 20\n      \n    },\n    {\n      \"id\": 3,\n      \"name\": \"User\",\n      \"rankedBefore\": \"\",\n      \"rankedAfter\": \"\",\n      \"active\": true,\n      \"createdAt\": \"28.07.2021\",\n      \"updatedAt\": \"28.07.2021\",\n      \"rank\": 20\n\n    }\n]\n}",
+                                "body": "\n  [\n    {\n      \"id\": 1,\n      \"name\": \"None\",\n      \"rankedBefore\": \"\",\n      \"rankedAfter\": \"\",\n      \"active\": true,\n      \"createdAt\": \"28.07.2021\",\n      \"updatedAt\": \"28.07.2021\",\n      \"rank\": 0\n\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Admin\",\n      \"rankedBefore\": \"\",\n      \"rankedAfter\": \"\",\n      \"active\": true,\n      \"createdAt\": \"28.07.2021\",\n      \"updatedAt\": \"28.07.2021\",\n      \"rank\": 20\n      \n    },\n    {\n      \"id\": 3,\n      \"name\": \"User\",\n      \"rankedBefore\": \"\",\n      \"rankedAfter\": \"\",\n      \"active\": true,\n      \"createdAt\": \"28.07.2021\",\n      \"updatedAt\": \"28.07.2021\",\n      \"rank\": 10\n\n    }\n]\n",
+                                "latency": 0,
+                                "statusCode": 200,
+                                "label": "",
+                                "headers": [],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [],
+                                "rulesOperator": "OR",
+                                "disableTemplating": false,
+                                "fallbackTo404": false
+                            }
+                        ],
+                        "enabled": true,
+                        "randomResponse": false,
+                        "sequentialResponse": false
+                    },
+                    {
+                        "uuid": "",
+                        "documentation": "",
+                        "method": "post",
+                        "endpoint": "roles",
+                        "responses": [
+                            {
+                                "uuid": "",
+                                "body": "{}",
                                 "latency": 0,
                                 "statusCode": 200,
                                 "label": "",
