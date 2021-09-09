@@ -20,6 +20,9 @@ const create = (formData) => {
   });
 }
 
+const search = (queryParams) => {
+  return http.get(`/best-practices?${queryParams}`);
+}
 
 const update = (id, data) => {
   return http.put(`/practices/${id}`, data);
@@ -40,7 +43,8 @@ const BestPracticeService = {
   create,
   update,
   remove,
-  removeAll
+  removeAll,
+  search
 };
 
 export default BestPracticeService;

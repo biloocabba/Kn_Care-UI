@@ -17,22 +17,21 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // react plugin that prints a given react component
-import ReactToPrint from "react-to-print";
 // react component for creating dynamic tables
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory from "react-bootstrap-table2-paginator";
-import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import BootstrapTable from 'react-bootstrap-table-next'
+import paginationFactory from 'react-bootstrap-table2-paginator'
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit'
 // react component used to create sweet alerts
-import ReactBSAlert from "react-bootstrap-sweetalert";
 // reactstrap components
 import {
   Button,
-  ButtonGroup,
   Card,
   Container,
   Row,
+  CardHeader,
   Col,
   UncontrolledTooltip,
+  Input
 } from "reactstrap";
 
 import {
@@ -41,6 +40,7 @@ import {
 // core components
 import SimpleHeader from "components/Headers/SimpleHeader";
 import { CustomLoader } from "../../../components/Loader/CustomLoader"
+import { searchBestPractices, reterieveBestPractices} from 'actions/bestPractices'
 
 
 const pagination = paginationFactory({
@@ -48,10 +48,10 @@ const pagination = paginationFactory({
   alwaysShowAllBtns: true,
   showTotal: true,
   withFirstAndLast: false,
-  sizePerPageRenderer: ({ options, currSizePerPage, onSizePerPageChange }) => (
+  sizePerPageRenderer: ({ onSizePerPageChange }) => (
     <div className="dataTables_length" id="datatable-basic_length">
       <label>
-        Show{" "}
+        Show{' '}
         {
           <select
             name="datatable-basic_length"
@@ -64,63 +64,48 @@ const pagination = paginationFactory({
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
-        }{" "}
+        }{' '}
         entries.
       </label>
     </div>
   ),
-});
+})
 
-const { SearchBar } = Search;
-
-
+const { SearchBar } = Search
 
 
-function ReactBSTables(props) {
+
+
+function SearchBestPracticePage(props) {
   const [alert, setAlert] = React.useState(null);
   const componentRef = React.useRef(null);
   // this function will copy to clipboard an entire table,
   // so you can paste it inside an excel or csv file
-  const copyToClipboardAsTable = (el) => {
-    var body = document.body,
-      range,
-      sel;
-    if (document.createRange && window.getSelection) {
-      range = document.createRange();
-      sel = window.getSelection();
-      sel.removeAllRanges();
-      try {
-        range.selectNodeContents(el);
-        sel.addRange(range);
-      } catch (e) {
-        range.selectNode(el);
-        sel.addRange(range);
-      }
-      document.execCommand("copy");
-    } else if (body.createTextRange) {
-      range = body.createTextRange();
-      range.moveToElementText(el);
-      range.select();
-      range.execCommand("Copy");
+
+  const bestPractices = useSelector((state) => state.bestPractices)
+  const dispatch = useDispatch()
+  const [searchTime, setSearchTime] = useState('')
+  const [searchAuthor, setSearchAuthor] = useState('')
+  const [searchTag, setSearchTag] = useState('')
+  const [searchRate, setSearchRate] = useState('')
+  const [searchTitle, setSearchTitle] = useState('')
+
+  
+  // useEffect(() => {
+  //   dispatch(reterieveBestPractices())
+  // }, [dispatch])
+
+  const makeSearch = () => {
+    const searchFilters = {
+      searchTime: searchTime,
+      searchAuthor: searchAuthor,
+      searchTag: searchTag,
+      searchRate: searchRate,
+      searchTitle: searchTitle,
     }
-    setAlert(
-      <ReactBSAlert
-        success
-        style={{ display: "block", marginTop: "-100px" }}
-        title="Good job!"
-        onConfirm={() => setAlert(null)}
-        onCancel={() => setAlert(null)}
-        confirmBtnBsStyle="info"
-        btnSize=""
-      >
-        Copied to clipboard!
-      </ReactBSAlert>
-    );
-  };
-
-  const bestPractices = useSelector(state => state.bestPractices);
-  const dispatch = useDispatch();
-
+    
+   dispatch(searchBestPractices(searchFilters))
+  }
 
   const status = useSelector(state => state.pageStatus);
   const pageStatus = { pageStatus: status, statusCode: -1 };
@@ -158,109 +143,160 @@ function ReactBSTables(props) {
   return (
     <>
       {alert}
-      <SimpleHeader name="React Tables" parentName="Tables" />
+      <SimpleHeader name="Best Practices" parentName="Tables" />
       <Container className="mt--6" fluid>
         <Row>
           <div className="col">
             <Card>
-              <div className="d-flex justify-content-center">
-                <CustomLoader {...pageStatus} />
-              </div>
+            <CardHeader>
+                <h3 className="mb-0">Best Practices</h3>
+                <p className="text-sm mb-0">Add Filters</p>
+                  <div className="d-flex justify-content-center">
+                  <CustomLoader {...pageStatus} />
+                </div>
+              </CardHeader>
               <ToolkitProvider
                 data={bestPractices}
                 keyField="id"
                 columns={[
                   {
-                    dataField: "title",
-                    text: "Title",
+                    dataField: 'id',
+                    text: 'id',
+                    hidden: true,
+                  },
+                  {
+                    dataField: 'title',
+                    text: 'Title',
                     sort: true,
                   },
                   {
-                    dataField: "description",
-                    text: "Description",
+                    dataField: 'content',
+                    text: 'Content',
                     sort: true,
                   },
                   {
-                    dataField: "action",
-                    text: "",
-                    formatter: formatActionButtonCell
-                  }
+                    dataField: 'description',
+                    text: 'Description',
+                    sort: true,
+                  },
+                  {
+                    dataField: 'author',
+                    text: 'Author',
+                    sort: true,
+                  },
+                  {
+                    dataField: 'tag',
+                    text: 'Tag',
+                    sort: true,
+                  },
+                  {
+                    dataField: 'rate',
+                    text: 'Rate',
+                    sort: true,
+                  },
+                  {
+                    dataField: 'time',
+                    text: 'Time',
+                    sort: true,
+                  },
                 ]}
                 search
               >
                 {(props) => (
                   <div className="py-4 table-responsive">
-                    <Container fluid>
-                      <Row>
-                        <Col xs={12} sm={6}>
-                          <ButtonGroup>
-                            <Button
-                              className="buttons-copy buttons-html5"
-                              color="default"
-                              size="sm"
-                              id="copy-tooltip"
-                              onClick={() =>
-                                copyToClipboardAsTable(
-                                  document.getElementById("react-bs-table")
-                                )
-                              }
-                            >
-                              <span>Copy</span>
-                            </Button>
-                            <ReactToPrint
-                              trigger={() => (
-                                <Button
-                                  color="default"
-                                  size="sm"
-                                  className="buttons-copy buttons-html5"
-                                  id="print-tooltip"
-                                >
-                                  Print
-                                </Button>
-                              )}
-                              content={() => componentRef.current}
-                            />
-                          </ButtonGroup>
-                          <UncontrolledTooltip
-                            placement="top"
-                            target="print-tooltip"
-                          >
-                            This will open a print page with the visible rows of
-                            the table.
-                          </UncontrolledTooltip>
-                          <UncontrolledTooltip
-                            placement="top"
-                            target="copy-tooltip"
-                          >
-                            This will copy to your clipboard the visible rows of
-                            the table.
-                          </UncontrolledTooltip>
-                        </Col>
-                        <Col xs={12} sm={6}>
-                          <div
-                            id="datatable-basic_filter"
-                            className="dataTables_filter px-4 pb-1 float-right"
-                          >
-                            <label>
-                              Search:
-                              <SearchBar
-                                className="form-control-sm"
-                                placeholder=""
-                                {...props.searchProps}
-                              />
-                            </label>
-                          </div>
-                        </Col>
-                      </Row>
-                    </Container>
+                    <div
+                      id="datatable-basic_filter"
+                      className="dataTables_filter px-4 pb-1"
+                    >
+                      <div
+                        id="datatable-basic_filter"
+                        className="dataTables_filter px-3 pb-1"
+                      >
+                        <label>
+                          <Input
+                            className="form-control-sm"
+                            placeholder="Time"
+                            onChange={(e) => setSearchTime(e.target.value)}
+                            value={searchTime}
+                            id="search-time"
+                            type="text"
+                          />
+                        </label>
+                      </div>
+                      <div
+                        id="datatable-basic_filter"
+                        className="dataTables_filter px-3 pb-1"
+                      >
+                        <label>
+                          <Input
+                            className="form-control-sm"
+                            placeholder="Author"
+                            onChange={(e) => setSearchAuthor(e.target.value)}
+                            value={searchAuthor}
+                            id="search-Author"
+                            type="text"
+                          />
+                        </label>
+                      </div>
+                      <div
+                        id="datatable-basic_filter"
+                        className="dataTables_filter px-3 pb-1"
+                      >
+                        <label>
+                          <Input
+                            className="form-control-sm"
+                            placeholder="Tag"
+                            onChange={(e) => setSearchTag(e.target.value)}
+                            value={searchTag}
+                            id="search-Tag"
+                            type="text"
+                          />
+                        </label>
+                      </div>
+                      <div
+                        id="datatable-basic_filter"
+                        className="dataTables_filter px-3 pb-1"
+                      >
+                        <label>
+                          <Input
+                            className="form-control-sm"
+                            placeholder="Rate"
+                            onChange={(e) => setSearchRate(e.target.value)}
+                            value={searchRate}
+                            id="search-Rate"
+                            type="text"
+                          />
+                        </label>
+                      </div>
+                      <div
+                        id="datatable-basic_filter"
+                        className="dataTables_filter px-3 pb-1"
+                      >
+                        <label>
+                          <Input
+                            className="form-control-sm"
+                            placeholder="Title"
+                            onChange={(e) => setSearchTitle(e.target.value)}
+                            value={searchTitle}
+                            id="search-Title"
+                            type="text"
+                          />
+                        </label>
+                      </div>
+                      <Button
+                        type="button"
+                        color="info"
+                        href="#pablo"
+                        onClick={makeSearch}
+                      >
+                        Search
+                      </Button>
+                    </div>
                     <BootstrapTable
-                      hover
-                      ref={componentRef}
                       {...props.baseProps}
                       bootstrap4={true}
                       pagination={pagination}
                       bordered={false}
-                      id="react-bs-table"
                     />
                   </div>
                 )}
@@ -270,7 +306,7 @@ function ReactBSTables(props) {
         </Row>
       </Container>
     </>
-  );
+  )
 }
 
-export default ReactBSTables;
+export default SearchBestPracticePage

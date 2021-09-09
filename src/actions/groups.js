@@ -7,7 +7,7 @@ import {
     SEARCH_GROUP,
   } from "./types";
   
-  import groupServices from "../services/GroupServices";
+  import groupServices from "../services/groupServices";
   
   export const createGroup = (name, description) => async (dispatch) => {
     try {

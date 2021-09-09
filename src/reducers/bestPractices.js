@@ -5,7 +5,6 @@ import {
     DELETE_BEST_PRACTICE,
 } from "../actions/types/index"
 import BestPracticeInitialState from "../initialStates/BestPracticeInitialState";
-//const initialState = [];
 
 const bestPracticesReducer = (bestPractices = BestPracticeInitialState, action) => {
     const { type, payload } = action;
