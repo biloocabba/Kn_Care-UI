@@ -12,7 +12,7 @@ export const createUser = (data) => {
   return { type: CREATE_EMPLOYEE, payload: data }
 }
 
-export const reterieveEmployees = () => async (dispatch) => {
+export const retrieveEmployees = () => async (dispatch) => {
   try {
     const res = await employeeService.getAll()
     dispatch({ type: RETRIEVE_EMPLOYEES, payload: res.data })
@@ -20,6 +20,23 @@ export const reterieveEmployees = () => async (dispatch) => {
     console.log(error)
   }
 }
+
+export const searchEmployees = (filters) => async (dispatch) => {
+  try {
+    const queryParams = new URLSearchParams(filters);
+
+    const res = await employeeService.searchEmployees(queryParams);
+
+    console.log(res)
+
+    dispatch({
+      type: RETRIEVE_EMPLOYEES,
+      payload: res.data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 export const updateUser = (id, data) => {
   return { type: UPDATE_EMPLOYEE, payload: id, data }

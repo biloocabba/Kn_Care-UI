@@ -39,8 +39,7 @@ const removeAll = () => {
 
 
 
-const groupService = {
-
+const groupServices = {
   getAll,
   get,
   create,
@@ -49,4 +48,4 @@ const groupService = {
   removeAll,
 }
 
-export default groupService;
+export default groupServices;

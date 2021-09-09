@@ -1,12 +1,16 @@
 import http from './http-common'
 
-const getAll = () => {
+const getAllEmployees = () => {
   return http.get('/employees')
 }
 
+const searchEmployees = (queryParams) => {
+  return http.get(`/employees?${queryParams}`);
+};
 
 const employeeService = {
-  getAll, 
-}
+  getAllEmployees,
+  searchEmployees
+};
 
 export default employeeService
