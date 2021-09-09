@@ -3,12 +3,15 @@ import employeesReducer from "./employees.js";
 import careMembersReducer from './careMembers.js';
 import groupsReducer from './groups.js';
 import emailDraftReducer from "./emailDrafts.js";
+import bestPracticesReducer from "./bestPractices.js";
+import pageStatusReducer from "./pageStatus.js";
 
 
 export const rootReducer = combineReducers({
     employees: employeesReducer,
     careMembers: careMembersReducer,
     groups:groupsReducer,
-    emailDrafts: emailDraftReducer
-  }
-);
+    emailDrafts: emailDraftReducer,
+    bestPractices:bestPracticesReducer,
+    pageStatus:pageStatusReducer
+  });

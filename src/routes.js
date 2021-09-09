@@ -41,6 +41,7 @@ import GroupsPage from "views/pages/groups/GroupsPage.js"
 
 import CreateBestPracticePage from "views/pages/best-practices/CreateBestPracticePage.js"
 import SearchBestPracticesPage from "views/pages/best-practices/SearchBestPracticesPage.js"
+import BestPracticeView from "views/pages/best-practices/BestPracticePage";
 
 
 import CreateNewEmailPage from "views/pages/communications/CreateNewEmailPage";
@@ -131,6 +132,13 @@ const routes = [
         layout: "/admin",
       },
     ],
+  },
+  {
+    collapse: false,  
+    global:true, 
+    path:"/best-practice/:id",
+    component: BestPracticeView,
+    layout: "/admin",
   },
   {
     collapse: true,
