@@ -42,9 +42,10 @@ import GroupsPage from "views/pages/groups/GroupsPage.js"
 import CreateBestPracticePage from "views/pages/best-practices/CreateBestPracticePage.js"
 import SearchBestPracticesPage from "views/pages/best-practices/SearchBestPracticesPage.js"
 
+
 import CreateNewEmailPage from "views/pages/communications/CreateNewEmailPage";
 import EmailDetailsPage from "views/pages/communications/EmailDetailsPage";
-
+import SearchEmailDraftsPage from "views/pages/communications/SearchEmailDraftPage";
 import SendNotificationPage from "views/pages/communications/SendNotificationPage.js"
 import CreateEmailTemplatePage from "views/pages/communications/CreateEmailTemplatePage.js"
 import SearchTemplatePage from "views/pages/communications/SearchTemplatePage.js"
@@ -149,6 +150,13 @@ const routes = [
         name: "Search Email",
         miniName: "SE",
         component: SearchEmailPage,
+        layout: "/admin",
+      },
+      {
+        path: "/search-email-draft",
+        name: "Search Email Draft",
+        miniName: "SED",
+        component: SearchEmailDraftsPage,
         layout: "/admin",
       },
       {
