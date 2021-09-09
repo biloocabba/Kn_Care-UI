@@ -19,4 +19,8 @@ const careMemberService = {
   searchCareMembers
 }
 
+const getByRegion = region => {
+  return http.get(`/members/region=${region}`)
+}
+
 export default careMemberService

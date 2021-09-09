@@ -25,6 +25,7 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 // react component used to create sweet alerts
 import ReactBSAlert from "react-bootstrap-sweetalert";
 
+
 // reactstrap components
 import {
   Button,
