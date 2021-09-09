@@ -14,7 +14,7 @@ import {
     updateBestPractice,
     deleteBestPractice
 } from "../../../actions/bestPractice";
-import BestPracticeService from "../../../services/BestPracticeService";
+import BestPracticeService from "../../../services/bestPracticeService";
 import { confirmAlert } from "react-confirm-alert";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 

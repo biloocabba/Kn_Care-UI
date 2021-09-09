@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Redirect } from "react-router-dom";
 import SimpleReactValidator from 'simple-react-validator';
-import BestPracticeService from "../../../services/BestPracticeService";
+import bestPracticeService from "../../../services/bestPracticeService";
 import Files from 'react-files'
 
 // reactstrap components
@@ -77,7 +77,7 @@ function CreateBestPracticePage() {
     formData.append("content", content.description);
     const formValid = simpleValidator.current.allValid()
     if (formValid) {
-      BestPracticeService.create(formData)
+      bestPracticeService.create(formData)
         .then(setCreated(true))
         .catch(e => {
           setErrorAlert(true);

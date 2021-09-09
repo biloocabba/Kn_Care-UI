@@ -37,7 +37,7 @@ const removeAll = () => {
 };
 
 
-const BestPracticeService = {
+const bestPracticeService = {
   getAll,
   get,
   create,
@@ -47,4 +47,4 @@ const BestPracticeService = {
   search
 };
 
-export default BestPracticeService;
+export default bestPracticeService;
