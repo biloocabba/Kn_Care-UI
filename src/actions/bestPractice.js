@@ -7,14 +7,14 @@ import {
     SEARCH_BEST_PRACTICE,
     RATE_BEST_PRACTICE,
     TAG_BEST_PRACTICE,
-    SHARE_BEST_PRACTICE,
+    SHARE_BEST_PRACTICE,    
     RETRIEVE_BEST_PRACTICES,
     API_SEND_START,
     API_SEND_END
 
 } from "./types/index";
 
-import BestPracticeService from "../services/BestPracticeService";
+import BestPracticeService from "../services/bestPracticeService";
 import { PageStatus } from "../types/pageStatus"
 
 export const createBestPractice = (title, description, content) => async (dispatch) => {
@@ -83,3 +83,19 @@ export const deleteBestPractice = (id) => async (dispatch) => {
         console.log(err);
     }
 };
+
+
+
+  export const searchBestPractices = (searchFilters) => async (dispatch) => {
+    try {
+      // convert object to a query string
+      const queryParams = new URLSearchParams(searchFilters);
+
+      const res = await BestPracticeService.search(queryParams)
+
+      console.log(res)
+      dispatch({ type: RETRIEVE_BEST_PRACTICES, payload: res.data })
+    } catch (error) {
+      console.log(error)
+    }
+  }

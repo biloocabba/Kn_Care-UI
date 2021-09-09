@@ -34,13 +34,10 @@ import {
   Input
 } from "reactstrap";
 
-import {
-  retrieveBestPractices,
-} from "../../../actions/bestPractice";
 // core components
 import SimpleHeader from "components/Headers/SimpleHeader";
 import { CustomLoader } from "../../../components/Loader/CustomLoader"
-import { searchBestPractices, reterieveBestPractices} from 'actions/bestPractices'
+import { searchBestPractices, retrieveBestPractices} from 'actions/bestPractice'
 
 
 const pagination = paginationFactory({
