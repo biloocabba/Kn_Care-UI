@@ -8,6 +8,8 @@ import pageStatusReducer from "./pageStatus.js";
 import mapKpisReducer from './mapKpis.js';
 import authReducer from "./auth";
 import messageReducer from "./message";
+import roleReducer from "./roles";
+
 
 export const rootReducer = combineReducers({
     employees: employeesReducer,
@@ -19,4 +21,5 @@ export const rootReducer = combineReducers({
     mapKpis: mapKpisReducer,
     message: messageReducer,
     auth: authReducer,
+    roles:roleReducer
   });
