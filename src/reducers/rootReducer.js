@@ -5,7 +5,9 @@ import groupsReducer from './groups.js';
 import emailDraftReducer from "./emailDrafts.js";
 import bestPracticesReducer from "./bestPractices.js";
 import pageStatusReducer from "./pageStatus.js";
-
+import mapKpisReducer from './mapKpis.js';
+import authReducer from "./auth";
+import messageReducer from "./message";
 
 export const rootReducer = combineReducers({
     employees: employeesReducer,
@@ -13,5 +15,8 @@ export const rootReducer = combineReducers({
     groups:groupsReducer,
     emailDrafts: emailDraftReducer,
     bestPractices:bestPracticesReducer,
-    pageStatus:pageStatusReducer
+    pageStatus:pageStatusReducer,
+    mapKpis: mapKpisReducer,
+    message: messageReducer,
+    auth: authReducer,
   });

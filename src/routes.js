@@ -58,6 +58,8 @@ import ChartsPage from "views/pages/dashboards/ChartsPage.js"
 import WorldOverviewPage from "views/pages/dashboards/WorldOverviewPage.js"
 import CreateCareMemberPage from "views/pages/users/CreateCareMemberPage";
 
+import LoginPage from "views/pages/users/LoginPage"
+
 
 const routes = [
   {
@@ -110,6 +112,13 @@ const routes = [
     path: "/group-member-details/:id",
     component: EditGroupPage,
     layout: "/admin"
+  },
+  {
+    collapse: false,  
+    global:true, 
+    path: "/login",
+    component: LoginPage,
+    layout: "/auth"
   },
   {
     collapse: true,

@@ -14,33 +14,23 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState } from "react";
 // react plugin for creating vector maps
 import { VectorMap } from "react-jvectormap";
 
 // reactstrap components
 import { Card, CardBody, Container, Row } from "reactstrap";
 // core components
-import SimpleHeader from "components/Headers/SimpleHeader.js";
+import MapsHeader from "components/Headers/MapsHeader";
 
-let mapData = {
-  AU: 760,
-  BR: 550,
-  CA: 120,
-  DE: 1300,
-  FR: 540,
-  GB: 690,
-  GE: 200,
-  IN: 200,
-  RO: 600,
-  RU: 300,
-  US: 2920,
-};
+
 
 function Vector() {
+  const [mapData, setMapData] = useState({});
+
   return (
     <>
-      <SimpleHeader name="Vector maps" parentName="Maps" />
+      <MapsHeader name="World view" setMapData={setMapData} />
       <Container className="mt--6" fluid>
         <Row>
           <div className="col">
@@ -53,7 +43,7 @@ function Vector() {
                     height: "600px",
                   }}
                   map={"world_mill"}
-                  zoomOnScroll={false}
+                  zoomOnScroll={true}
                   scaleColors={["#f00", "#0071A4"]}
                   normalizeFunction="polynomial"
                   hoverOpacity={0.7}
@@ -70,70 +60,49 @@ function Vector() {
                     hover: {
                       fill: "#dee2e6",
                       "fill-opacity": 0.8,
-                      cursor: "pointer",
-                    },
-                    selected: {
-                      fill: "yellow",
-                    },
-                    selectedHover: {},
+                      cursor: "pointer"
+                    }
                   }}
-                  markerStyle={{
-                    initial: {
-                      fill: "#fb6340",
-                      "stroke-width": 0,
-                    },
-                    hover: {
-                      fill: "#11cdef",
-                      "stroke-width": 0,
-                    },
-                  }}
-                  markers={[
-                    {
-                      latLng: [41.9, 12.45],
-                      name: "Vatican City",
-                    },
-                    {
-                      latLng: [43.73, 7.41],
-                      name: "Monaco",
-                    },
-                    {
-                      latLng: [35.88, 14.5],
-                      name: "Malta",
-                    },
-                    {
-                      latLng: [1.3, 103.8],
-                      name: "Singapore",
-                    },
-                    {
-                      latLng: [1.46, 173.03],
-                      name: "Kiribati",
-                    },
-                    {
-                      latLng: [-21.13, -175.2],
-                      name: "Tonga",
-                    },
-                    {
-                      latLng: [15.3, -61.38],
-                      name: "Dominica",
-                    },
-                    {
-                      latLng: [-20.2, 57.5],
-                      name: "Mauritius",
-                    },
-                    {
-                      latLng: [26.02, 50.55],
-                      name: "Bahrain",
-                    },
-                  ]}
+                  // markerStyle={{
+                  //   initial: {
+                  //     fill: "#fb6340",
+                  //     "stroke-width": 0,
+                  //   },
+                  //   hover: {
+                  //     fill: "#11cdef",
+                  //     "stroke-width": 0,
+                  //   },
+                  // }}
+                  // markers={[
+                  //   {
+                  //     latLng: [41.9, 12.45],
+                  //     name: "Vatican City",
+                  //   },
+                  //   {
+                  //     latLng: [43.73, 7.41],
+                  //     name: "Monaco",
+                  //   },
+                  //   {
+                  //     latLng: [35.88, 14.5],
+                  //     name: "Malta",
+                  //   },
+                  // ]}
                   series={{
                     regions: [
                       {
                         values: mapData,
-                        scale: ["#ced4da", "#adb5bd"],
+                        scale: ["#ced4da", "#043c7c"],
                         normalizeFunction: "polynomial",
                       },
                     ],
                   }}
+                  onRegionTipShow={
+                    function name(e, label, code) {
+                      if (mapData[code] != undefined) {
+                        label.html(label.html() +' - '+ mapData[code]);
+                      }
+                    }
+                  }
                 />
               </CardBody>
             </Card>
