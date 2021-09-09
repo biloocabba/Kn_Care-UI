@@ -1,4 +1,3 @@
-import { initialState } from "initialStates/mapKpi.js";
 import {
     ALL_ACTIVE_MEMBERS,
     NEW_MEMBERS,
@@ -6,59 +5,73 @@ import {
     AUTO_OFFBOARDED_MEMBERS
 } from "../actions/types";
 
-function mapKpisReducer(kpis = initialState, action) {
-    const { type } = action;
+// initialState is empty dict
+const initialState = {};
 
-    // kpis is not iterable?
-    console.log([...kpis]);
-  
+function mapKpisReducer(mapKpis = initialState, action) {
+    const { type, payload } = action;
+
     const getLastYear = new Date().getFullYear() - 1;
-    var mapData = {};
+    mapKpis = {};
 
     switch (type) {
         case ALL_ACTIVE_MEMBERS:
-            console.log("ALL ACTIVE");
-            // kpis.forEach is not a function?
-            kpis.forEach(kpi => {
-                console.log(kpi);
-                if (kpi.offBoardedDate != null) {
-                    mapData[kpi.country] += 1;
+            payload.forEach(kpi => {
+                if (kpi.offBoardedDate !== null) {
+                    if (mapKpis[kpi.country] !== undefined) {
+                        mapKpis[kpi.country] += 1;
+                    }
+                    else {
+                        mapKpis[kpi.country] = 1;
+                    }
                 }
             });
-            console.log([...mapData]);
-            return mapData
+            return mapKpis;
 
         case NEW_MEMBERS:
-            console.log("NEW MEMBERS");
-            kpis.forEach(kpi => {
-                if (Date.parse(kpi.onBoardedDate) >= getLastYear) {
-                    mapData[kpi.country] += 1;
+            payload.forEach(kpi => {
+                var started = new Date(kpi.onBoardDate);
+                if (started.getFullYear() >= getLastYear) {
+                    if (mapKpis[kpi.country] !== undefined) {
+                        mapKpis[kpi.country] += 1;
+                    }
+                    else {
+                        mapKpis[kpi.country] = 1;
+                    }
                 }
             });
-            return mapData
-
+            return mapKpis;
 
         case SELF_RESIGNED_MEMBERS:
-            console.log("SELF RESIGNED");
-            kpis.forEach(kpi => {
-                if (Date.parse(kpi.offBoardedDate) >= getLastYear && kpi.selfResigned) {
-                    mapData[kpi.country] += 1;
+            payload.forEach(kpi => {
+                var endDate = new Date(kpi.offBoardDate);
+                if (endDate.getFullYear() >= getLastYear && kpi.selfResigned) {
+                    if (mapKpis[kpi.country] !== undefined) {
+                        mapKpis[kpi.country] += 1;
+                    }
+                    else {
+                        mapKpis[kpi.country] = 1;
+                    }
                 }
             });
-            return mapData;
-
+            return mapKpis;
 
         case AUTO_OFFBOARDED_MEMBERS:
-            console.log("AUTO OFFBOARDED");
-            kpis.forEach(kpi => {
-                if (Date.parse(kpi.offBoardedDate) >= getLastYear && !kpi.selfResigned) {
-                    mapData[kpi.country] += 1;
+            payload.forEach(kpi => {
+                var endDate = new Date(kpi.offBoardDate);
+                if (endDate.getFullYear() >= getLastYear && !kpi.selfResigned) {
+                    if (mapKpis[kpi.country] !== undefined) {
+                        mapKpis[kpi.country] += 1;
+                    }
+                    else {
+                        mapKpis[kpi.country] = 1;
+                    }
                 }
             });
-            return mapData;
+            return mapKpis;
 
         default:
-            return mapData;
+            return mapKpis;
     }
 };
 

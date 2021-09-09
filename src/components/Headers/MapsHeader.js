@@ -11,7 +11,8 @@ import {
   Col,
 } from "reactstrap";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { getMapData } from 'actions/mapKpi';
 
 import {
   ALL_ACTIVE_MEMBERS,
@@ -21,13 +22,13 @@ import {
 } from "../../actions/types";
 
 
-function MapsHeader({ name, setMapData }) {
-  // const careMembers = useSelector(state => state.careMembers);
+function MapsHeader({ name }) {
   const dispatch = useDispatch();
+  // const mapData = useSelector(state => state.mapKpis);
 
-  const getMap = (e, action) => {
+  const getMap = (e, actionType) => {
     e.preventDefault();
-    setMapData(dispatch(action));
+    dispatch(getMapData(actionType));
   }
 
   return (
@@ -58,25 +59,25 @@ function MapsHeader({ name, setMapData }) {
               </Col>
               <Col className="mt-6 mt-md-0 text-md-right" lg="6" xs="5">
                 <Button className="btn-neutral"
-                  onClick={(e) => getMap(e, {type: ALL_ACTIVE_MEMBERS})}
+                  onClick={(e) => getMap(e, ALL_ACTIVE_MEMBERS)}
                   color="default"
                   size="sm">
                   Active Care Members
                 </Button>
                 <Button className="btn-neutral"
-                  onClick={(e) => getMap(e, {type: NEW_MEMBERS})}
+                  onClick={(e) => getMap(e, NEW_MEMBERS)}
                   color="default"
                   size="sm">
                   New Care Members
                 </Button>
                 <Button className="btn-neutral"
-                  onClick={(e) => getMap(e, { type: SELF_RESIGNED_MEMBERS })}
+                  onClick={(e) => getMap(e, SELF_RESIGNED_MEMBERS)}
                   color="default"
                   size="sm">
                   Self resigned last year
                 </Button>
                 <Button className="btn-neutral"
-                  onClick={(e) => getMap(e, { type: AUTO_OFFBOARDED_MEMBERS })}
+                  onClick={(e) => getMap(e, AUTO_OFFBOARDED_MEMBERS)}
                   color="default"
                   size="sm">
                   Automatic offboarded last year
