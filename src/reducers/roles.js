@@ -4,9 +4,8 @@ import {
     EDIT_ROLE, RETRIEVE_ROLES,
 } from "actions/types/index.js";
 
-const initialState = [];
 
-const roleReducer = (roles = initialState, action) => {
+const roleReducer = (roles = {}, action) => {
     const { type, payload } = action;
 
     switch (type) {

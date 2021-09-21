@@ -1,12 +1,74 @@
 import {
   CREATE_CARE_MEMBER,
   RETRIEVE_CARE_MEMBERS,
+  API_CALL_START
 } from './types'
 
 import careMemberService from '../services/careMemberService'
 import { toast } from 'react-toastify';
 
 
+
+
+
+
+
+
+
+export const searchCareMembers = (filters) => (dispatch) => {
+  try {
+    const queryParams = new URLSearchParams(filters);
+
+    dispatch({
+      type: API_CALL_START,
+      payload: 'SEARCH_EMPLOYEES',
+    });
+
+    const res = careMemberService.searchCareMembers(queryParams);
+
+    console.log("/careMembers?" + {queryParams})
+
+    dispatch({
+      type: RETRIEVE_CARE_MEMBERS,
+      payload: res.data,
+    });
+    return Promise.resolve(res.data);
+
+  } catch (err) {
+    toast.error("Could not connect to server. Contact Administrator")
+    return Promise.reject(err);
+  }
+};
+
+
+export const createCareMember = (data) => (dispatch) => {
+    
+  const { country, employee, offBoardDate, onBoardDate, role } = data
+
+  try {
+    const res = careMemberService.create({
+     country,
+     employee,
+     offBoardDate,
+     onBoardDate,
+     role
+    })
+
+    dispatch({ type: CREATE_CARE_MEMBER, payload: res.data })
+
+    if(res.status === 201){
+      toast.success("Care Member Created Successfully")
+    }
+    return Promise.resolve(res.data);
+
+  } catch (error) {
+    toast.error("Could not connect to server. Contact Administrator")
+    return Promise.reject(error);
+  }
+}
+
+/** Real Impl */
+/*
 export const searchCareMembers = (filters) => async (dispatch) => {
   try {
     const queryParams = new URLSearchParams(filters);
@@ -53,4 +115,5 @@ export const createCareMember = (data) => async (dispatch) => {
     return Promise.reject(error)
   }
 }
+*/
 

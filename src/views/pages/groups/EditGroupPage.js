@@ -16,7 +16,10 @@
 */
 import React, {useState, useEffect} from "react";
 import { useDispatch, useSelector } from  "react-redux";
+import BootstrapTable from 'react-bootstrap-table-next'
+import paginationFactory from 'react-bootstrap-table2-paginator'
 
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit'
 // reactstrap components
 import {
   Button,
@@ -38,34 +41,75 @@ import {
   Col,
   Modal, ModalHeader, ModalBody, ModalFooter
 } from "reactstrap";
+
+
 // core components
-import ProfileHeader from "components/Headers/ProfileHeader.js";
+
+import AddMemberPanel from "./AddMemberPanel.js";
 import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
 import {useParams} from "react-router-dom";
 import {DEACTIVATE_GROUP, UPDATE_GROUP} from "actions/types"
+const { SearchBar } = Search
 
+const pagination = paginationFactory({
+  page: 1,
+  alwaysShowAllBtns: true,
+  showTotal: true,
+  withFirstAndLast: false,
+  sizePerPageRenderer: ({ options, currSizePerPage, onSizePerPageChange }) => (
+    <div className="dataTables_length" id="datatable-basic_length">
+      <label>
+        Show{' '}
+        {
+          <select
+            name="datatable-basic_length"
+            aria-controls="datatable-basic"
+            className="form-control form-control-sm"
+            onChange={(e) => onSizePerPageChange(e.target.value)}
+          >
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        }{' '}
+        entries.
+      </label>
+    </div>
+  ),
+})
 
 
 
 function EditGroupPage(props) {
 
-    const handleInputChange = event => {
+  const dispatch = useDispatch();
+  const groups = useSelector(state => state.groups);
+  const careMembers = useSelector(state => state.careMembers);
+
+  let { id } = useParams(); //see in routes path: "/users/employee-details/:id",
+  let currentGroup = groups.find(grp=> grp.id===parseInt(id));
+
+ 
+  const [group, setGroup] = useState(currentGroup)
+
+  const toggleCurrentMembers = () => {
+    setCurrentMembersCollapse(!currentMembersCollapse);
+    setAddMembersCollapse(false);  
+  }
+  const [currentMembersCollapse, setCurrentMembersCollapse] = useState(false);
+
+  const toggleAddMembers = () => {
+    setAddMembersCollapse(!addMembersCollapse);
+    setCurrentMembersCollapse(false);
+  }  
+  const [addMembersCollapse, setAddMembersCollapse] = useState(false);
+
+  const handleInputChange = event => {
     event.preventDefault()
     const { name, value } = event.target;
     setGroup({ ...group, [name]: value });
   };
-
-  const dispatch = useDispatch();
-
-  useEffect(()=>{
-    setGroup({...group});
-  },[]);
-
-  const groups = useSelector(state => state.groups);
-
-  let { id } = useParams(); //see in routes path: "/users/employee-details/:id",
-  
-  let currentGroup = groups.filter(grp=> grp.id==id)[0];
 
   const deactivateGroup = () => {
     dispatch({
@@ -84,21 +128,52 @@ function EditGroupPage(props) {
     backToSearch();
   }
 
+  const formatActionButtonCell = (cell, row) => {
+    return (
+      <>
+        <Button
+          id={row.id}
+          className="btn-icon btn-2"
+          type="button"
+          color="info"
+          onClick={memberDetails}
+        >
+          <span id={row.id} className="btn-inner--icon">
+            <i id={row.id} className="ni ni-badge" />
+          </span>
+        </Button>
+        <Button
+          id={row.id}
+          className="btn-icon btn-2"
+          color="danger"
+          type="button"
+          onClick={memberRemove}
+        >
+          <span id={row.id} className="btn-inner--icon">
+            <i id={row.id} className="ni ni-fat-remove" />
+          </span>
+        </Button>
+      </>
+    )
+  }
 
-  const backToSearch = () => {
+  const memberDetails = (e) => {
+    var { id } = e.target
+    props.history.push('/admin/users/employee-details/' + id)
+  }
 
-    props.history.push('/admin/search-groups')
-
+  const memberRemove = (e) => {
+    var { id } = e.target
+    console.log(id)    
   }
 
 
-  const toggle = () => setCollapse(!collapse);
-  
+  const backToSearch = () => {
+    props.history.push('/admin/search-groups')
+  }
+ 
+  let numOfMembers = 2; //(group.members) ? group.members.length : 0;
 
-  const [group, setGroup] = useState(currentGroup)
-  const [collapse, setCollapse] = useState(false);
-
-  let numOfMembers = group.members.length;
   return (
     <>
       <GradientEmptyHeader name="Groups"  />
@@ -115,7 +190,7 @@ function EditGroupPage(props) {
                 <Row className="align-items-center py-4">              
                   <Col lg="12" xs="7" className="text-right">
 
-                    {group.active ? <Button
+                    {group && group.active ? <Button
                           type="button"
                           color="danger"
                           onClick={deactivateGroup}                  
@@ -128,7 +203,7 @@ function EditGroupPage(props) {
                         >
                           Activate Group
                         </Button> 
-}
+                        }
                       
 
                         <Button
@@ -141,10 +216,12 @@ function EditGroupPage(props) {
                   </Col>
                 </Row>
               </CardHeader>
+
               <CardBody>
-              <Form>
-              <h6 className="heading-small text-muted mb-4">
-                    Care Member information
+              {group && 
+                <Form>
+                  <h6 className="heading-small text-muted mb-4">
+                   Group Details
                   </h6>
                   <div className="pl-lg-4">                    
                     <Row>
@@ -182,8 +259,6 @@ function EditGroupPage(props) {
                         </FormGroup>
                       </Col>
                     </Row>
-
-                    
                     <Row>
                       <Col >
                         <FormGroup>
@@ -205,78 +280,147 @@ function EditGroupPage(props) {
                       </Col>
                    
                     </Row>
-                   
-
                   </div>
-                
-                  <hr className="my-4" />
-
-                
-
-                  <Row className="d-flex justify-content-between mx-2">
-
+                <hr className="my-4" />
+   
+               <Row className="d-flex justify-content-between mx-2">
+               
                   <h6 className="heading-small text-muted mb-4">
                     MEMBERS
                   </h6> 
 
-
                   <ButtonGroup className="d-flex">
-                  <Button onClick={toggle} disabled={numOfMembers === 0} >
-                        {collapse ?"Hide members":  "Show members"} ({numOfMembers} members)
-                  </Button>
+                    <Button onClick={toggleAddMembers} color='success'>
+                        Add new Members
+                    </Button>
+                    <Button onClick={toggleCurrentMembers} disabled={numOfMembers === 0} color='info'>
+                          {currentMembersCollapse ?"Hide members":  "Show members"} ({numOfMembers} members)
+                    </Button>
+                  </ButtonGroup>    
 
+                </Row>
 
-                  </ButtonGroup>
-
-                  
-
-                    
-                  </Row>
-
-                
-
-                      
-                 
-                  
-                  <div className="pl-lg-4">
-                  <Row>
-
-               
-                      
-                  </Row>
-
-                    <Row>
+                <Row>
+                    <Col lg="12">
                     {/* <MembersTableComps data={group.members} /> */}
-                    <Collapse isOpen={collapse}>
-                        <ListGroup>
-                          <ListGroupItem>Cras justo odio</ListGroupItem>
-                          <ListGroupItem>Dapibus ac facilisis in</ListGroupItem>
-                          <ListGroupItem>Morbi leo risus</ListGroupItem>
-                          <ListGroupItem>Porta ac consectetur ac</ListGroupItem>
-                          <ListGroupItem>Vestibulum at eros</ListGroupItem>
-                        </ListGroup>
-       
+                      <Collapse isOpen={addMembersCollapse} >
+                        <AddMemberPanel 
+                          onchangeRole={ (e) => console.log(e)}
+                          onchangeCountry={(e) => console.log(e)}
+                          onchangeBunit={(e) => console.log(e)}
+                          onSelectCareMember={(e) => console.log(e)}                        
+                        />
                       </Collapse>
+                      <Collapse isOpen={currentMembersCollapse} >
+                      <Card>
+                            <CardHeader>
+                              <h3 className="mb-0">Group members</h3>
+                              <p className="text-sm mb-0">Care Members</p>
+                            </CardHeader>
+                      
+                            <ToolkitProvider
+                              data={careMembers}
+                              keyField="firstName"
+                              columns={[
+                                {
+                                  dataField: 'firstName',
+                                  text: 'First Name',
+                                  hidden: true,
+                                },
+                                {
+                                  dataField: 'lastName',
+                                  text: 'lastName',
+                                  hidden: true,
+                                },
+                                {
+                                  dataField: 'internationalName',
+                                  text: 'int Name',
+                                  sort: true,
+                                },
+                                {
+                                  dataField: 'title',
+                                  text: 'title',
+                                  sort: true,
+                                  style: { width: '50px' },
+                                },
+                                {
+                                  dataField: 'businessUnit',
+                                  text: 'bUnit',
+                                  sort: true,
+                                  style: { width: '50px' },
+                                },
+                                {
+                                  dataField: 'companyCode',
+                                  text: 'companyCode',
+                                  sort: true,
+                                  style: { width: '50px' },
+                                },
+                                {
+                                  dataField: 'costCenter',
+                                  text: 'costCenter',
+                                  sort: true,
+                                },
+                                {
+                                  dataField: 'country',
+                                  text: 'country',
+                                  sort: true,
+                                },
+                                {
+                                  dataField: "hiringDate",
+                                  text: "hiringDate",
+                                  sort: true,
+                                },
+                                {
+                                  dataField: 'action',
+                                  text: '',
+                                  formatter: formatActionButtonCell,
+                                },
+                              ]}
+                              search
+                            >
+                              {(props) => (
+                                <> 
+                                <div className="py-4 table-responsive">
+
+                                  <div
+                                    id="datatable-basic_filter"
+                                    className="dataTables_filter px-4 pb-1"
+                                  >
+                                  <label>
+                                        Search:
+                                        <SearchBar
+                                          className="form-control-sm"
+                                          placeholder="Filter results"
+                                          {...props.searchProps}
+                                        />
+                                      </label>
+                                  </div>
+                                                    
+                                  <BootstrapTable
+                                    {...props.baseProps}
+                                    bootstrap4={true}
+                                    pagination={pagination}
+                                    bordered={false}
+                                  />
+                                </div>
+                                </>
+                              )}
+                            </ToolkitProvider>
+                          </Card>
+                      </Collapse>
+                      </Col>
                     </Row>
-                   
-      
-                  </div>
+                 
 
                   <hr className="my-4" />
 
                   <div className="pl-lg-4">
-
                   <Row>
                     <Button color="primary" onClick={() => handleSaveClick()}> Save</Button>
                     <Button color="danger" onClick={() => handleSaveClick()}> Delete group</Button>
-
                  </Row>
-
-
                   </div>
-                </Form>
-
-                
+                </Form>}
               </CardBody>
             </Card>
           </Col>

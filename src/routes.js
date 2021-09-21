@@ -41,8 +41,7 @@ import GroupsPage from "views/pages/groups/GroupsPage.js"
 
 import CreateBestPracticePage from "views/pages/best-practices/CreateBestPracticePage.js"
 import SearchBestPracticesPage from "views/pages/best-practices/SearchBestPracticesPage.js"
-import BestPracticeView from "views/pages/best-practices/BestPracticePage";
-
+import BestPracticeDetailPage from "views/pages/best-practices/BestPracticeDetailPage";
 
 import CreateNewEmailPage from "views/pages/communications/CreateNewEmailPage";
 import EmailDetailsPage from "views/pages/communications/EmailDetailsPage";
@@ -144,13 +143,6 @@ const routes = [
     ],
   },
   {
-    collapse: false,  
-    global:true, 
-    path:"/best-practice/:id",
-    component: BestPracticeView,
-    layout: "/admin",
-  },
-  {
     collapse: true,
     name: "Communications",
     icon: "ni ni-email-83 text-info",
@@ -163,55 +155,55 @@ const routes = [
         component: CreateNewEmailPage,
         layout: "/admin",
       },
-      {
-        path: "/search-email",
-        name: "Search Email",
-        miniName: "SE",
-        component: SearchEmailPage,
-        layout: "/admin",
-      },
+      // {
+      //   path: "/search-email",
+      //   name: "Search Email",
+      //   miniName: "SE",
+      //   component: SearchEmailPage,
+      //   layout: "/admin",
+      // },
       {
         path: "/search-email-draft",
-        name: "Search Email Draft",
+        name: "Search Email",
         miniName: "SED",
         component: SearchEmailDraftsPage,
         layout: "/admin",
       },
-      {
-        path: "/create-notification",
-        name: "Create Notification",
-        miniName: "CN",
-        component: SendNotificationPage,
-        layout: "/admin",
-      },
-      {
-        path: "/email-history",
-        name: "Email History",
-        miniName: "EH",
-        component: EmailHistoryPage,
-        layout: "/admin",
-      },
-      {
-        path: "/email-create-template",
-        name: "Create Template",
-        miniName: "CT",
-        component: CreateEmailTemplatePage,
-        layout: "/admin",
-      },
-      {
-        path: "/email-search-template",
-        name: "Search Template",
-        miniName: "ST",
-        component: SearchTemplatePage,
-        layout: "/admin",
-      },
-      {
-        path: "/archive",
-        name: "Archive",
-        miniName: "CA",
-        component: ArchivePage,
-        layout: "/admin",
-      },
+      // {
+      //   path: "/create-notification",
+      //   name: "Create Notification",
+      //   miniName: "CN",
+      //   component: SendNotificationPage,
+      //   layout: "/admin",
+      // },
+      // {
+      //   path: "/email-history",
+      //   name: "Email History",
+      //   miniName: "EH",
+      //   component: EmailHistoryPage,
+      //   layout: "/admin",
+      // },
+      // {
+      //   path: "/email-create-template",
+      //   name: "Create Template",
+      //   miniName: "CT",
+      //   component: CreateEmailTemplatePage,
+      //   layout: "/admin",
+      // },
+      // {
+      //   path: "/email-search-template",
+      //   name: "Search Template",
+      //   miniName: "ST",
+      //   component: SearchTemplatePage,
+      //   layout: "/admin",
+      // },
+      // {
+      //   path: "/archive",
+      //   name: "Archive",
+      //   miniName: "CA",
+      //   component: ArchivePage,
+      //   layout: "/admin",
+      // },
     ],
   },
   {
@@ -262,6 +254,13 @@ const routes = [
     global:true, 
     path: "/users/new-care-member/:id",
     component: CreateCareMemberPage,
+    layout: "/admin",
+  },
+  {
+    collapse: false,  
+    global:true, 
+    path: "/best-practice/:id",
+    component: BestPracticeDetailPage,
     layout: "/admin",
   },
   {

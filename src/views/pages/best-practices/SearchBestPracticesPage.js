@@ -23,16 +23,15 @@ import paginationFactory from 'react-bootstrap-table2-paginator'
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit'
 // react component used to create sweet alerts
 // reactstrap components
-import {
-  Button,
-  Card,
-  Container,
-  Row,
-  CardHeader,
-  Col,
-  UncontrolledTooltip,
-  Input
-} from "reactstrap";
+import { Button, Card, Col, CardBody, CardHeader, Container, Input, Row,FormGroup,
+  CardImg,  
+  CardTitle,
+  CardText     
+   } from 'reactstrap'
+import ReactDatetime from "react-datetime";
+
+import Select from "react-select";
+import makeAnimated from 'react-select/animated';
 
 // core components
 import SimpleHeader from "components/Headers/SimpleHeader";
@@ -81,6 +80,7 @@ function SearchBestPracticePage(props) {
 
   const bestPractices = useSelector((state) => state.bestPractices)
   const dispatch = useDispatch()
+
   const [searchTime, setSearchTime] = useState('')
   const [searchAuthor, setSearchAuthor] = useState('')
   const [searchTag, setSearchTag] = useState('')
@@ -104,16 +104,16 @@ function SearchBestPracticePage(props) {
    dispatch(searchBestPractices(searchFilters))
   }
 
-  const status = useSelector(state => state.pageStatus);
-  const pageStatus = { pageStatus: status, statusCode: -1 };
+  // const status = useSelector(state => state.pageStatus);
+  // const pageStatus = { pageStatus: status, statusCode: -1 };
 
 
-  useEffect(() => {
-    const loadData = async () => {
-      await dispatch(retrieveBestPractices());
-    }
-    loadData();
-  }, [dispatch]);
+  // useEffect(() => {
+  //   const loadData = async () => {
+  //     await dispatch(retrieveBestPractices());
+  //   }
+  //   loadData();
+  // }, [dispatch]);
 
 
   // limit description respresintation to 50 characters to fit it on the page
@@ -123,7 +123,7 @@ function SearchBestPracticePage(props) {
     }
   });
 
-  const ViewBestPractice = e => {
+  const toBestPracticeDetailsPage = e => {
     var { id } = e.target;
     props.history.push("/admin/best-practice/" + id);
   }
@@ -131,7 +131,7 @@ function SearchBestPracticePage(props) {
   const formatActionButtonCell = (cell, row) => {
     return (
       <>
-        <Button id={row.id} className="btn-icon btn-2" type="button" onClick={e => ViewBestPractice(e)}>
+        <Button id={row.id} className="btn-icon btn-2" type="button" onClick={e => toBestPracticeDetailsPage(e)}>
           View
         </Button>
       </>);
@@ -142,16 +142,211 @@ function SearchBestPracticePage(props) {
       {alert}
       <SimpleHeader name="Best Practices" parentName="Tables" />
       <Container className="mt--6" fluid>
+      <Row className="justify-content-center">
+          <Col className="card-wrapper" lg="12">
+            <Card>
+              <CardHeader>
+                <h2 className="mb-0">Best Practices</h2>
+                <p className="text-sm mb-0">Highlighted</p>
+              </CardHeader>
+              <CardBody>
+              <Row className="card-wrapper">
+              <Col lg="4">
+                  <Card>
+                      <CardImg
+                        alt="..."
+                        src={require("assets/img/care/care-credit-cards.png").default}
+                        top
+                      />              
+                    <CardBody >
+                      <CardTitle className="mb-3 text-center" tag="h3">
+                        Care Credit Cards
+                      </CardTitle>
+                      <CardText className="mb-4" >
+                        <Row className="justify-content-center">
+                          <Col lg="12">
+                           Recognize a colleague from everywhere in the world
+                          </Col>
+                        </Row>
+                      </CardText>
+                      <Button
+                        color="primary"
+                        href="#pablo"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        Read More
+                      </Button>
+                    </CardBody>
+                  </Card>
+                </Col>
+                <Col lg="4">
+                  <Card >
+                      <CardImg
+                        alt="..."
+                        src={require("assets/img/care/huddle.png").default}
+                        top
+                      />              
+                    <CardBody>
+                      <CardTitle className="mb-3 text-center" tag="h3">
+                        Huddles
+                      </CardTitle>
+                      <CardText className="mb-4">
+                        <Row className="justify-content-center">
+                          <Col lg="12">
+                            Guide the team in a discussion around the topics and what the idea means
+                          </Col>
+                        </Row>
+                      </CardText>
+                      <Button
+                        id="1"
+                        color="primary"
+                        href="#pablo"
+                        onClick={(e) => toBestPracticeDetailsPage(e)}
+                      >
+                        Read More
+                      </Button>
+                    </CardBody>
+                  </Card>
+                </Col>
+                <Col lg="4">
+                  <Card>
+                      <CardImg
+                        alt="..."
+                        src={require("assets/img/care/remote-work.png").default}                       
+                        top
+                      />              
+                    <CardBody>
+                      <CardTitle className="mb-3 text-center" tag="h3">
+                        Care & Remote Work
+                      </CardTitle>
+                      <CardText className="mb-4">
+                        <Row className="justify-content-center">
+                          <Col lg="12">
+                            Playbook for remote work
+                          </Col>
+                        </Row>
+                      </CardText>
+                      <Button
+                        color="primary"
+                        href="#pablo"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        Read More
+                      </Button>
+                    </CardBody>
+                  </Card>
+                </Col>              
+              </Row>
+              </CardBody>  
+            </Card>
+          </Col>
+      </Row>
+     
+      <Row>    
+        <div className="col">
+            <Card >
+              <CardHeader>
+                <h3 className="mb-0">Search Best Practices</h3>
+                <p className="text-sm mb-0">Filters</p>
+              </CardHeader>
+              <CardBody>
+                   <Row>
+               <Col md="3">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="author"
+                  >
+                    Author
+                  </label>
+                  <Input                   
+                    placeholder="Author"
+                    onChange={(e) => setSearchAuthor(e.target.value)}
+                    value={searchAuthor}
+                    id="author"
+                    type="text"
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="3">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="title"
+                  >
+                    Title
+                  </label>
+                  <Input
+                    placeholder="Title"
+                    onChange={(e) => setSearchTitle(e.target.value)}
+                    value={searchTitle}
+                    id="title"
+                    type="text"
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="2">
+              <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="tag"
+                  >
+                    Tag
+                  </label>
+                  <Input                   
+                    placeholder="Tag"
+                    onChange={(e) => setSearchTag(e.target.value)}
+                    value={searchTag}
+                    id="search-Tag"
+                    type="text"
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="2">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="example3cols2Input"
+                  >
+                   Creation Date
+                  </label>
+                  <ReactDatetime                   
+                    inputProps={{
+                      placeholder: "Creation Date",
+                    }}
+                    onChange={(e) =>
+                      console.log(e)
+                    }
+                    timeFormat={false}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="2"> 
+                <FormGroup>            
+                      <button
+                        style={{marginTop:'32px', marginLeft:'32px', height:'40px'}}                       
+                        className="btn btn-info"
+                        type="button"
+                        onClick={e => console.log(e)}
+                      >
+                        Search
+                      </button>   
+                  </FormGroup>                 
+                </Col>
+            </Row>
+              </CardBody>
+              </Card>                   
+                </div>    
+      </Row>                
+       
+       
         <Row>
           <div className="col">
             <Card>
             <CardHeader>
-                <h3 className="mb-0">Best Practices</h3>
-                <p className="text-sm mb-0">Add Filters</p>
-                  <div className="d-flex justify-content-center">
-                  <CustomLoader {...pageStatus} />
-                </div>
+                <h3 className="mb-0">Search results</h3>                              
               </CardHeader>
+
               <ToolkitProvider
                 data={bestPractices}
                 keyField="id"
@@ -200,7 +395,22 @@ function SearchBestPracticePage(props) {
                 search
               >
                 {(props) => (
-                  <div className="py-4 table-responsive">
+                     <div className="py-4 table-responsive">
+
+                     <div
+                       id="datatable-basic_filter"
+                       className="dataTables_filter px-4 pb-1"
+                     >
+                     <label>
+                           Search:
+                           <SearchBar
+                             className="form-control-sm"
+                             placeholder="Filter results"
+                             {...props.searchProps}
+                           />
+                         </label>
+                     </div>
+                     {/* <div className="py-4 table-responsive">
                     <div
                       id="datatable-basic_filter"
                       className="dataTables_filter px-4 pb-1"
@@ -295,7 +505,16 @@ function SearchBestPracticePage(props) {
                       pagination={pagination}
                       bordered={false}
                     />
-                  </div>
+                  </div> */}
+                     <BootstrapTable
+                      {...props.baseProps}
+                      bootstrap4={true}
+                      pagination={pagination}
+                      bordered={false}
+                    />
+
+                     </div>
+                  
                 )}
               </ToolkitProvider>
             </Card>

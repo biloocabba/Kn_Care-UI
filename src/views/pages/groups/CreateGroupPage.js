@@ -17,10 +17,10 @@
 import React, {useState, useEffect} from "react";
 import { useDispatch, useSelector } from  "react-redux";
 import {createGroup} from "actions/groups"
-import {user_initialState} from "../../../initialStates/user"
+//import {user_initialState} from "../../../mock-data/employees"
 import AsyncSelect from 'react-select/async';
 import SelectMemberPaginate from "./SelectMemberPaginate";
-
+import AddMemberPanel from "./AddMemberPanel.js";
 // reactstrap components
 import {
   Button,
@@ -63,6 +63,7 @@ function CreateGroupPage() {
 ];
     const [region, setRegion] = useState(optionsRegion[0]);
     const [currentCountry, setCurrentCountry] = useState(null);
+
     const onchangeSelect = (item) => {
     setCurrentCountry(null);
     setRegion(item);
@@ -108,7 +109,7 @@ function CreateGroupPage() {
    
 
   const getMembers = () =>{
-    user_initialState.map(user => options.push( {value: user.id, label: `${user.firstName} ${user.lastName}`}))
+  //  user_initialState.map(user => options.push( {value: user.id, label: `${user.firstName} ${user.lastName}`}))
   }
 
   const filterMembers = (inputValMembers) => {
@@ -120,16 +121,16 @@ function CreateGroupPage() {
 
   //temporary before being able to make query with search parameter
 
-  const promiseOptions = inputValMembers =>
-  new Promise(resolve => {
-    setTimeout(() => {
-      resolve(filterMembers(inputValMembers));
-    }, 1000);
-  });
+  // const promiseOptions = inputValMembers =>
+  // new Promise(resolve => {
+  //   setTimeout(() => {
+  //     resolve(filterMembers(inputValMembers));
+  //   }, 1000);
+  // });
 
-  useEffect(() => {
-    getMembers()
-  }, []);
+  // useEffect(() => {
+  //   getMembers()
+  // }, []);
   
 
   
@@ -219,34 +220,27 @@ function CreateGroupPage() {
                       </Col>                    
                     </Row>
 
-
-                  </div>
-                      {/* <hr className="my-4" />
-
-                      <h6 className="heading-small text-muted mb-4">
-                        Add Employees
-                      </h6> */}
-
-                  <div className="pl-lg-4">
-
-                  <Row>
+                    <Row>
                        <Col lg="10">
-                        <FormGroup>
+                       
+                       <AddMemberPanel 
+                          onchangeRole={ (e) => console.log(e)}
+                          onchangeCountry={(e) => console.log(e)}
+                          onchangeBunit={(e) => console.log(e)}
+                          onSelectCareMember={(e) => console.log(e)}                        
+                        />
+
+                       {/* <Row>
+
+                       <Col lg="2">
+                       <FormGroup>
                           <label
                             className="form-control-label"
                             htmlFor="members"
                           >
-                            Add members
+                            Care Role
                           </label>
-                          {/* <Select
-                                  defaultValue={selectedOption}
-                                  onChange={setSelectedOption}
-                                  options={members}
-                                  isMulti
-                                /> */}
-                        <div className="my-3">
-
-                        <Select
+                          <Select
                                   value={region}
                                   onChange={onchangeSelect}
                                   options={optionsRegion}
@@ -254,47 +248,76 @@ function CreateGroupPage() {
                                   getOptionLabel={(option) => option.value}
                               />
 
+                          </FormGroup>
+                       </Col> 
+                       <Col lg="2">
+                       <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="members"
+                          >
+                            Country
+                          </label>
+                          <Select
+                                  value={region}
+                                  onChange={onchangeSelect}
+                                  options={optionsRegion}
+                                  getOptionValue={(option) => option.value}
+                                  getOptionLabel={(option) => option.value}
+                              />
 
-                        </div>
+                          </FormGroup>
+                       </Col>   
+                       <Col lg="2">
+                       <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="members"
+                          >
+                            Business Unit
+                          </label>
+                          <Select
+                                  value={region}
+                                  onChange={onchangeSelect}
+                                  options={optionsRegion}
+                                  getOptionValue={(option) => option.value}
+                                  getOptionLabel={(option) => option.value}
+                              />
 
-
-                        <div className="my-3">
-
-
-                        <SelectMemberPaginate
-                                    regionName={region.value}
-                                    value={currentCountry}
-                                    onChange={(country) => setCurrentCountry(country)}
-                                  />
-
-                          
-                        </div>
-                       
-
-
-{/* 
-                          <AsyncSelect
+                          </FormGroup>
+                       </Col>  
+                       <Col lg="6">
+                       <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="members"
+                          >
+                            Add members
+                          </label>
+                          <Select
                                   isMulti
-                                  cacheOptions
-                                  defaultOptions
-                                  loadOptions={promiseOptions}
-                                  onChange={handleChangeMembers}
-                                  isClearable
-                                  value={options.filter(obj => members.includes(obj.value))}
-                                /> */}
-                        </FormGroup>
-                      </Col>                    
-                    </Row>
+                                  value={region}
+                                  onChange={onchangeSelect}
+                                  options={optionsRegion}
+                                  getOptionValue={(option) => option.value}
+                                  getOptionLabel={(option) => option.value}
+                              />
 
-                    <Row>
+                          </FormGroup>
+                       </Col> 
+                       </Row>*/}
+                     
+                            </Col> 
+                        </Row>           
+                      </div>
+                
+              
+              
 
-                   
-                    </Row>
 
                
                       
-          
-        </div>
+     
                  
                   <div className="pl-lg-4">
                    

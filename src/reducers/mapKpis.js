@@ -5,10 +5,7 @@ import {
     AUTO_OFFBOARDED_MEMBERS
 } from "../actions/types";
 
-// initialState is empty dict
-const initialState = {};
-
-function mapKpisReducer(mapKpis = initialState, action) {
+function mapKpisReducer(mapKpis = {}, action) {
     const { type, payload } = action;
 
     const getLastYear = new Date().getFullYear() - 1;

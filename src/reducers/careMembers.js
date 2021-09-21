@@ -2,7 +2,8 @@ import {
     CREATE_CARE_MEMBER,
     RETRIEVE_CARE_MEMBERS,
     UPDATE_CARE_MEMBER,
-    OFFBOARD_CARE_MEMBER
+    OFFBOARD_CARE_MEMBER,
+    SEARCH_CARE_MEMBERS
  } from "actions/types";
 
 const careMembersReducer = (careMembers = [], action) => {
@@ -14,8 +15,9 @@ const careMembersReducer = (careMembers = [], action) => {
             return [...careMembers, payload];
 
         case RETRIEVE_CARE_MEMBERS:
+        case SEARCH_CARE_MEMBERS:           
             return payload;
-           
+         
         case UPDATE_CARE_MEMBER:
             return careMembers.map(user => {
                 if(user.id === payload.id){

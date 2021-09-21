@@ -14,6 +14,7 @@ import {
   Row,
   Col,
   Card,
+  CardHeader,
   CardBody,
   CardText,
   CardTitle
@@ -32,6 +33,11 @@ const initialState = {
 
 function CreateBestPracticePage() {
   const simpleValidator = useRef(new SimpleReactValidator());
+
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  
 
   const [created, setCreated] = useState(false);
   const [formData,] = useState(new FormData());
@@ -100,6 +106,45 @@ function CreateBestPracticePage() {
       <Container className="mt--6" fluid>
         <Row>
           <Col className="order-xl-1">
+            <Row>    
+                <div className="col">
+                    <Card >
+                        <CardHeader>
+                            <h3 className="mb-0">Best Practices</h3>
+                            <p className="text-sm mb-0">Create new</p>
+                        </CardHeader>
+                        <CardBody>
+                        <Row>
+                            <Col md="12">
+                                <FormGroup>
+                                    <label className="form-control-label">Title</label>
+                                    <Input className="text-sm" name="title" value={title}  />
+                                </FormGroup>
+                            </Col>                            
+                            <Col md="12">
+                            <FormGroup>
+                                    <label className="form-control-label">Description</label>
+                                    <Input
+                                        name="description"
+                                        type="textarea"
+                                        rows="5"
+                                        onChange={handleInputChange}
+                                        value={description}
+                                      />                                  
+                                </FormGroup>
+                            </Col>
+                            <Col md="12">
+                                <FormGroup>
+                                    <label className="form-control-label">Image Url</label>
+                                    <Input className="text-sm" name="title" value={imageUrl}  />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                    </CardBody>
+                    </Card>                   
+                </div>    
+             </Row> 
+             {/*
             <FormGroup>
               <label className="form-control-label">Title</label>
               {simpleValidator.current.message('title', content.title, 'required|min:3|max:50')}
@@ -110,9 +155,10 @@ function CreateBestPracticePage() {
                 onBlur={() => simpleValidator.current.showMessageFor('title')}
               />
             </FormGroup>
+             */}
           </Col>
         </Row>
-        <Row>
+        {/* <Row>
           <Col className="order-xl-1">
             <FormGroup>
               <label className="form-control-label">Description</label>
@@ -126,7 +172,7 @@ function CreateBestPracticePage() {
               <p className="float-right">{content.description.length} / 1000</p>
             </FormGroup>
           </Col>
-        </Row>
+        </Row> */}
         <Row>
           <Col>
             <FormGroup>
@@ -151,8 +197,7 @@ function CreateBestPracticePage() {
                 {/* <div className="file-name d-flex" hidden={formData.entries("file").next().done}> */}
                 {/* <p className="mt-2">{formData.entries("file").next().done ? "" : formData.get("file").name}</p> */}
 
-              </div>
-              {/* </div> */}
+              </div>            
             </FormGroup>
           </Col>
         </Row>

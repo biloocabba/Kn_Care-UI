@@ -2,7 +2,10 @@ import {
   CREATE_EMPLOYEE,
   UPDATE_EMPLOYEE,
   DELETE_EMPLOYEE,
-  RETRIEVE_EMPLOYEES
+  RETRIEVE_EMPLOYEES,
+  SEARCH_EMPLOYEES,
+  API_CALL_ERROR,
+  API_CALL_START
 } from './types'
 
 import employeeService from '../services/employeeService'
@@ -21,6 +24,31 @@ export const retrieveEmployees = () => async (dispatch) => {
   }
 }
 
+export const searchEmployees = (filters) => (dispatch) => {
+  try {
+    const queryParams = new URLSearchParams(filters);
+
+    dispatch({
+      type: API_CALL_START,
+      payload: 'SEARCH_EMPLOYEES',
+    });
+
+    const res = employeeService.searchEmployees(queryParams);
+
+    dispatch({
+      type: SEARCH_EMPLOYEES,
+      payload: res.data,
+    });
+
+  } catch (err) {
+    dispatch({
+      type: API_CALL_ERROR,
+      payload: err,
+    });
+  }
+};
+
+/*
 export const searchEmployees = (filters) => async (dispatch) => {
   try {
     const queryParams = new URLSearchParams(filters);
@@ -36,7 +64,7 @@ export const searchEmployees = (filters) => async (dispatch) => {
   } catch (err) {
     console.log(err);
   }
-};
+};*/
 
 export const updateUser = (id, data) => {
   return { type: UPDATE_EMPLOYEE, payload: id, data }

@@ -21,14 +21,11 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import {
   searchCareMembers
 } from "../../../actions/careMembers";
-import {
-  Input,
-  Button,
-  Card,
-  CardHeader,
-  Container,
-  Row,
-} from "reactstrap";
+import { Button, Card, Col, CardBody, CardHeader, Container, Input, Row,FormGroup } from 'reactstrap'
+import Select from "react-select";
+import makeAnimated from 'react-select/animated';
+import ReactDatetime from "react-datetime";
+
 import ReactBSAlert from 'react-bootstrap-sweetalert'
 import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
 import { useDispatch, useSelector } from  "react-redux";
@@ -65,57 +62,69 @@ const { SearchBar } = Search
 
 function CareMembersPage(props) {
 
-  const [searchInternationalName, setSearchInternationalName] = useState("");
-  const [searchBusinessUnit, setSearchBusinessUnit] = useState("");
-  const [searchCompanyCode, setSearchCompanyCode] = useState("");
-  const [searchCountry, setSearchCountry] = useState("");
-  const [searchOnBoardDate, setSearchOnBoardDate] = useState("");
-
   const careMembers = useSelector(state => state.careMembers);
   const dispatch = useDispatch();
 
-  const onChangeSearchInternationalName = e => {
-    const searchInternationalName = e.target.value;
-    setSearchInternationalName(searchInternationalName);
+
+  const businessUnits = useSelector( (state) => {
+    return state.categories.businessUnits.map(bunit => {return {"value": bunit.id, "label":bunit.name}})
+  });
+
+  const countries = useSelector( (state) => {
+    return state.categories.countryListAllIsoData.map(country => {return {"value": country.code3, "label":country.name}})
+  });
+
+
+  const [searchLastName, setSearchLastName] = useState("");
+  const [searchBusinessUnit, setSearchBusinessUnit] = useState("");
+  const [searchCountry, setSearchCountry] = useState("");
+  const [searchOnBoardDateFrom, setSearchOnBoardDateFrom] = useState(null);
+  
+  const [searchOnBoardDateTo, setSearchOnBoardDateTo] = useState(null);
+  const [searchOffboardingDateFrom, setSearchOffboardingDateFrom] = useState(null);
+  const [searchOffboardingDateTo, setSearchOffboardingDateTo] = useState(null);
+
+
+  const onChangeSearchLastName = e => {  
+    const searchLastName = e.target.value;
+    setSearchLastName(searchLastName);
   };
 
-  const onChangeSearchBusinessUnit = e => {
-    const searchBusinessUnit = e.target.value;
-    setSearchBusinessUnit(searchBusinessUnit);
+  const onChangeSearchOnboardingDateFrom = (dateAsMoment) => {    
+    setSearchOnBoardDateFrom(dateAsMoment.format('D-MM-YYYY'));
   };
 
-  const onChangeSearchCompanyCode = e => {
-    const searchCompanyCode = e.target.value;
-    setSearchCompanyCode(searchCompanyCode);
+  const onChangeSearchOnboardingDateTo = (dateAsMoment) => {    
+    setSearchOnBoardDateTo(dateAsMoment.format('D-MM-YYYY'));
   };
 
-  const onChangeSearchCountry = e => {
-    const searchCountry = e.target.value;
-    setSearchCountry(searchCountry);
+  const onChangeSearchOffboardingDateFrom = (dateAsMoment) => {    
+    setSearchOffboardingDateFrom(dateAsMoment.format('D-MM-YYYY'));
   };
 
-  const onChangeSearchOnBoardDate = e => {
-    const searchOnboardDate = e.target.value;
-    setSearchOnBoardDate(searchOnboardDate);
+  const onChangeSearchOffboardingDateTo = (dateAsMoment) => {    
+    setSearchOffboardingDateTo(dateAsMoment.format('D-MM-YYYY'));
   };
-
-  const findByAllParameters = () => {
-    let filters ={
-      internationalName:searchInternationalName,
+  
+    const findByAllParameters = () => {
+    let filters ={    
+      lastName: searchLastName,
       businessUnitId: searchBusinessUnit,
-      nationalityId:searchCountry,
-      companyCode:searchCompanyCode,
-      onBoardDate:searchOnBoardDate
+      countryId:searchCountry,    
+      onboardDateFrom:searchOnBoardDateFrom,
+      onboardDateTo:searchOnBoardDateTo,
+      offboardingDateFrom:searchOffboardingDateFrom,
+      offboardingDateTo:searchOffboardingDateTo
     }
     dispatch(searchCareMembers(filters));
   }
 
+
+
   const rowDataDetails = (e) => {
     //console.log(e.target);
     var { id } = e.target
-    console.log('See Details for Id: ' + id)
-    //props.history.push('/admin/users/care-member-details/'+id);
-    props.history.push('/admin/users/care-member-details/1')
+    props.history.push('/admin/users/care-member-details/'+ id)
   }
 
   const formatActionButtonCell = (cell, row) => {
@@ -192,11 +201,203 @@ function CareMembersPage(props) {
       {alert}
       <GradientEmptyHeader name="Employees" />
       <Container className="mt--6" fluid>
+      <Row>    
+        <div className="col">
+            <Card >
+              <CardHeader>
+                <h3 className="mb-0">Search Care Members</h3>
+                <p className="text-sm mb-0">Filters</p>
+              </CardHeader>
+              <CardBody>
+                   <Row>
+               <Col md="3">
+               <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="example3cols2Input"
+                  >
+                  Role
+                  </label>
+                  <Select
+                      id="group"
+                      components = {makeAnimated()}
+                      options = {countries}
+                      onChange = {item => setSearchCountry(item.value)}
+                    />
+                   </FormGroup>    
+              </Col>
+              <Col md="3">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="businessUnits"
+                  >
+                    Business Units
+                  </label>
+                  <Select
+                      id="businessUnits"
+                      components = {makeAnimated()}
+                      options = {businessUnits}
+                      onChange = {item => setSearchBusinessUnit(item.value)}
+                    />
+                </FormGroup>
+              </Col>
+              <Col md="3">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="country"
+                  >
+                    Countries
+                  </label>
+                  <Select
+                      id="country"
+                      components = {makeAnimated()}
+                      options = {countries}
+                      onChange = {item => setSearchCountry(item.value)}
+                    />
+                </FormGroup>
+              </Col>
+              <Col md="3">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="group"
+                  >
+                   Group
+                  </label>
+                  <Select
+                      id="group"
+                      components = {makeAnimated()}
+                      options = {countries}
+                      onChange = {item => setSearchCountry(item.value)}
+                    />
+                </FormGroup>
+              </Col> 
+              </Row>
+
+              <Row>
+                   
+                <Col md="3">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="lastName"
+                  >
+                    Last name
+                  </label>
+                  <Input
+                    id="lastName"                  
+                    className="form-control"                    
+                    type="text"
+                    placeholder="Last Name"
+                    value={searchLastName}
+                    onChange={onChangeSearchLastName}
+                  />
+                </FormGroup>
+                </Col>
+                <Col md="2">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="example3cols2Input"
+                  >
+                   Onbording from
+                  </label>
+                  <ReactDatetime                   
+                    inputProps={{
+                      placeholder: "From",
+                    }}
+                    onChange={(e) =>
+                      onChangeSearchOnboardingDateFrom(e)
+                    }
+                    timeFormat={false}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="2">
+              <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="example3cols2Input"
+                  >
+                   Onbording to
+                  </label>
+                  <ReactDatetime                   
+                    inputProps={{
+                      placeholder: "To",
+                    }}
+                    onChange={(e) =>
+                      onChangeSearchOnboardingDateTo(e)
+                    }
+                    timeFormat={false}
+                  />   
+                   </FormGroup>            
+              </Col>  
+              <Col md="2">
+              <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="example3cols2Input"
+                  >
+                   Offboarded From
+                  </label>
+                  <ReactDatetime                   
+                    inputProps={{
+                      placeholder: "To",
+                    }}
+                    onChange={(e) =>
+                      onChangeSearchOffboardingDateFrom(e)
+                    }
+                    timeFormat={false}
+                  />   
+                   </FormGroup>            
+              </Col>
+              <Col md="2">
+              <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="example3cols2Input"
+                  >
+                   Offboarded to
+                  </label>
+                  <ReactDatetime                   
+                    inputProps={{
+                      placeholder: "To",
+                    }}
+                    onChange={(e) =>
+                      onChangeSearchOffboardingDateTo(e)
+                    }
+                    timeFormat={false}
+                  />   
+                   </FormGroup>            
+              </Col> 
+                            
+              <Col md="1"> 
+                <FormGroup className="text-right">            
+                      <button
+                        style={{marginTop:'32px', height:'40px'}}                       
+                        className="btn btn-info"
+                        type="button"
+                        onClick={findByAllParameters}
+                      >
+                        Search
+                      </button>   
+                  </FormGroup>                 
+                </Col>
+              
+            </Row>
+              </CardBody>
+              </Card>                   
+          </div>    
+      </Row> 
+       
+       
         <Row>
           <div className="col">
             <Card>
               <CardHeader>
-                <h3 className="mb-0">Care Members</h3>
+                <h3 className="mb-0">Search Results</h3>
                 <p className="text-sm mb-0">
                   Care Members visible according to current user's role
                 </p>
@@ -268,80 +469,20 @@ function CareMembersPage(props) {
               >
                 {(props) => (
                   <div className="py-4 table-responsive">
-                    <div
+                      <div
                       id="datatable-basic_filter"
                       className="dataTables_filter px-4 pb-1"
                     >
-                      <label>
-                        <Input
-                          className="form-control-sm"
-                          placeholder="International Name"
-                          value={searchInternationalName}
-                          onChange={onChangeSearchInternationalName}
-                        />
-                      </label>
+                    <label>
+                          Search:
+                          <SearchBar
+                            className="form-control-sm"
+                            placeholder="Filter results"
+                            {...props.searchProps}
+                          />
+                        </label>
                     </div>
-                    <div
-                      id="datatable-basic_filter"
-                      className="dataTables_filter px-4 pb-1"
-                    >
-                      <label>
-                        <Input
-                          className="form-control-sm"
-                          placeholder="Business Unit"
-                          value={searchBusinessUnit}
-                          onChange={onChangeSearchBusinessUnit}
-                        />
-                      </label>
-                    </div>
-                    <div
-                      id="datatable-basic_filter"
-                      className="dataTables_filter px-4 pb-1"
-                    >
-                      <label>
-                        <Input
-                          className="form-control-sm"
-                          placeholder="CompanyCode"
-                          value={searchCompanyCode}
-                          onChange={onChangeSearchCompanyCode}
-                        />
-                      </label>
-                    </div>
-                    <div
-                      id="datatable-basic_filter"
-                      className="dataTables_filter px-4 pb-1"
-                    >
-                      <label>
-                        <Input
-                          className="form-control-sm"
-                          placeholder="Country"
-                          value={searchCountry}
-                          onChange={onChangeSearchCountry}
-                        />
-                      </label>
-                    </div>
-                    <div
-                      id="datatable-basic_filter"
-                      className="dataTables_filter px-4 pb-1"
-                    >
-                      <label>
-                        <Input
-                          className="form-control-sm"
-                          placeholder="Onboarding Date"
-                          value={searchOnBoardDate}
-                          onChange={onChangeSearchOnBoardDate}
-                        />
-                      </label>
-                    </div>
-                    <div className="input-group-append">
-                      <button
-                        className="btn btn-info"
-                        type="button"
-                        onClick={findByAllParameters}
-                      >
-                        Search
-                      </button>
-                    </div>  
+
                     <BootstrapTable
                       {...props.baseProps}
                       bootstrap4={true}

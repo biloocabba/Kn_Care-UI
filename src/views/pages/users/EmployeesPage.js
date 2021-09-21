@@ -17,10 +17,15 @@
 import React, { useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next'
 import paginationFactory from 'react-bootstrap-table2-paginator'
+
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit'
-import { Button, Card, CardHeader, Container, Row } from 'reactstrap'
+import { Button, Card, Col, Form ,CardBody, CardHeader, Container, Input, Row,FormGroup } from 'reactstrap'
+import ReactDatetime from "react-datetime";
+
 import GradientEmptyHeader from 'components/Headers/GradientEmptyHeader.js'
 import { useDispatch, useSelector } from 'react-redux'
+import Select from "react-select";
+import makeAnimated from 'react-select/animated';
 import {
   searchEmployees,
   deleteUser,
@@ -56,47 +61,35 @@ const pagination = paginationFactory({
 
 const { SearchBar } = Search
 
-function Employees(props) {
-  const [searchInternationalName, setSearchInternationalName] = useState("");
-  const [searchBusinessUnit, setSearchBusinessUnit] = useState("");
-  const [searchCompanyCode, setSearchCompanyCode] = useState("");
-  const [searchCountry, setSearchCountry] = useState("");
-  const [searchHiringDate, setSearchHiringDate] = useState("");
+function EmployeesPage(props) {
+
+  const businessUnits = useSelector( (state) => {
+    return state.categories.businessUnits.map(bunit => {return {"value": bunit.id, "label":bunit.name}})
+  });
+
+  const countries = useSelector( (state) => {
+    return state.categories.countryListAllIsoData.map(country => {return {"value": country.code3, "label":country.name}})
+  });
 
   const employees = useSelector(state => state.employees);
   const dispatch = useDispatch();
 
-  const onChangeSearchInternationalName = e => {
-    const searchInternationalName = e.target.value;
-    setSearchInternationalName(searchInternationalName);
-  };
 
-  const onChangeSearchBusinessUnit = e => {
-    const searchBusinessUnit = e.target.value;
-    setSearchBusinessUnit(searchBusinessUnit);
-  };
-
-  const onChangeSearchCompanyCode = e => {
-    const searchCompanyCode = e.target.value;
-    setSearchCompanyCode(searchCompanyCode);
-  };
-
-  const onChangeSearchCountry = e => {
-    const searchCountry = e.target.value;
-    setSearchCountry(searchCountry);
-  };
-
-  const onChangeSearchHiringDate = e => {
-    const searchHiringDate = e.target.value;
-    setSearchHiringDate(searchHiringDate);
+  const [searchLastName, setSearchLastName] = useState("");
+  const [searchBusinessUnit, setSearchBusinessUnit] = useState("");
+  const [searchCountry, setSearchCountry] = useState("");
+  const [searchHiringDate, setSearchHiringDate] = useState(null);
+  
+  const onChangeSearchLastName = e => {  
+    const searchLastName = e.target.value;
+    setSearchLastName(searchLastName);
   };
 
   const findByAllParameters = () => {
-    let filters ={
-      internationalName:searchInternationalName,
+    let filters ={    
+      lastName: searchLastName,
       businessUnitId: searchBusinessUnit,
-      nationalityId:searchCountry,
-      companyCode:searchCompanyCode,
+      countryId:searchCountry,    
       hiringDate:searchHiringDate
     }
     dispatch(searchEmployees(filters));
@@ -112,6 +105,10 @@ function Employees(props) {
     console.log(id)
     dispatch(deleteUser(id))
   }
+
+  const onChangeSearchHiringDate = (dateAsMoment) => {    
+    setSearchHiringDate(dateAsMoment.format('D-MM-YYYY'));
+  };
 
   const formatActionButtonCell = (cell, row) => {
     return (
@@ -144,9 +141,108 @@ function Employees(props) {
 
   return (
     <>
-      {alert}
+      {/* alert*/}
       <GradientEmptyHeader name="Employees" />
       <Container className="mt--6" fluid>
+
+      <Row>    
+        <div className="col">
+            <Card >
+              <CardHeader>
+                <h3 className="mb-0">Search Employees</h3>
+                <p className="text-sm mb-0">Filters</p>
+              </CardHeader>
+              <CardBody>
+                   <Row>
+               <Col md="3">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="lastName"
+                  >
+                    Last name
+                  </label>
+                  <Input
+                    id="lastName"
+                    style={{height:'36px'}}
+                    className="form-control"                    
+                    type="text"
+                    placeholder="Last Name"
+                    value={searchLastName}
+                    onChange={onChangeSearchLastName}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="3">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="businessUnits"
+                  >
+                    Business Units
+                  </label>
+                  <Select
+                      id="businessUnits"
+                      components = {makeAnimated()}
+                      options = {businessUnits}
+                      onChange = {item => setSearchBusinessUnit(item.value)}
+                    />
+                </FormGroup>
+              </Col>
+              <Col md="2">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="country"
+                  >
+                    Countries
+                  </label>
+                  <Select
+                      id="country"
+                      components = {makeAnimated()}
+                      options = {countries}
+                      onChange = {item => setSearchCountry(item.value)}
+                    />
+                </FormGroup>
+              </Col>
+              <Col md="2">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="example3cols2Input"
+                  >
+                   Hire Date From
+                  </label>
+                  <ReactDatetime                   
+                    inputProps={{
+                      placeholder: "Hire date",
+                    }}
+                    onChange={(e) =>
+                      onChangeSearchHiringDate(e)
+                    }
+                    timeFormat={false}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="2"> 
+                <FormGroup>            
+                      <button
+                        style={{marginTop:'32px', marginLeft:'32px', height:'40px'}}                       
+                        className="btn btn-info"
+                        type="button"
+                        onClick={findByAllParameters}
+                      >
+                        Search
+                      </button>   
+                  </FormGroup>                 
+                </Col>
+            </Row>
+              </CardBody>
+              </Card>                   
+                </div>    
+      </Row>                
+                   
+
         <Row>
           <div className="col">
             <Card>
@@ -215,81 +311,23 @@ function Employees(props) {
                 search
               >
                 {(props) => (
+                  <> 
                   <div className="py-4 table-responsive">
+
                     <div
                       id="datatable-basic_filter"
                       className="dataTables_filter px-4 pb-1"
                     >
-                      <label>
-                        <SearchBar
-                          className="form-control-sm"
-                          placeholder="International Name"
-                          value={searchInternationalName}
-                          onChange={onChangeSearchInternationalName}
-                        />
-                      </label>
+                    <label>
+                          Search:
+                          <SearchBar
+                            className="form-control-sm"
+                            placeholder="Filter results"
+                            {...props.searchProps}
+                          />
+                        </label>
                     </div>
-                    <div
-                      id="datatable-basic_filter"
-                      className="dataTables_filter px-4 pb-1"
-                    >
-                      <label>
-                        <SearchBar
-                          className="form-control-sm"
-                          placeholder="Business Unit"
-                          value={searchBusinessUnit}
-                          onChange={onChangeSearchBusinessUnit}
-                        />
-                      </label>
-                    </div>
-                    <div
-                      id="datatable-basic_filter"
-                      className="dataTables_filter px-4 pb-1"
-                    >
-                      <label>
-                        <SearchBar
-                          className="form-control-sm"
-                          placeholder="CompanyCode"
-                          value={searchCompanyCode}
-                          onChange={onChangeSearchCompanyCode}
-                        />
-                      </label>
-                    </div>
-                    <div
-                      id="datatable-basic_filter"
-                      className="dataTables_filter px-4 pb-1"
-                    >
-                      <label>
-                        <SearchBar
-                          className="form-control-sm"
-                          placeholder="Country"
-                          value={searchCountry}
-                          onChange={onChangeSearchCountry}
-                        />
-                      </label>
-                    </div>
-                    <div
-                      id="datatable-basic_filter"
-                      className="dataTables_filter px-4 pb-1"
-                    >
-                      <label>
-                        <SearchBar
-                          className="form-control-sm"
-                          placeholder="Hiring Date"
-                          value={searchHiringDate}
-                          onChange={onChangeSearchHiringDate}
-                        />
-                      </label>
-                    </div>
-                    <div className="input-group-append">
-                      <button
-                        className="btn btn-info"
-                        type="button"
-                        onClick={findByAllParameters}
-                      >
-                        Search
-                      </button>
-                    </div>  
+                                       
                     <BootstrapTable
                       {...props.baseProps}
                       bootstrap4={true}
@@ -297,6 +335,7 @@ function Employees(props) {
                       bordered={false}
                     />
                   </div>
+                  </>
                 )}
               </ToolkitProvider>
             </Card>
@@ -307,4 +346,4 @@ function Employees(props) {
   )
 }
 
-export default Employees
+export default EmployeesPage

@@ -39,8 +39,9 @@ import { useSelector } from 'react-redux'
 function EmployeeDetailsPage(props) {
   let { id } = useParams() //see in routes path: "/users/employee-details/:id",
 
-  const users = useSelector((state) => state.employees)
-  let user = users.find((user) => user.id === parseInt(id))
+  const employees = useSelector((state) => state.employees)
+  let employee = employees.find((employee) => employee.id === parseInt(id))
+  let buttonColor =  employee.careMember?   "secondary" : "success";
 
   return (
     <>
@@ -59,9 +60,10 @@ function EmployeeDetailsPage(props) {
                   <Col lg="12" xs="7" className="text-right">
                     <Button
                       type="button"
-                      color="success"
+                      color={buttonColor}
                       href="#pablo"
                       onClick={(e) => props.history.push('/admin/users/new-care-member/' + id)}
+                      disabled ={employee.careMember}
                     >
                       Invite to Care
                     </Button>
@@ -93,7 +95,7 @@ function EmployeeDetailsPage(props) {
                           </label>
                           <Input
                             id="input-first-name"
-                            value={user.firstName}
+                            value={employee.firstName}
                             type="text"
                             disabled={true}
                           />
@@ -109,7 +111,7 @@ function EmployeeDetailsPage(props) {
                           </label>
                           <Input
                             id="input-last-name"
-                            value={user.lastName}
+                            value={employee.lastName}
                             disabled={true}
                             type="text"
                           />
@@ -128,7 +130,7 @@ function EmployeeDetailsPage(props) {
                           </label>
                           <Input
                             id="input-username"
-                            value={user.internationalName}
+                            value={employee.internationalName}
                             disabled={true}
                             type="text"
                           />
@@ -144,7 +146,7 @@ function EmployeeDetailsPage(props) {
                           </label>
                           <Input
                             id="input-email"
-                            value={user.email}
+                            value={employee.email}
                             disabled={true}
                             type="email"
                           />
@@ -168,7 +170,7 @@ function EmployeeDetailsPage(props) {
                             Address
                           </label>
                           <Input
-                            defaultValue={user.address}
+                            defaultValue={employee.address}
                             id="input-address"
                             placeholder="Home Address"
                             type="text"
@@ -186,7 +188,7 @@ function EmployeeDetailsPage(props) {
                             City
                           </label>
                           <Input
-                            defaultValue={user.city}
+                            defaultValue={employee.city}
                             id="input-city"
                             placeholder="City"
                             type="text"
@@ -202,7 +204,7 @@ function EmployeeDetailsPage(props) {
                             Country
                           </label>
                           <Input
-                            defaultValue={user.country}
+                            defaultValue={employee.country}
                             id="input-country"
                             placeholder="Country"
                             type="text"
@@ -219,7 +221,7 @@ function EmployeeDetailsPage(props) {
                           </label>
                           <Input
                             id="input-postal-code"
-                            value={user.postalCode}
+                            value={employee.postalCode}
                             placeholder="Postal code"
                             type="number"
                           />
@@ -239,7 +241,7 @@ function EmployeeDetailsPage(props) {
                           <label className="form-control-label">Title</label>
                           <Input
                             id="title"
-                            value={user.title}
+                            value={employee.title}
                             disabled={true}
                             type="text"
                           />
@@ -266,7 +268,7 @@ function EmployeeDetailsPage(props) {
                           </label>
                           <Input
                             id="input-postal-code"
-                            value={user.companyCode}
+                            value={employee.companyCode}
                             disabled={true}
                             type="text"
                           />
@@ -282,7 +284,7 @@ function EmployeeDetailsPage(props) {
                           </label>
                           <Input
                             id="input-postal-code"
-                            value={user.businessUnit.name}
+                            value={employee.businessUnit.name}
                             disabled={true}
                             type="text"
                           />
@@ -296,7 +298,7 @@ function EmployeeDetailsPage(props) {
                           </label>
                           <Input
                             id="input-postal-code"
-                            value={user.costCenter}
+                            value={employee.costCenter}
                             disabled={true}
                             type="text"
                           />
@@ -309,7 +311,7 @@ function EmployeeDetailsPage(props) {
                           </label>
                           <Input
                             id="input-postal-code"
-                            value={user.managementGroup}
+                            value={employee.managementGroup}
                             disabled={true}
                             type="text"
                           />

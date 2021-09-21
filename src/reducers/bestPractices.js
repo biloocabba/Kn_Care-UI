@@ -4,9 +4,8 @@ import {
     UPDATE_BEST_PRACTICE,
     DELETE_BEST_PRACTICE,
 } from "../actions/types/index"
-import BestPracticeInitialState from "../initialStates/BestPracticeInitialState";
 
-const bestPracticesReducer = (bestPractices = BestPracticeInitialState, action) => {
+const bestPracticesReducer = (bestPractices = [], action) => {
     const { type, payload } = action;
 
     switch(type){

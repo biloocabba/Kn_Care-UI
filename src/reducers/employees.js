@@ -1,7 +1,7 @@
 import { 
     CREATE_EMPLOYEE, 
     UPDATE_EMPLOYEE, 
-    RETRIEVE_EMPLOYEES,
+    SEARCH_EMPLOYEES,
     DELETE_EMPLOYEE,
     CREATE_CARE_MEMBER
  } from "actions/types";
@@ -17,7 +17,7 @@ const employeesReducer = (employees = [], action) => {
         case CREATE_CARE_MEMBER:
             return [...employees, payload];
 
-        case RETRIEVE_EMPLOYEES:
+        case SEARCH_EMPLOYEES:
             return payload;
            
         case UPDATE_EMPLOYEE:

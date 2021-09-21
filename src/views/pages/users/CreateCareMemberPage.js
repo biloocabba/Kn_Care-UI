@@ -32,8 +32,8 @@ const CreateCareMemberPage = (props) => {
   const [selectedCountry, setSelectedCountry] = useState('')
   const [selectedRole, setSelectedRole] = useState('')
 
-  const users = useSelector((state) => state.employees)
-  let user = users.find((user) => user.id === parseInt(id))
+  const employees = useSelector((state) => state.employees)
+  let employee = employees.find((employee) => employee.id === parseInt(id))
 
   const date = new Date()
 
@@ -61,9 +61,10 @@ const CreateCareMemberPage = (props) => {
     const careMemberInfo = {
       onBoardDate: onBoardDate,
       offBoardDate: offBoardDate,
-      employee: user.id,
+      employee: employee.id,
       role: 'care Advocate',
       country: selectedCountry,
+      careMember: true,
     }
 
     dispatch(createCareMember(careMemberInfo))
@@ -71,7 +72,7 @@ const CreateCareMemberPage = (props) => {
         setCareMember({
           onBoardDate: onBoardDate,
           offBoardDate: offBoardDate,
-          employee: user.id,
+          employee: employee.id,
           role: 'care Advocate',
           country: selectedCountry,
         })
@@ -99,7 +100,7 @@ const CreateCareMemberPage = (props) => {
                     <Button
                       type="button"
                       color="info"
-                      href="#pablo"
+                      href="#dsfkjlsi39ds9d97876s7d"
                       onClick={(e) => props.history.push('/admin/employees')}
                     >
                       Back to Employees
@@ -214,7 +215,7 @@ const CreateCareMemberPage = (props) => {
                           </label>
                           <Input
                             id="input-first-name"
-                            value={user.firstName}
+                            value={employee.firstName}
                             type="text"
                             disabled={true}
                           />
@@ -230,7 +231,7 @@ const CreateCareMemberPage = (props) => {
                           </label>
                           <Input
                             id="input-last-name"
-                            value={user.lastName}
+                            value={employee.lastName}
                             disabled={true}
                             type="text"
                           />
@@ -249,7 +250,7 @@ const CreateCareMemberPage = (props) => {
                           </label>
                           <Input
                             id="input-username"
-                            value={user.internationalName}
+                            value={employee.internationalName}
                             disabled={true}
                             type="text"
                           />
@@ -265,7 +266,7 @@ const CreateCareMemberPage = (props) => {
                           </label>
                           <Input
                             id="input-email"
-                            value={user.email}
+                            value={employee.email}
                             disabled={true}
                             type="email"
                           />
@@ -289,7 +290,7 @@ const CreateCareMemberPage = (props) => {
                             Address
                           </label>
                           <Input
-                            value={user.address}
+                            value={employee.address}
                             id="input-address"
                             placeholder="Home Address"
                             type="text"
@@ -308,7 +309,7 @@ const CreateCareMemberPage = (props) => {
                             City
                           </label>
                           <Input
-                            value={user.city}
+                            value={employee.city}
                             id="input-city"
                             placeholder="City"
                             type="text"
@@ -325,7 +326,7 @@ const CreateCareMemberPage = (props) => {
                             Country
                           </label>
                           <Input
-                            value={user.country}
+                            value={employee.country}
                             id="input-country"
                             placeholder="Country"
                             type="text"
@@ -342,7 +343,7 @@ const CreateCareMemberPage = (props) => {
                             Postal code
                           </label>
                           <Input
-                            value={user.postalCode}
+                            value={employee.postalCode}
                             id="input-postal-code"
                             placeholder="Postal code"
                             type="number"
@@ -364,7 +365,7 @@ const CreateCareMemberPage = (props) => {
                           <label className="form-control-label">Title</label>
                           <Input
                             id="title"
-                            value={user.title}
+                            value={employee.title}
                             disabled={true}
                             type="text"
                           />
@@ -391,7 +392,7 @@ const CreateCareMemberPage = (props) => {
                           </label>
                           <Input
                             id="input-postal-code"
-                            value={user.companyCode}
+                            value={employee.companyCode}
                             disabled={true}
                             type="text"
                           />
@@ -407,7 +408,7 @@ const CreateCareMemberPage = (props) => {
                           </label>
                           <Input
                             id="input-postal-code"
-                            value={user.businessUnit.name}
+                            value={employee.businessUnit.name}
                             disabled={true}
                             type="text"
                           />
@@ -421,7 +422,7 @@ const CreateCareMemberPage = (props) => {
                           </label>
                           <Input
                             id="input-postal-code"
-                            value={user.costCenter}
+                            value={employee.costCenter}
                             disabled={true}
                             type="text"
                           />
@@ -434,7 +435,7 @@ const CreateCareMemberPage = (props) => {
                           </label>
                           <Input
                             id="input-postal-code"
-                            value={user.managementGroup}
+                            value={employee.managementGroup}
                             disabled={true}
                             type="text"
                           />

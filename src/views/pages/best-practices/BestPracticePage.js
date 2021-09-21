@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import initialState from "../../../initialStates/BestPracticeInitialState";
+import initialState from "../../../mock-data/BestPracticeInitialState";
 import { useDispatch } from "react-redux";
 import { Container, Row } from "reactstrap";
 import SimpleHeader from "components/Headers/SimpleHeader.js";
@@ -8,6 +8,9 @@ import {
     Col,
     Input,
     FormGroup,
+    Card,
+    CardBody,
+    CardHeader
 } from "reactstrap";
 
 import {
@@ -22,11 +25,16 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 const BestPracticePage = (props) => {
 
-    const [currentBestPractice, setCurrentBestPractice] = useState(initialState);
-    const [disableEdit, setDisableEdit] = useState(true);
-
     const dispatch = useDispatch();
 
+
+ 
+    const [disableEdit, setDisableEdit] = useState(true);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    
+    
+/*
     const getBestPractice = id => {
         BestPracticeService.get(id)
             .then(response => {
@@ -38,15 +46,10 @@ const BestPracticePage = (props) => {
             });
     };
 
-    useEffect(() => {
-        getBestPractice(props.match.params.id);
-    }, [props.match.params.id]);
-
     const handleInputChange = event => {
         const { name, value } = event.target;
         setCurrentBestPractice({ ...currentBestPractice, [name]: value });
     };
-
 
     const updateContent = () => {
         dispatch(updateBestPractice(currentBestPractice.id, currentBestPractice))
@@ -82,17 +85,45 @@ const BestPracticePage = (props) => {
                 }
             ]
         });
-
     };
 
-
-
-
+    useEffect(() => {
+        getBestPractice(props.match.params.id);
+    }, [props.match.params.id]);
+*/
 
     return (
         <>
-            <SimpleHeader name={currentBestPractice.title || ""} parentName="Best Practices" />
+            <SimpleHeader name="Best Practice"  />
             <Container className="mt-6 ml-6 container-sm" fluid>
+            <Row>    
+                <div className="col">
+                    <Card >
+                        <CardHeader>
+                            <h3 className="mb-0">Search Employees</h3>
+                            <p className="text-sm mb-0">Filters</p>
+                        </CardHeader>
+                        <CardBody>
+                        <Row>
+                            <Col md="12">
+                                <FormGroup>
+                                    <label className="form-control-label">Title</label>
+                                    <Input name="title" value={title}  />
+                                </FormGroup>
+                            </Col>
+                            <Col md="12">
+                            <FormGroup>
+                                    <label className="form-control-label">Description</label>
+                                    <Input name="description" value={description}  />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                    </CardBody>
+                    </Card>                   
+                </div>    
+             </Row> 
+
+{/*
                 <Row>
                     <Col className="order-xl-1">
                         <FormGroup>
@@ -116,17 +147,18 @@ const BestPracticePage = (props) => {
                         </FormGroup>
                     </Col>
                 </Row>
+*/}
                 <Button id="edit" className="btn btn-info" type="button" onClick={() => setDisableEdit(!disableEdit)}>
                     <span className="btn-inner--icon">
                         Edit
                     </span>
                 </Button>
-                <Button id="remove" className="btn-icon btn-2" color="danger" type="button" onClick={removeBestPractice}>
+                <Button id="remove" className="btn-icon btn-2" color="danger" type="button" onClick={e => console.log(e)}>
                     <span className="btn-inner--icon">
                         <i className="ni ni-fat-remove" />
                     </span>
                 </Button>
-                <Button id="update" className="btn btn-success float-right" type="button" hidden={disableEdit} onClick={updateContent}>
+                <Button id="update" className="btn btn-success float-right" type="button" hidden={disableEdit} onClick={e => console.log(e)}>
                     Save
                 </Button>
             </Container>

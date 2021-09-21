@@ -8,9 +8,9 @@ import {
   UPDATE_GROUP
 } from "../actions/types";
 
-const initialState = []
+import {categoriesData} from "mock-data/categories.js";
   
-  function groupsReducer(groups = initialState, action) {
+  function groupsReducer(groups = categoriesData.groups, action) {
     const { type, payload } = action;
     switch (type) {
       case CREATE_GROUP:

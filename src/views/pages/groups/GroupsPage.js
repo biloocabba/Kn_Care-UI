@@ -16,13 +16,9 @@
 */
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-// react plugin that prints a given react component
-import ReactToPrint from 'react-to-print'
-// react component for creating dynamic tables
 import BootstrapTable from 'react-bootstrap-table-next'
 import paginationFactory from 'react-bootstrap-table2-paginator'
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit'
-// react component used to create sweet alerts
 import ReactBSAlert from 'react-bootstrap-sweetalert'
 
 
@@ -42,7 +38,7 @@ import {
   DropdownItem,
 } from 'reactstrap'
 // core components
-import SimpleHeader from 'components/Headers/SimpleHeader.js'
+import GradientEmptyHeader from 'components/Headers/GradientEmptyHeader.js'
 
 import { retrieveGroups } from '../../../actions/groups'
 
@@ -108,50 +104,8 @@ function GroupsPage(props) {
 
   const [alert, setAlert] = React.useState(null)
   const componentRef = React.useRef(null)
-  // this function will copy to clipboard an entire table,
-  // so you can paste it inside an excel or csv file
-  const copyToClipboardAsTable = (el) => {
-    var body = document.body,
-      range,
-      sel
-    if (document.createRange && window.getSelection) {
-      range = document.createRange()
-      sel = window.getSelection()
-      sel.removeAllRanges()
-      try {
-        range.selectNodeContents(el)
-        sel.addRange(range)
-      } catch (e) {
-        range.selectNode(el)
-        sel.addRange(range)
-      }
-      document.execCommand('copy')
-    } else if (body.createTextRange) {
-      range = body.createTextRange()
-      range.moveToElementText(el)
-      range.select()
-      range.execCommand('Copy')
-    }
-    setAlert(
-      <ReactBSAlert
-        success
-        style={{ display: 'block', marginTop: '-100px' }}
-        title="Good job!"
-        onConfirm={() => setAlert(null)}
-        onCancel={() => setAlert(null)}
-        confirmBtnBsStyle="info"
-        btnSize=""
-      >
-        Copied to clipboard!
-      </ReactBSAlert>
-    )
-  }
+   const dispatch = useDispatch()
 
-  const dispatch = useDispatch()
-
-  const [dropdownOpen, setDropdownOpen] = useState(false)
-
-  const toggleDropDown = () => setDropdownOpen(!dropdownOpen)
 
   //this goes in a different story
   // useEffect(() => {
@@ -161,39 +115,15 @@ function GroupsPage(props) {
   return (
     <>
       {alert}
-      <SimpleHeader name="React Tables" parentName="Tables" />
+      <GradientEmptyHeader name="Groups" />
       <Container className="mt--6" fluid>
         <Row>
           <div className="col">
-            <Card className="my-3 p-3">
-              <h5>Filter</h5>
-              <div class="d-flex justify-content-start">
-                <InputGroupButtonDropdown
-                  addonType="append"
-                  isOpen={dropdownOpen}
-                  toggle={toggleDropDown}
-                >
-                  <DropdownToggle caret>Language</DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem value="english">English</DropdownItem>
-                    <DropdownItem value="french">French</DropdownItem>
-                    <DropdownItem value="estonian">Estonian</DropdownItem>
-                    <DropdownItem value="french">Japanese</DropdownItem>
-                  </DropdownMenu>
-                </InputGroupButtonDropdown>
-                <InputGroupButtonDropdown addonType="append">
-                  <DropdownToggle caret>Created From</DropdownToggle>
-                  <DropdownMenu></DropdownMenu>
-                </InputGroupButtonDropdown>
-              </div>
-            </Card>
-            <Card>
+             <Card>
               <CardHeader>
                 <h3 className="mb-0">Groups</h3>
                 <p className="text-sm mb-0">
-                  This is an exmaple of data table using the well known
-                  react-bootstrap-table2 plugin. This is a minimal setup in
-                  order to get started fast.
+                  Groups available
                 </p>
               </CardHeader>
               <ToolkitProvider
@@ -227,51 +157,7 @@ function GroupsPage(props) {
                   <div className="py-4 table-responsive">
                     <Container fluid>
                       <Row>
-                        <Col xs={12} sm={6}>
-                          <ButtonGroup>
-                            <Button
-                              className="buttons-copy buttons-html5"
-                              color="default"
-                              size="sm"
-                              id="copy-tooltip"
-                              onClick={() =>
-                                copyToClipboardAsTable(
-                                  document.getElementById('react-bs-table')
-                                )
-                              }
-                            >
-                              <span>Copy</span>
-                            </Button>
-                            <ReactToPrint
-                              trigger={() => (
-                                <Button
-                                  color="default"
-                                  size="sm"
-                                  className="buttons-copy buttons-html5"
-                                  id="print-tooltip"
-                                >
-                                  Print
-                                </Button>
-                              )}
-                              content={() => componentRef.current}
-                            />
-                          </ButtonGroup>
-                          <UncontrolledTooltip
-                            placement="top"
-                            target="print-tooltip"
-                          >
-                            This will open a print page with the visible rows of
-                            the table.
-                          </UncontrolledTooltip>
-                          <UncontrolledTooltip
-                            placement="top"
-                            target="copy-tooltip"
-                          >
-                            This will copy to your clipboard the visible rows of
-                            the table.
-                          </UncontrolledTooltip>
-                        </Col>
-                        <Col xs={12} sm={6}>
+                         <Col xs={12} sm={6}>
                           <div
                             id="datatable-basic_filter"
                             className="dataTables_filter px-4 pb-1 float-right"
