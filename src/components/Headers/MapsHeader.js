@@ -12,7 +12,7 @@ import {
 } from "reactstrap";
 
 import { useDispatch } from "react-redux";
-import { getMapData } from 'actions/mapKpi';
+
 
 import {
   ALL_ACTIVE_MEMBERS,
@@ -20,16 +20,18 @@ import {
   SELF_RESIGNED_MEMBERS,
   AUTO_OFFBOARDED_MEMBERS
 } from "../../actions/types";
+import { getAutoOffboardedMembersMapData } from "actions/mapKpi";
 
 
-function MapsHeader({ name }) {
+function MapsHeader({ name, onActiveMembersClick, onNewMembersClick, onSelfResignedClick, onAutoOffboardedClick }) {
   const dispatch = useDispatch();
   // const mapData = useSelector(state => state.mapKpis);
 
-  const getMap = (e, actionType) => {
-    e.preventDefault();
-    dispatch(getMapData(actionType));
-  }
+  // const getMap = (e, actionType) => {
+  //   e.preventDefault();
+    
+  //   dispatch(getMapData(actionType));
+  // }
 
   return (
     <>
@@ -59,25 +61,25 @@ function MapsHeader({ name }) {
               </Col>
               <Col className="mt-6 mt-md-0 text-md-right" lg="6" xs="5">
                 <Button className="btn-neutral"
-                  onClick={(e) => getMap(e, ALL_ACTIVE_MEMBERS)}
+                  onClick={onActiveMembersClick}
                   color="default"
                   size="sm">
                   Active Care Members
                 </Button>
                 <Button className="btn-neutral"
-                  onClick={(e) => getMap(e, NEW_MEMBERS)}
+                  onClick={onNewMembersClick}
                   color="default"
                   size="sm">
                   New Care Members
                 </Button>
                 <Button className="btn-neutral"
-                  onClick={(e) => getMap(e, SELF_RESIGNED_MEMBERS)}
+                  onClick={onSelfResignedClick}
                   color="default"
                   size="sm">
                   Self resigned last year
                 </Button>
                 <Button className="btn-neutral"
-                  onClick={(e) => getMap(e, AUTO_OFFBOARDED_MEMBERS)}
+                  onClick={onAutoOffboardedClick}
                   color="default"
                   size="sm">
                   Automatic offboarded last year

@@ -244,7 +244,7 @@ function Charts() {
   // }
   return (
     <>
-        <GradientEmptyHeader name="Groups"  />
+      <GradientEmptyHeader name="Groups"  />
       <Container className="mt--6" fluid>
 
       <div>
