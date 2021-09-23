@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import {useState} from "react";
 
 // reactstrap components
 import {
@@ -30,9 +30,12 @@ import {
   Col,
 } from "reactstrap";
 
-import {useParams} from "react-router-dom";
+import Select from "react-select";
+import makeAnimated from 'react-select/animated';
 
-import { useSelector } from 'react-redux'
+import {useParams} from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux'
+
 
 // core components
 import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
@@ -40,10 +43,26 @@ import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
 function EditCareMemberPage(props) {
 
   let { id } = useParams(); //see in routes path: "/users/careMember-details/:id",
- 
-  const careMembers = useSelector((state) => state.careMembers)
+
+  const dispatch =useDispatch();
+
+  const careRoles = useSelector( (state) => {
+    return state.categories.careRoles.map(role => {return {"value": role.id, "label":role.name}})
+  });
+  const careMembers = useSelector((state) =>  state.careMembers)
+  const groups =  useSelector( (state) => {
+    return state.groups.map(group => {return {"value": group.id, "label":group.name}})
+  });
+
   let careMember = careMembers.find((careMember) => careMember.id === parseInt(id))
- 
+
+
+  const [ role, setRole ] = useState(careMember.role);
+  const [ group, setGroup ] = useState(careMember.groups[0]);
+
+
+  console.log(role);
+
   return (
     <>
       <GradientEmptyHeader name="careMembers"  />
@@ -95,7 +114,7 @@ function EditCareMemberPage(props) {
                           </label>
                           <Input                            
                             id="input-onboard-date"
-                            value={careMember.onBoardDate}
+                            value={careMember.onboardingDate}
                             disabled = {true}       
                             type="text"                            
                           />
@@ -111,7 +130,7 @@ function EditCareMemberPage(props) {
                           </label>
                           <Input                           
                             id="input-offboard-date"
-                            value={careMember.offBoardDate}
+                            value={careMember.offboardingDate}
                             onChange={e => e.preventDefault}                           
                             type="text"
                           />
@@ -129,27 +148,32 @@ function EditCareMemberPage(props) {
                           >
                             Care Role
                           </label>
-                          <Input                           
-                            id="input-last-name"
-                            value="Care Advocate"
-                            onChange={e => e.preventDefault}        
-                            type="text"
+                          <Select
+                            id="careRole"
+                            components = {makeAnimated()}
+                            // value={role.name}    
+                            defaultInputValue ={role.name}   
+                            defaultValue ={role.name}     
+                            options = {careRoles}
+                            onChange = {item => setRole({"id":item.value, "name":item.label})}
                           />
                         </FormGroup>
                       </Col>
-                      <Col lg="6">
+                       <Col lg="6">
                         <FormGroup>
                           <label
                             className="form-control-label"
                             htmlFor="input-email"
                           >
-                            Country
+                            Group
                           </label>
-                          <Input
-                            id="input-email"
-                            value={careMember.country}
-                            onChange={e => e.preventDefault}        
-                            type="email"
+                          <Select
+                            id="defaultGroup"
+                            components = {makeAnimated()}                            
+                            defaultInputValue ={group.name}   
+                            defaultValue ={group.name}   
+                            options = {groups}
+                            onChange = {item => setGroup({"id":item.value, "name":item.label})}
                           />
                         </FormGroup>
                       </Col>
@@ -253,9 +277,10 @@ function EditCareMemberPage(props) {
                             Address
                           </label>
                           <Input
-                            value={careMember.address}
+                            disabled = {true}
+                            value={careMember.officeAddressStreet}
                             id="input-address"
-                            placeholder="Home Address"
+                            placeholder="Office Address"
                             type="text"
                           />
                         </FormGroup>
@@ -271,7 +296,8 @@ function EditCareMemberPage(props) {
                             City
                           </label>
                           <Input
-                            value={careMember.city}
+                            disabled = {true}
+                            value={careMember.officeAddressCity}
                             id="input-city"
                             placeholder="City"
                             type="text"
@@ -287,7 +313,8 @@ function EditCareMemberPage(props) {
                             Country
                           </label>
                           <Input
-                             value={careMember.country}
+                            disabled = {true}
+                            value={careMember.officeAddressCountry}
                             id="input-country"
                             placeholder="Country"
                             type="text"
@@ -303,7 +330,8 @@ function EditCareMemberPage(props) {
                             Postal code
                           </label>
                           <Input
-                            value={careMember.postalCode}
+                            disabled = {true}
+                            value={careMember.officeAddressPostalCode}
                             id="input-postal-code"
                             placeholder="Postal code"
                           />

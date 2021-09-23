@@ -3,10 +3,13 @@ import {
     RETRIEVE_CARE_MEMBERS,
     UPDATE_CARE_MEMBER,
     OFFBOARD_CARE_MEMBER,
-    SEARCH_CARE_MEMBERS
+    SEARCH_CARE_MEMBERS,
+    CARE_MEMBER_UPDATE_ROLE
  } from "actions/types";
 
-const careMembersReducer = (careMembers = [], action) => {
+ import { careMembersData } from '../mock-data/careMembers.js'
+
+const careMemberReducer = (careMembers = careMembersData, action) => {
     const { type, payload } = action;
 
     switch (type) {
@@ -30,6 +33,20 @@ const careMembersReducer = (careMembers = [], action) => {
                 }
             });
 
+        // case CARE_MEMBER_UPDATE_ROLE:
+        //     return careMembers.map(user => {
+        //         if(user.id === payload.id){
+
+        //             return {
+        //                 ...user,
+        //                 ...payload
+        //             };
+        //         } else {
+        //             return user
+        //         }
+        //     });
+
+
         case OFFBOARD_CARE_MEMBER:
             return careMembers.filter(({ id }) => id !== payload.id);
 
@@ -38,4 +55,4 @@ const careMembersReducer = (careMembers = [], action) => {
     }
 }
 
-export default careMembersReducer
+export default careMemberReducer

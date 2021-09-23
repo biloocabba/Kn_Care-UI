@@ -21,49 +21,83 @@ import { useSelector, useDispatch } from 'react-redux'
 import GradientEmptyHeader from 'components/Headers/GradientEmptyHeader.js'
 
 // react plugin used to create DropdownMenu for selecting items
-import Select2 from 'react-select2-wrapper'
+// import Select2 from 'react-select2-wrapper'
+import Select from "react-select";
+import makeAnimated from 'react-select/animated';
+import ReactDatetime from "react-datetime";
+
 import { createCareMember } from '../../../actions/careMembers.js'
 // react plugin used to fetch list of countries
 import countryList from 'country-list'
 
 
 const CreateCareMemberPage = (props) => {
+
   let { id } = useParams()
-  const [selectedCountry, setSelectedCountry] = useState('')
-  const [selectedRole, setSelectedRole] = useState('')
+  
+  const dispatch = useDispatch()
+  const careRoles = useSelector( (state) => {
+    return state.categories.careRoles.map(role => {return {"value": role.id, "label":role.name}})
+  });
+  const groups =  useSelector( (state) => {
+    return state.groups.map(group => {return {"value": group.id, "label":group.name}})
+  });
 
   const employees = useSelector((state) => state.employees)
   let employee = employees.find((employee) => employee.id === parseInt(id))
 
-  const date = new Date()
 
-  const onBoardDate = `${date.getDate()}/${
-    date.getMonth() + 1
-  }/${date.getFullYear()}`
-  const offBoardDate = `${date.getDate()}/${date.getMonth() + 1}/${
-    date.getFullYear() + 1
-  }` //OffBoard Date is 1 year from on Board date
-
+  // const [selectedCountry, setSelectedCountry] = useState('')
   const initialState = {
     onBoardDate: '',
     offBoardDate: '',
     employee: null,
     role: '',
-    country: '',
+    group: '',
   }
+  
+  const date = new Date()
+  const defaultOffBoardDate =date.setDate(date.getDate() + 365)
 
-  //Local state to hold the Current careMember before calling a dispatch to the store
+
+  const [ role, setRole ] = useState(careRoles[0]);
+  const [ group, setGroup ] = useState(groups[0]);
+  const [ onboardingDate, setOnboardingDate ] = useState(date);
+  const [ offboardingDate, setOffboardingDate ] = useState(defaultOffBoardDate);
+  
+
   const [careMember, setCareMember] = useState(initialState)
-  const dispatch = useDispatch()
+
+  
+
+
+
+  const onBoardDate = `${date.getDate()}/${
+    date.getMonth() + 1
+  }/${date.getFullYear()-1}`
+
+  // const offBoardDate = `${date.getDate()}/${date.getMonth() + 1}/${
+  //   date.getFullYear() + 1
+  // }` //OffBoard Date is 1 year from on Board date
+
+
+ 
+
+
+  const onChangeOffboardingDate = (dateAsMoment) => {    
+    setOffboardingDate(dateAsMoment.format('D-MM-YYYY'));
+  };
+
+
 
   const saveCareMember = () => {
     
     const careMemberInfo = {
       onBoardDate: onBoardDate,
-      offBoardDate: offBoardDate,
+      offBoardDate: offboardingDate,
       employee: employee.id,
       role: 'care Advocate',
-      country: selectedCountry,
+      group: group,
       careMember: true,
     }
 
@@ -71,10 +105,10 @@ const CreateCareMemberPage = (props) => {
       .then((data) =>
         setCareMember({
           onBoardDate: onBoardDate,
-          offBoardDate: offBoardDate,
+          offBoardDate: offboardingDate,
           employee: employee.id,
           role: 'care Advocate',
-          country: selectedCountry,
+          group: group,
         })
       )
       .catch((error) => {
@@ -139,12 +173,23 @@ const CreateCareMemberPage = (props) => {
                           >
                             Auto Offboard Date
                           </label>
-                          <Input
+                          <ReactDatetime                   
+                            // inputProps={{
+                            //   placeholder: "Hire date",
+                            // }}
+                            value={offboardingDate}
+                            onChange={(e) =>
+                              setOffboardingDate(e)
+                            }
+                            timeFormat={false}
+                          />
+
+                          {/* <Input
                             id="input-last-name"
                             value={offBoardDate}
                             onChange={(e) => e.preventDefault}
                             type="text"
-                          />
+                          /> */}
                         </FormGroup>
                       </Col>
                     </Row>
@@ -158,20 +203,17 @@ const CreateCareMemberPage = (props) => {
                           >
                             Care Role
                           </label>
-                          <Select2
+                          {/* <Select2
                             className="form-control"
                             defaultValue="1"
-                            options={{
-                              placeholder: 'Select Role',
-                            }}
-                            data={[
-                              { id: '1', text: 'Care Advocate' },
-                              { id: '2', text: 'Care Role' },
-                              { id: '3', text: 'Care Role' },
-                              { id: '4', text: 'Care Role' },
-                              { id: '5', text: 'Care Role' },
-                              { id: '6', text: 'Care Role' },
-                            ]}
+                            data={careRoles}                           
+                          /> */}
+
+                        <Select
+                            id="careRole"
+                            components = {makeAnimated()}
+                            options = {careRoles}
+                            onChange = {item => setRole({"id":item.value, "name":item.label})}
                           />
                         </FormGroup>
                       </Col>
@@ -181,19 +223,26 @@ const CreateCareMemberPage = (props) => {
                             className="form-control-label"
                             htmlFor="input-email"
                           >
-                            Country
+                            Group
                           </label>
-                          <Select2
+                          <Select
+                            id="defaultGroup"
+                            components = {makeAnimated()}
+                            options = {groups}
+                            onChange = {item => setGroup({"id":item.value, "name":item.label})}
+                          />
+
+                          {/* <Select2
                             className="form-control"
                             options={{
-                              placeholder: 'Select Country',
+                              placeholder: 'Default Group',
                             }}
                             data={countryList.getNames()}
                             onChange={(event) =>
                               setSelectedCountry(event.target.value)
                             }
                             value={selectedCountry}
-                          />
+                          /> */}
                         </FormGroup>
                       </Col>
                     </Row>

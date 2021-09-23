@@ -10,7 +10,7 @@ import {
 
 import {categoriesData} from "mock-data/categories.js";
   
-  function groupsReducer(groups = categoriesData.groups, action) {
+  function groupReducer(groups = categoriesData.groups, action) {
     const { type, payload } = action;
     switch (type) {
       case CREATE_GROUP:
@@ -75,5 +75,5 @@ import {categoriesData} from "mock-data/categories.js";
 
 //add reducer to add members
 
-export default groupsReducer;
+export default groupReducer;
 

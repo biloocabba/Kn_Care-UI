@@ -45,15 +45,23 @@ import Select from 'react-select';
 
 function CreateGroupPage() {
 
-  const dispatch = useDispatch();
-  const initialGroupState = {
-    id: null,
-    name: "",
-    description: "",
-    members: []
-  }
 
-  const [group, setGroup] = useState(initialGroupState)
+  // const initialGroupState = {
+  //   id: null,
+  //   name: "",
+  //   description: "",
+  //   members: []
+  // }
+
+  // const [group, setGroup] = useState(initialGroupState)
+
+  const [groupName, setGroupName] = useState('')
+  const [groupDescription, setGroupDescription] = useState('')
+  const saveGroup = (e) => {
+    e.preventDefault();
+  }
+  /*
+
   const [submitted, setSubmitted] = useState(false);
 
   const optionsRegion = [
@@ -117,7 +125,7 @@ function CreateGroupPage() {
       i.label.toLowerCase().includes(inputValMembers.toLowerCase())
     );
   };
-
+*/
 
   //temporary before being able to make query with search parameter
 
@@ -163,14 +171,14 @@ function CreateGroupPage() {
                 </Row>
               </CardHeader>
               <CardBody>
-              {submitted ? (
+              {/* {submitted ? (
                  <div>
                  <h4>You submitted successfully!</h4>
                  <button className="btn btn-success" onClick={newGroup}>
                    Add
                  </button>
                </div>
-             ) : (
+             ) : ( */}
                 <Form>
                   <h6 className="heading-small text-muted mb-4">
                     Group information
@@ -187,12 +195,12 @@ function CreateGroupPage() {
                           </label>
                           <Input
                             name="name"
-                            value={group.name}
+                            value={groupName}
                             required
                             id="input-group-name"
                             placeholder="Group name"
                             type="text"
-                            onChange={handleInputChange}  
+                            onChange={e => setGroupName(e.target.value)}  
                           />
                         </FormGroup>
                       </Col>                    
@@ -213,8 +221,8 @@ function CreateGroupPage() {
                             placeholder="A few words about the group"
                             rows="4"
                             type="textarea" 
-                            onChange={handleInputChange}  
-                            value={group.description}                          
+                            onChange={e =>  setGroupDescription(e.target.value)}  
+                            alue={groupDescription}                         
                           />
                         </FormGroup>
                       </Col>                    
@@ -325,7 +333,7 @@ function CreateGroupPage() {
                  </div>
                 </Form>
 
-             )}
+             {/* )} */}
               </CardBody>
             </Card>
           </Col>

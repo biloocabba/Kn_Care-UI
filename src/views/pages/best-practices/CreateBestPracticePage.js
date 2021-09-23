@@ -34,6 +34,7 @@ const initialState = {
 function CreateBestPracticePage() {
   const simpleValidator = useRef(new SimpleReactValidator());
 
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -118,7 +119,7 @@ function CreateBestPracticePage() {
                             <Col md="12">
                                 <FormGroup>
                                     <label className="form-control-label">Title</label>
-                                    <Input className="text-sm" name="title" value={title}  />
+                                    <Input className="text-sm" name="title" value={title} onChange={ e => setTitle(e.target.value)} />
                                 </FormGroup>
                             </Col>                            
                             <Col md="12">
@@ -128,7 +129,8 @@ function CreateBestPracticePage() {
                                         name="description"
                                         type="textarea"
                                         rows="5"
-                                        onChange={handleInputChange}
+                                        // onChange={handleInputChange}
+                                        onChange={ e => setDescription(e.target.value)}
                                         value={description}
                                       />                                  
                                 </FormGroup>
@@ -136,7 +138,7 @@ function CreateBestPracticePage() {
                             <Col md="12">
                                 <FormGroup>
                                     <label className="form-control-label">Image Url</label>
-                                    <Input className="text-sm" name="title" value={imageUrl}  />
+                                    <Input className="text-sm" name="title" value={imageUrl}  onChange={ e => setImageUrl(e.target.value)} />
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -214,7 +216,7 @@ function CreateBestPracticePage() {
           </Row>
         </div>
         <Row>
-          <Button color="primary" type="submit" onClick={saveBestPractice}>
+          <Button color="primary" type="submit" onClick={e => console.log(e)}>
             Create
           </Button>
         </Row>

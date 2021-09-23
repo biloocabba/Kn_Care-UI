@@ -5,7 +5,7 @@ import {
     DELETE_BEST_PRACTICE,
 } from "../actions/types/index"
 
-const bestPracticesReducer = (bestPractices = [], action) => {
+const bestPracticeReducer = (bestPractices = [], action) => {
     const { type, payload } = action;
 
     switch(type){
@@ -31,4 +31,4 @@ const bestPracticesReducer = (bestPractices = [], action) => {
     }
 }
 
-export default bestPracticesReducer;
+export default bestPracticeReducer;

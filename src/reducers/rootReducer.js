@@ -1,27 +1,23 @@
 import { combineReducers } from "redux";
-import employeesReducer from "./employees.js";
-import careMembersReducer from './careMembers.js';
-import groupsReducer from './groups.js';
-import emailDraftReducer from "./emailDrafts.js";
-import bestPracticesReducer from "./bestPractices.js";
-import pageStatusReducer from "./pageStatus.js";
-import mapKpisReducer from './mapKpis.js';
+import employeesReducer from "./employeeReducer.js";
+import careMemberReducer from './careMemberReducer.js';
+import groupReducer from './groupReducer.js';
+import emailDraftReducer from "./emailDraftReducer.js";
+import bestPracticeReducer from "./bestPracticeReducer.js";
+import mapKpisReducer from './mapKpiReducer.js';
 import authReducer from "./auth.js";
-import messageReducer from "./message";
-import roleReducer from "./roles";
+import messageReducer from "./messageReducer";
 import categoryReducer from "./categoryReducer.js";
 
 
 export const rootReducer = combineReducers({
     employees: employeesReducer,
-    careMembers: careMembersReducer,
-    groups:groupsReducer,
+    careMembers: careMemberReducer,
+    groups:groupReducer,
     emailDrafts: emailDraftReducer,
-    bestPractices:bestPracticesReducer,
-    pageStatus:pageStatusReducer,
+    bestPractices:bestPracticeReducer,   
     mapKpis: mapKpisReducer,
     message: messageReducer,
     auth: authReducer,
-    roles:roleReducer,
     categories: categoryReducer
   });

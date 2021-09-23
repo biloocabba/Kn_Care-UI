@@ -293,8 +293,8 @@ function EditGroupPage(props) {
                     <Button onClick={toggleAddMembers} color='success'>
                         Add new Members
                     </Button>
-                    <Button onClick={toggleCurrentMembers} disabled={numOfMembers === 0} color='info'>
-                          {currentMembersCollapse ?"Hide members":  "Show members"} ({numOfMembers} members)
+                    <Button onClick={toggleCurrentMembers} disabled={careMembers.length === 0} color='info'>
+                          {currentMembersCollapse ?"Hide members":  "Show members"} ({careMembers.length} members)
                     </Button>
                   </ButtonGroup>    
 

@@ -29,3 +29,47 @@ export const pagination = paginationFactory({
       </div>
     ),
   })
+
+
+  // this function will copy to clipboard an entire table,
+  // so you can paste it inside an excel or csv file
+  export const copyToClipboardAsTable = (el, showAlert) => {
+    var body = document.body,
+      range,
+      sel
+    if (document.createRange && window.getSelection) {
+      range = document.createRange()
+      sel = window.getSelection()
+      sel.removeAllRanges()
+      try {
+        range.selectNodeContents(el)
+        sel.addRange(range)
+      } catch (e) {
+        range.selectNode(el)
+        sel.addRange(range)
+      }
+      document.execCommand('copy')
+    } else if (body.createTextRange) {
+      range = body.createTextRange()
+      range.moveToElementText(el)
+      range.select()
+      range.execCommand('Copy')
+    }
+
+    showAlert();
+
+   // setAlert(alertComponent);
+    // setAlert(
+    //   <ReactBSAlert
+    //     success
+    //     style={{ display: 'block', marginTop: '-100px' }}
+    //     title="Good job!"
+    //     onConfirm={() => setAlert(null)}
+    //     onCancel={() => setAlert(null)}
+    //     confirmBtnBsStyle="info"
+    //     btnSize=""
+    //   >
+    //     Copied to clipboard!
+    //   </ReactBSAlert>
+    // )
+  }

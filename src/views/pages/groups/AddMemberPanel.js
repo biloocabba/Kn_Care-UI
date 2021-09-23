@@ -47,8 +47,11 @@ import Select from 'react-select';
 
 function AddMemberPanel(props) {
   
- 
- const careMembers = useSelector(state => state.careMembers);
+
+const careMembers = useSelector( (state) => {
+    return state.careMembers.map(careMember => {return {"value": careMember.id, "label":careMember.internationalName}})
+  });
+
 
   const roles = useSelector( (state) => {
     return state.categories.careRoles.map(role => {return {"value": role.id, "label":role.name}})
@@ -61,6 +64,7 @@ function AddMemberPanel(props) {
   const countries = useSelector( (state) => {
     return state.categories.countryListAllIsoData.map(country => {return {"value": country.code3, "label":country.name}})
   });
+
 
   return (
            <Card>
@@ -87,8 +91,8 @@ function AddMemberPanel(props) {
                           <Select                                  
                               onChange={props.onchangeRole}
                               options={roles}
-                              getOptionValue={(option) => option.value}
-                              getOptionLabel={(option) => option.value}
+                              // getOptionValue={(option) => option.value}
+                              // getOptionLabel={(option) => option.value}
                           />
 
                           </FormGroup>
@@ -120,9 +124,7 @@ function AddMemberPanel(props) {
                           </label>
                           <Select                                 
                                   onChange={props.onchangeBunit}
-                                  options={businessUnits}
-                                  getOptionValue={(option) => option.value}
-                                  getOptionLabel={(option) => option.value}
+                                  options={businessUnits}                                
                               />
 
                           </FormGroup>
@@ -138,22 +140,13 @@ function AddMemberPanel(props) {
                           <Select
                                   isMulti                                 
                                   onChange={props.onSelectCareMember}
-                                  options={careMembers}
-                                  getOptionValue={(option) => option.value}
-                                  getOptionLabel={(option) => option.value}
+                                  options={careMembers}                                
                               />
 
                           </FormGroup>
                        </Col> 
                        </Row>
-                       </Col>   
-                          {/* <Select
-                                  defaultValue={selectedOption}
-                                  onChange={setSelectedOption}
-                                  options={members}
-                                  isMulti
-                                /> */}
-                                                        
+                       </Col>                                                         
                     </Row>
                     </CardBody>
             </Card>

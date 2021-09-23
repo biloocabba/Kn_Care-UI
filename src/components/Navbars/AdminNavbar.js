@@ -95,7 +95,7 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
       >
         <Container fluid>
           <Collapse navbar isOpen={true}>
-            <Form
+            {/* <Form
               className={classnames(
                 "navbar-search form-inline mr-sm-3",
                 { "navbar-search-light": theme === "dark" },
@@ -120,10 +120,10 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
               >
                 <span aria-hidden={true}>×</span>
               </button>
-            </Form>
+            </Form> */}
 
             <Nav className="align-items-center ml-md-auto" navbar>
-              <NavItem className="d-xl-none">
+              {/* <NavItem className="d-xl-none">
                 <div
                   className={classnames(
                     "pr-3 sidenav-toggler",
@@ -143,8 +143,8 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                 <NavLink onClick={openSearch}>
                   <i className="ni ni-zoom-split-in" />
                 </NavLink>
-              </NavItem>
-              <UncontrolledDropdown nav>
+              </NavItem> */}
+              {/* <UncontrolledDropdown nav>
                 <DropdownToggle className="nav-link" color="" tag="a">
                   <i className="ni ni-bell-55" />
                 </DropdownToggle>
@@ -315,7 +315,8 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                     View all
                   </DropdownItem>
                 </DropdownMenu>
-              </UncontrolledDropdown>
+              </UncontrolledDropdown> */}
+{/* 
               <UncontrolledDropdown nav>
                 <DropdownToggle className="nav-link" color="" tag="a">
                   <i className="ni ni-ungroup" />
@@ -400,6 +401,9 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                   </Row>
                 </DropdownMenu>
               </UncontrolledDropdown>
+            
+             */}
+            
             </Nav>
             <Nav className="align-items-center ml-auto ml-md-0" navbar>
               <UncontrolledDropdown nav>
@@ -408,12 +412,12 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                     <span className="avatar avatar-sm rounded-circle">
                       <img
                         alt="..."
-                        src={require("assets/img/theme/team-4.jpg").default}
+                        src={require("assets/img/care/stefano-fiorenza.jpg").default}
                       />
                     </span>
                     <Media className="ml-2 d-none d-lg-block">
                       <span className="mb-0 text-sm font-weight-bold">
-                        John Snow
+                        Stefano Fiorenza
                       </span>
                     </Media>
                   </Media>

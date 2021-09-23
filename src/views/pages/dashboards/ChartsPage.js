@@ -187,7 +187,7 @@ const  turnoverData = {
     labels: ["January", "February", "March", "April", "May", "June", "July"],
     datasets: [
       {
-        label: "Dataset 1",
+        label: "Offboarded",
         backgroundColor: colors.theme["danger"],
         data: [
           randomScalingFactor(),
@@ -201,7 +201,7 @@ const  turnoverData = {
         maxBarThickness: 10,
       },
       {
-        label: "Dataset 2",
+        label: "Onboarded",
         backgroundColor: colors.theme["success"],
         data: [
           randomScalingFactor(),
@@ -377,7 +377,7 @@ function Charts() {
             <Card>
               <CardHeader>
                 <h6 className="surtitle">Care Members</h6>
-                <h5 className="h3 mb-0">Onboarderd/Offboarded</h5>
+                <h5 className="h3 mb-0">Onboarded/Offboarded</h5>
               </CardHeader>
               <CardBody>
                 <div className="chart">

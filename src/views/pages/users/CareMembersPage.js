@@ -74,10 +74,20 @@ function CareMembersPage(props) {
     return state.categories.countryListAllIsoData.map(country => {return {"value": country.code3, "label":country.name}})
   });
 
+  const careRoles = useSelector( (state) => {
+    return state.categories.careRoles.map(role => {return {"value": role.id, "label":role.name}})
+  });
 
+  const groups =  useSelector( (state) => {
+    return state.groups.map(group => {return {"value": group.id, "label":group.name}})
+  });
+  
+
+  const [searchRole, setSearchRole] = useState("");
   const [searchLastName, setSearchLastName] = useState("");
   const [searchBusinessUnit, setSearchBusinessUnit] = useState("");
   const [searchCountry, setSearchCountry] = useState("");
+  const [searchGroup, setSearchGroup] = useState("");  
   const [searchOnBoardDateFrom, setSearchOnBoardDateFrom] = useState(null);
   
   const [searchOnBoardDateTo, setSearchOnBoardDateTo] = useState(null);
@@ -85,14 +95,18 @@ function CareMembersPage(props) {
   const [searchOffboardingDateTo, setSearchOffboardingDateTo] = useState(null);
 
 
+  const onChangeSearchOnboardingDateFrom = (dateAsMoment) => {    
+    setSearchRole(dateAsMoment.format('D-MM-YYYY'));
+  };
+
   const onChangeSearchLastName = e => {  
     const searchLastName = e.target.value;
     setSearchLastName(searchLastName);
   };
 
-  const onChangeSearchOnboardingDateFrom = (dateAsMoment) => {    
-    setSearchOnBoardDateFrom(dateAsMoment.format('D-MM-YYYY'));
-  };
+  // const onChangeSearchOnboardingDateFrom = (dateAsMoment) => {    
+  //   setSearchOnBoardDateFrom(dateAsMoment.format('D-MM-YYYY'));
+  // };
 
   const onChangeSearchOnboardingDateTo = (dateAsMoment) => {    
     setSearchOnBoardDateTo(dateAsMoment.format('D-MM-YYYY'));
@@ -131,16 +145,19 @@ function CareMembersPage(props) {
     return (
       <>
         <Button
+          id={row.id}
           className="btn-icon btn-2"
           type="button"
           color="info"
           onClick={rowDataDetails}
         >
-          <span className="btn-inner--icon">
-            <i className="ni ni-badge" />
+          {/* <span id={row.id} className="btn-inner--icon"> */}
+          <span id={row.id} className="btn-inner--icon">
+            <i id={row.id} className="ni ni-badge" />
           </span>
         </Button>
         <Button
+          id={row.id}
           className="btn-icon btn-2"
           color="danger"
           type="button"
@@ -155,46 +172,8 @@ function CareMembersPage(props) {
   }
 
   const [alert, setAlert] = React.useState(null)
-  const componentRef = React.useRef(null)
 
-  // this function will copy to clipboard an entire table,
-  // so you can paste it inside an excel or csv file
-  const copyToClipboardAsTable = (el) => {
-    var body = document.body,
-      range,
-      sel
-    if (document.createRange && window.getSelection) {
-      range = document.createRange()
-      sel = window.getSelection()
-      sel.removeAllRanges()
-      try {
-        range.selectNodeContents(el)
-        sel.addRange(range)
-      } catch (e) {
-        range.selectNode(el)
-        sel.addRange(range)
-      }
-      document.execCommand('copy')
-    } else if (body.createTextRange) {
-      range = body.createTextRange()
-      range.moveToElementText(el)
-      range.select()
-      range.execCommand('Copy')
-    }
-    setAlert(
-      <ReactBSAlert
-        success
-        style={{ display: 'block', marginTop: '-100px' }}
-        title="Good job!"
-        onConfirm={() => setAlert(null)}
-        onCancel={() => setAlert(null)}
-        confirmBtnBsStyle="info"
-        btnSize=""
-      >
-        Copied to clipboard!
-      </ReactBSAlert>
-    )
-  }
+  
 
   return (
     <>
@@ -221,8 +200,8 @@ function CareMembersPage(props) {
                   <Select
                       id="group"
                       components = {makeAnimated()}
-                      options = {countries}
-                      onChange = {item => setSearchCountry(item.value)}
+                      options = {careRoles}
+                      onChange = {item => setSearchRole(item.value)}
                     />
                    </FormGroup>    
               </Col>
@@ -269,8 +248,8 @@ function CareMembersPage(props) {
                   <Select
                       id="group"
                       components = {makeAnimated()}
-                      options = {countries}
-                      onChange = {item => setSearchCountry(item.value)}
+                      options = {groups}
+                      onChange = {item => setSearchGroup(item.value)}
                     />
                 </FormGroup>
               </Col> 

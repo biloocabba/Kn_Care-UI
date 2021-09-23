@@ -1,7 +1,8 @@
 import {
   CREATE_CARE_MEMBER,
   RETRIEVE_CARE_MEMBERS,
-  API_CALL_START
+  API_CALL_START,
+  CARE_MEMBER_UPDATE_ROLE
 } from './types'
 
 import careMemberService from '../services/careMemberService'
@@ -39,7 +40,6 @@ export const searchCareMembers = (filters) => (dispatch) => {
     return Promise.reject(err);
   }
 };
-
 
 export const createCareMember = (data) => (dispatch) => {
     
