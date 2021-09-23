@@ -38,6 +38,8 @@ import {
   Container,
   Row,
   Col,
+  ButtonGroup,
+  Collapse
 } from "reactstrap";
 // core components
 import GroupHeader from "components/Headers/GroupHeader.js";
@@ -60,6 +62,9 @@ function CreateGroupPage() {
   const saveGroup = (e) => {
     e.preventDefault();
   }
+
+  const [addMembersCollapse, setAddMembersCollapse] = useState(false);
+
   /*
 
   const [submitted, setSubmitted] = useState(false);
@@ -184,6 +189,7 @@ function CreateGroupPage() {
                     Group information
                   </h6>
                   <div className="pl-lg-4">
+
                     <Row>
                        <Col lg="10">
                         <FormGroup>
@@ -228,7 +234,32 @@ function CreateGroupPage() {
                       </Col>                    
                     </Row>
 
-                    <Row>
+                    <Row className="d-flex justify-content-between mx-2">               
+                        <h6 className="heading-small text-muted mb-4">
+                          MEMBERS
+                        </h6> 
+                        <ButtonGroup className="d-flex">
+                          <Button onClick={e => setAddMembersCollapse(!addMembersCollapse)} color='success' type="button">
+                              Add new Members
+                          </Button>                       
+                        </ButtonGroup>    
+                      </Row>
+
+                      <Row>
+                        <Col lg="12">
+                        {/* <MembersTableComps data={group.members} /> */}
+                          <Collapse isOpen={addMembersCollapse} >
+                            <AddMemberPanel 
+                              onchangeRole={ (e) => console.log(e)}
+                              onchangeCountry={(e) => console.log(e)}
+                              onchangeBunit={(e) => console.log(e)}
+                              onSelectCareMember={(e) => console.log(e)}                        
+                            />
+                          </Collapse>
+                          </Col> 
+                     </Row> 
+                     </div> 
+                    {/* <Row>
                        <Col lg="10">
                        
                        <AddMemberPanel 
@@ -237,7 +268,8 @@ function CreateGroupPage() {
                           onchangeBunit={(e) => console.log(e)}
                           onSelectCareMember={(e) => console.log(e)}                        
                         />
-
+                      </Col> 
+                    </Row>  */}
                        {/* <Row>
 
                        <Col lg="2">
@@ -315,9 +347,9 @@ function CreateGroupPage() {
                        </Col> 
                        </Row>*/}
                      
-                            </Col> 
-                        </Row>           
-                      </div>
+                            {/* </Col> 
+                        </Row>            */}
+                      {/* </div> */}
                 
               
               
@@ -327,8 +359,7 @@ function CreateGroupPage() {
                       
      
                  
-                  <div className="pl-lg-4">
-                   
+                  <div className="pl-lg-4">                   
                    <button onClick={saveGroup} className="btn btn-success"> Submit </button>
                  </div>
                 </Form>

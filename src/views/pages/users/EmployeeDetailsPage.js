@@ -167,10 +167,11 @@ function EmployeeDetailsPage(props) {
                             className="form-control-label"
                             htmlFor="input-address"
                           >
-                            Address
+                            Office address
                           </label>
                           <Input
-                            defaultValue={employee.address}
+                            disabled={true}
+                            defaultValue={employee.officeAddressStreet}
                             id="input-address"
                             placeholder="Home Address"
                             type="text"
@@ -188,7 +189,8 @@ function EmployeeDetailsPage(props) {
                             City
                           </label>
                           <Input
-                            defaultValue={employee.city}
+                            disabled={true}
+                            defaultValue={employee.officeAddressCity}
                             id="input-city"
                             placeholder="City"
                             type="text"
@@ -204,7 +206,8 @@ function EmployeeDetailsPage(props) {
                             Country
                           </label>
                           <Input
-                            defaultValue={employee.country}
+                            disabled={true}
+                            defaultValue={employee.officeAddressCountry}
                             id="input-country"
                             placeholder="Country"
                             type="text"
@@ -221,7 +224,8 @@ function EmployeeDetailsPage(props) {
                           </label>
                           <Input
                             id="input-postal-code"
-                            value={employee.postalCode}
+                            disabled={true}
+                            value={employee.officeAddressPostalCode? employee.officeAddressPostalCode: 10872}
                             placeholder="Postal code"
                             type="number"
                           />
@@ -284,7 +288,7 @@ function EmployeeDetailsPage(props) {
                           </label>
                           <Input
                             id="input-postal-code"
-                            value={employee.businessUnit.name}
+                            value={employee.businessUnit}
                             disabled={true}
                             type="text"
                           />
