@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import {useState} from "react";
 
 // reactstrap components
 import {
@@ -30,20 +30,42 @@ import {
   Col,
 } from "reactstrap";
 
+import Select from "react-select";
+import makeAnimated from 'react-select/animated';
+
 import {useParams} from "react-router-dom";
-import { employees } from "./EmployeesData.js";
+import { useSelector, useDispatch } from 'react-redux'
+
 
 // core components
 import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
 
 function EditCareMemberPage(props) {
 
-  let { id } = useParams(); //see in routes path: "/users/employee-details/:id",
-  let employee =employees[0] //.filter(emp => emp.id===id)[0];
- 
+  let { id } = useParams(); //see in routes path: "/users/careMember-details/:id",
+
+  const dispatch =useDispatch();
+
+  const careRoles = useSelector( (state) => {
+    return state.categories.careRoles.map(role => {return {"value": role.id, "label":role.name}})
+  });
+  const careMembers = useSelector((state) =>  state.careMembers)
+  const groups =  useSelector( (state) => {
+    return state.groups.map(group => {return {"value": group.id, "label":group.name}})
+  });
+
+  let careMember = careMembers.find((careMember) => careMember.id === parseInt(id))
+
+
+  const [ role, setRole ] = useState(careMember.role);
+  const [ group, setGroup ] = useState(careMember.groups[0]);
+
+
+  console.log(role);
+
   return (
     <>
-      <GradientEmptyHeader name="Employees"  />
+      <GradientEmptyHeader name="careMembers"  />
       <Container className="mt--6" fluid>    
         <Row>     
           <Col className="order-xl-1" xl="12">
@@ -77,7 +99,7 @@ function EditCareMemberPage(props) {
               </CardHeader>
               <CardBody>
               <Form>
-              <h6 className="heading-small text-muted mb-4">
+                  <h6 className="heading-small text-muted mb-4">
                     Care Member information
                   </h6>
                   <div className="pl-lg-4">                    
@@ -86,13 +108,13 @@ function EditCareMemberPage(props) {
                         <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="input-first-name"
+                            htmlFor="input-onboard-date"
                           >
                             Onboard Date
                           </label>
                           <Input                            
-                            id="input-first-name"
-                            value="12/12/2020"
+                            id="input-onboard-date"
+                            value={careMember.onboardingDate}
                             disabled = {true}       
                             type="text"                            
                           />
@@ -102,13 +124,13 @@ function EditCareMemberPage(props) {
                         <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="input-last-name"
+                            htmlFor="input-offboard-date"
                           >
                             Auto Offboard Date
                           </label>
                           <Input                           
-                            id="input-last-name"
-                            value="12/12/2021"
+                            id="input-offboard-date"
+                            value={careMember.offboardingDate}
                             onChange={e => e.preventDefault}                           
                             type="text"
                           />
@@ -126,27 +148,32 @@ function EditCareMemberPage(props) {
                           >
                             Care Role
                           </label>
-                          <Input                           
-                            id="input-last-name"
-                            value="Care Advocate"
-                            onChange={e => e.preventDefault}        
-                            type="text"
+                          <Select
+                            id="careRole"
+                            components = {makeAnimated()}
+                            // value={role.name}    
+                            defaultInputValue ={role.name}   
+                            defaultValue ={role.name}     
+                            options = {careRoles}
+                            onChange = {item => setRole({"id":item.value, "name":item.label})}
                           />
                         </FormGroup>
                       </Col>
-                      <Col lg="6">
+                       <Col lg="6">
                         <FormGroup>
                           <label
                             className="form-control-label"
                             htmlFor="input-email"
                           >
-                            Country
+                            Group
                           </label>
-                          <Input
-                            id="input-email"
-                            value={employee.country}
-                            onChange={e => e.preventDefault}        
-                            type="email"
+                          <Select
+                            id="defaultGroup"
+                            components = {makeAnimated()}                            
+                            defaultInputValue ={group.name}   
+                            defaultValue ={group.name}   
+                            options = {groups}
+                            onChange = {item => setGroup({"id":item.value, "name":item.label})}
                           />
                         </FormGroup>
                       </Col>
@@ -172,7 +199,7 @@ function EditCareMemberPage(props) {
                           </label>
                           <Input                            
                             id="input-first-name"
-                            value={employee.firstName}
+                            value={careMember.firstName}
                             type="text"
                             disabled = {true}
                           />
@@ -188,7 +215,7 @@ function EditCareMemberPage(props) {
                           </label>
                           <Input                           
                             id="input-last-name"
-                            value={employee.lastName}
+                            value={careMember.lastName}
                             disabled = {true}
                             type="text"
                           />
@@ -208,7 +235,7 @@ function EditCareMemberPage(props) {
                           </label>
                           <Input                           
                             id="input-username"
-                            value={employee.internationalName}
+                            value={careMember.internationalName}
                             disabled = {true}
                             type="text"                         
                           />
@@ -224,7 +251,7 @@ function EditCareMemberPage(props) {
                           </label>
                           <Input
                             id="input-email"
-                            value={employee.email}
+                            value={careMember.email}
                             disabled = {true}
                             type="email"
                           />
@@ -250,9 +277,10 @@ function EditCareMemberPage(props) {
                             Address
                           </label>
                           <Input
-                            defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
+                            disabled = {true}
+                            value={careMember.officeAddressStreet}
                             id="input-address"
-                            placeholder="Home Address"
+                            placeholder="Office Address"
                             type="text"
                           />
                         </FormGroup>
@@ -268,7 +296,8 @@ function EditCareMemberPage(props) {
                             City
                           </label>
                           <Input
-                            defaultValue="New York"
+                            disabled = {true}
+                            value={careMember.officeAddressCity}
                             id="input-city"
                             placeholder="City"
                             type="text"
@@ -284,7 +313,8 @@ function EditCareMemberPage(props) {
                             Country
                           </label>
                           <Input
-                            defaultValue="United States"
+                            disabled = {true}
+                            value={careMember.officeAddressCountry}
                             id="input-country"
                             placeholder="Country"
                             type="text"
@@ -300,9 +330,10 @@ function EditCareMemberPage(props) {
                             Postal code
                           </label>
                           <Input
+                            disabled = {true}
+                            value={careMember.officeAddressPostalCode}
                             id="input-postal-code"
                             placeholder="Postal code"
-                            type="number"
                           />
                         </FormGroup>
                       </Col>
@@ -318,7 +349,7 @@ function EditCareMemberPage(props) {
                           <label className="form-control-label">Title</label>
                           <Input
                                 id="title"
-                                value={employee.title}
+                                value={careMember.title}
                                 disabled = {true}
                                 type="text"
                               />
@@ -341,7 +372,7 @@ function EditCareMemberPage(props) {
                           <label className="form-control-label">Company Code</label>
                           <Input
                                 id="input-postal-code"
-                                value={employee.companyCode}
+                                value={careMember.companyCode}
                                 disabled = {true}
                                 type="text"
                               />
@@ -355,7 +386,7 @@ function EditCareMemberPage(props) {
                             <label className="form-control-label">Business Unit</label>
                             <Input
                                   id="input-postal-code"
-                                  value={employee.businessUnit}
+                                  value={careMember.businessUnit}
                                   disabled = {true}
                                   type="text"
                                 />
@@ -367,7 +398,7 @@ function EditCareMemberPage(props) {
                             <label className="form-control-label">Cost Center</label>
                             <Input
                                   id="input-postal-code"
-                                  value={employee.costCenter}
+                                  value={careMember.costCenter}
                                   disabled = {true}
                                   type="text"
                                 />
@@ -378,7 +409,7 @@ function EditCareMemberPage(props) {
                             <label className="form-control-label">Management Group</label>
                             <Input
                                   id="input-postal-code"
-                                  value={employee.managementGroup}
+                                  value={careMember.managementGroup}
                                   disabled = {true}
                                   type="text"
                                 />

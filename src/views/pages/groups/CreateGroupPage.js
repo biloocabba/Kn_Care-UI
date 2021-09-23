@@ -14,8 +14,13 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-
+import React, {useState, useEffect} from "react";
+import { useDispatch, useSelector } from  "react-redux";
+import {createGroup} from "actions/groups"
+//import {user_initialState} from "../../../mock-data/employees"
+import AsyncSelect from 'react-select/async';
+import SelectMemberPaginate from "./SelectMemberPaginate";
+import AddMemberPanel from "./AddMemberPanel.js";
 // reactstrap components
 import {
   Button,
@@ -33,11 +38,116 @@ import {
   Container,
   Row,
   Col,
+  ButtonGroup,
+  Collapse
 } from "reactstrap";
 // core components
 import GroupHeader from "components/Headers/GroupHeader.js";
+import Select from 'react-select';
 
 function CreateGroupPage() {
+
+
+  // const initialGroupState = {
+  //   id: null,
+  //   name: "",
+  //   description: "",
+  //   members: []
+  // }
+
+  // const [group, setGroup] = useState(initialGroupState)
+
+  const [groupName, setGroupName] = useState('')
+  const [groupDescription, setGroupDescription] = useState('')
+  const saveGroup = (e) => {
+    e.preventDefault();
+  }
+
+  const [addMembersCollapse, setAddMembersCollapse] = useState(false);
+
+  /*
+
+  const [submitted, setSubmitted] = useState(false);
+
+  const optionsRegion = [
+    { value: "EE", label: 'Estonia' },
+    { value: "FI" ,label:"Finland"},
+   
+];
+    const [region, setRegion] = useState(optionsRegion[0]);
+    const [currentCountry, setCurrentCountry] = useState(null);
+
+    const onchangeSelect = (item) => {
+    setCurrentCountry(null);
+    setRegion(item);
+};
+
+  const handleInputChange = event => {
+    const { name, value } = event.target;
+    setGroup({ ...group, [name]: value });
+  };
+
+  const saveGroup = (e) => {
+    e.preventDefault();
+    const {name, description} = group;
+    dispatch(createGroup(name, description))
+      .then(data => {
+        setGroup({
+          id: Math.floor(Math.random() * 10000),
+          name: data.name,
+          description: data.description,
+        });
+        setSubmitted(true);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  
+  }
+
+  const newGroup = () => {
+    setSubmitted(false);
+  };
+
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  let options = []
+
+  const [members, setMembers] = useState([])
+  const [inputValMembers, setInputValMembers] = useState(null)
+
+  const handleChangeMembers = (e) => {
+    setMembers(Array.isArray(e) ? e.map(x => x.value) : []);
+  }
+   
+
+  const getMembers = () =>{
+  //  user_initialState.map(user => options.push( {value: user.id, label: `${user.firstName} ${user.lastName}`}))
+  }
+
+  const filterMembers = (inputValMembers) => {
+    return options.filter(i =>
+      i.label.toLowerCase().includes(inputValMembers.toLowerCase())
+    );
+  };
+*/
+
+  //temporary before being able to make query with search parameter
+
+  // const promiseOptions = inputValMembers =>
+  // new Promise(resolve => {
+  //   setTimeout(() => {
+  //     resolve(filterMembers(inputValMembers));
+  //   }, 1000);
+  // });
+
+  // useEffect(() => {
+  //   getMembers()
+  // }, []);
+  
+
+  
+
   return (
     <>
       
@@ -66,11 +176,20 @@ function CreateGroupPage() {
                 </Row>
               </CardHeader>
               <CardBody>
+              {/* {submitted ? (
+                 <div>
+                 <h4>You submitted successfully!</h4>
+                 <button className="btn btn-success" onClick={newGroup}>
+                   Add
+                 </button>
+               </div>
+             ) : ( */}
                 <Form>
                   <h6 className="heading-small text-muted mb-4">
                     Group information
                   </h6>
                   <div className="pl-lg-4">
+
                     <Row>
                        <Col lg="10">
                         <FormGroup>
@@ -81,10 +200,13 @@ function CreateGroupPage() {
                             Group Name
                           </label>
                           <Input
-                            defaultValue=""
+                            name="name"
+                            value={groupName}
+                            required
                             id="input-group-name"
                             placeholder="Group name"
                             type="text"
+                            onChange={e => setGroupName(e.target.value)}  
                           />
                         </FormGroup>
                       </Col>                    
@@ -95,111 +217,154 @@ function CreateGroupPage() {
                         <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="input-group-description"
+                            htmlFor="description"
                           >
                             Group Description (optional)
                           </label>
                           <Input
-                            id="input-group-description"
+                          name="description"
+                            id="description"
                             placeholder="A few words about the group"
                             rows="4"
-                            type="textarea"                           
+                            type="textarea" 
+                            onChange={e =>  setGroupDescription(e.target.value)}  
+                            alue={groupDescription}                         
                           />
                         </FormGroup>
                       </Col>                    
                     </Row>
 
+                    <Row className="d-flex justify-content-between mx-2">               
+                        <h6 className="heading-small text-muted mb-4">
+                          MEMBERS
+                        </h6> 
+                        <ButtonGroup className="d-flex">
+                          <Button onClick={e => setAddMembersCollapse(!addMembersCollapse)} color='success' type="button">
+                              Add new Members
+                          </Button>                       
+                        </ButtonGroup>    
+                      </Row>
 
-                  </div>
-                  <hr className="my-4" />
+                      <Row>
+                        <Col lg="12">
+                        {/* <MembersTableComps data={group.members} /> */}
+                          <Collapse isOpen={addMembersCollapse} >
+                            <AddMemberPanel 
+                              onchangeRole={ (e) => console.log(e)}
+                              onchangeCountry={(e) => console.log(e)}
+                              onchangeBunit={(e) => console.log(e)}
+                              onSelectCareMember={(e) => console.log(e)}                        
+                            />
+                          </Collapse>
+                          </Col> 
+                     </Row> 
+                     </div> 
+                    {/* <Row>
+                       <Col lg="10">
+                       
+                       <AddMemberPanel 
+                          onchangeRole={ (e) => console.log(e)}
+                          onchangeCountry={(e) => console.log(e)}
+                          onchangeBunit={(e) => console.log(e)}
+                          onSelectCareMember={(e) => console.log(e)}                        
+                        />
+                      </Col> 
+                    </Row>  */}
+                       {/* <Row>
 
-                  <h6 className="heading-small text-muted mb-4">
-                    Add Employees
-                  </h6>
-                  <div className="pl-lg-4">
-                    <Row>
-                      <Col md="12">
-                        <FormGroup>
+                       <Col lg="2">
+                       <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="input-address"
+                            htmlFor="members"
                           >
-                            Address
+                            Care Role
                           </label>
-                          <Input
-                            defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                            id="input-address"
-                            placeholder="Home Address"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col lg="4">
-                        <FormGroup>
+                          <Select
+                                  value={region}
+                                  onChange={onchangeSelect}
+                                  options={optionsRegion}
+                                  getOptionValue={(option) => option.value}
+                                  getOptionLabel={(option) => option.value}
+                              />
+
+                          </FormGroup>
+                       </Col> 
+                       <Col lg="2">
+                       <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="input-city"
-                          >
-                            City
-                          </label>
-                          <Input
-                            defaultValue="New York"
-                            id="input-city"
-                            placeholder="City"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-country"
+                            htmlFor="members"
                           >
                             Country
                           </label>
-                          <Input
-                            defaultValue="United States"
-                            id="input-country"
-                            placeholder="Country"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
+                          <Select
+                                  value={region}
+                                  onChange={onchangeSelect}
+                                  options={optionsRegion}
+                                  getOptionValue={(option) => option.value}
+                                  getOptionLabel={(option) => option.value}
+                              />
+
+                          </FormGroup>
+                       </Col>   
+                       <Col lg="2">
+                       <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="input-country"
+                            htmlFor="members"
                           >
-                            Postal code
+                            Business Unit
                           </label>
-                          <Input
-                            id="input-postal-code"
-                            placeholder="Postal code"
-                            type="number"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                  </div>
-                  <hr className="my-4" />
+                          <Select
+                                  value={region}
+                                  onChange={onchangeSelect}
+                                  options={optionsRegion}
+                                  getOptionValue={(option) => option.value}
+                                  getOptionLabel={(option) => option.value}
+                              />
 
-                  <h6 className="heading-small text-muted mb-4">About me</h6>
-                  <div className="pl-lg-4">
-                    <FormGroup>
-                      <label className="form-control-label">About Me</label>
-                      <Input
-                        placeholder="A few words about you ..."
-                        rows="4"
-                        type="textarea"
-                        defaultValue="A beautiful premium dashboard for Bootstrap 4."
-                      />
-                    </FormGroup>
-                  </div>
+                          </FormGroup>
+                       </Col>  
+                       <Col lg="6">
+                       <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="members"
+                          >
+                            Add members
+                          </label>
+                          <Select
+                                  isMulti
+                                  value={region}
+                                  onChange={onchangeSelect}
+                                  options={optionsRegion}
+                                  getOptionValue={(option) => option.value}
+                                  getOptionLabel={(option) => option.value}
+                              />
+
+                          </FormGroup>
+                       </Col> 
+                       </Row>*/}
+                     
+                            {/* </Col> 
+                        </Row>            */}
+                      {/* </div> */}
+                
+              
+              
+
+
+               
+                      
+     
+                 
+                  <div className="pl-lg-4">                   
+                   <button onClick={saveGroup} className="btn btn-success"> Submit </button>
+                 </div>
                 </Form>
+
+             {/* )} */}
               </CardBody>
             </Card>
           </Col>

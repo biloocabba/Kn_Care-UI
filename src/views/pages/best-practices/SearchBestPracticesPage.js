@@ -14,40 +14,40 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 // react plugin that prints a given react component
-import ReactToPrint from "react-to-print";
 // react component for creating dynamic tables
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory from "react-bootstrap-table2-paginator";
-import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import BootstrapTable from 'react-bootstrap-table-next'
+import paginationFactory from 'react-bootstrap-table2-paginator'
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit'
 // react component used to create sweet alerts
-import ReactBSAlert from "react-bootstrap-sweetalert";
 // reactstrap components
-import {
-  Button,
-  ButtonGroup,
-  Card,
-  CardHeader,
-  Container,
-  Row,
-  Col,
-  UncontrolledTooltip,
-} from "reactstrap";
-// core components
-import SimpleHeader from "components/Headers/SimpleHeader.js";
+import { Button, Card, Col, CardBody, CardHeader, Container, Input, Row,FormGroup,
+  CardImg,  
+  CardTitle,
+  CardText     
+   } from 'reactstrap'
+import ReactDatetime from "react-datetime";
 
-import { dataTable } from "variables/general";
+import Select from "react-select";
+import makeAnimated from 'react-select/animated';
+
+// core components
+import SimpleHeader from "components/Headers/SimpleHeader";
+import { CustomLoader } from "../../../components/Loader/CustomLoader"
+import { searchBestPractices, retrieveBestPractices} from 'actions/bestPractice'
+
 
 const pagination = paginationFactory({
   page: 1,
   alwaysShowAllBtns: true,
   showTotal: true,
   withFirstAndLast: false,
-  sizePerPageRenderer: ({ options, currSizePerPage, onSizePerPageChange }) => (
+  sizePerPageRenderer: ({ onSizePerPageChange }) => (
     <div className="dataTables_length" id="datatable-basic_length">
       <label>
-        Show{" "}
+        Show{' '}
         {
           <select
             name="datatable-basic_length"
@@ -60,124 +60,444 @@ const pagination = paginationFactory({
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
-        }{" "}
+        }{' '}
         entries.
       </label>
     </div>
   ),
-});
+})
 
-const { SearchBar } = Search;
+const { SearchBar } = Search
 
-function ReactBSTables() {
+
+
+
+function SearchBestPracticePage(props) {
   const [alert, setAlert] = React.useState(null);
   const componentRef = React.useRef(null);
   // this function will copy to clipboard an entire table,
   // so you can paste it inside an excel or csv file
-  const copyToClipboardAsTable = (el) => {
-    var body = document.body,
-      range,
-      sel;
-    if (document.createRange && window.getSelection) {
-      range = document.createRange();
-      sel = window.getSelection();
-      sel.removeAllRanges();
-      try {
-        range.selectNodeContents(el);
-        sel.addRange(range);
-      } catch (e) {
-        range.selectNode(el);
-        sel.addRange(range);
-      }
-      document.execCommand("copy");
-    } else if (body.createTextRange) {
-      range = body.createTextRange();
-      range.moveToElementText(el);
-      range.select();
-      range.execCommand("Copy");
+
+  const bestPractices = useSelector((state) => state.bestPractices)
+  const dispatch = useDispatch()
+
+  const [searchTime, setSearchTime] = useState('')
+  const [searchAuthor, setSearchAuthor] = useState('')
+  const [searchTag, setSearchTag] = useState('')
+  const [searchRate, setSearchRate] = useState('')
+  const [searchTitle, setSearchTitle] = useState('')
+
+  
+  // useEffect(() => {
+  //   dispatch(reterieveBestPractices())
+  // }, [dispatch])
+
+  const makeSearch = () => {
+    const searchFilters = {
+      searchTime: searchTime,
+      searchAuthor: searchAuthor,
+      searchTag: searchTag,
+      searchRate: searchRate,
+      searchTitle: searchTitle,
     }
-    setAlert(
-      <ReactBSAlert
-        success
-        style={{ display: "block", marginTop: "-100px" }}
-        title="Good job!"
-        onConfirm={() => setAlert(null)}
-        onCancel={() => setAlert(null)}
-        confirmBtnBsStyle="info"
-        btnSize=""
-      >
-        Copied to clipboard!
-      </ReactBSAlert>
-    );
-  };
+    
+   dispatch(searchBestPractices(searchFilters))
+  }
+
+  // const status = useSelector(state => state.pageStatus);
+  // const pageStatus = { pageStatus: status, statusCode: -1 };
+
+
+  // useEffect(() => {
+  //   const loadData = async () => {
+  //     await dispatch(retrieveBestPractices());
+  //   }
+  //   loadData();
+  // }, [dispatch]);
+
+
+  // limit description respresintation to 50 characters to fit it on the page
+  bestPractices.forEach(bestPractice => {
+    if (bestPractice.description!== null && bestPractice.description.length > 50) {
+      bestPractice.description = bestPractice.description.substring(0, 50) + '...';
+    }
+  });
+
+  const toBestPracticeDetailsPage = e => {
+    var { id } = e.target;
+    props.history.push("/admin/best-practice/" + id);
+  }
+
+  const formatActionButtonCell = (cell, row) => {
+    return (
+      <>
+        <Button id={row.id} className="btn-icon btn-2" type="button" onClick={e => toBestPracticeDetailsPage(e)}>
+          View
+        </Button>
+      </>);
+  }
 
   return (
     <>
       {alert}
-      <SimpleHeader name="React Tables" parentName="Tables" />
+      <SimpleHeader name="Best Practices" parentName="Tables" />
       <Container className="mt--6" fluid>
+      <Row className="justify-content-center">
+          <Col className="card-wrapper" lg="12">
+            <Card>
+              <CardHeader>
+                <h2 className="mb-0">Best Practices</h2>
+                <p className="text-sm mb-0">Highlighted</p>
+              </CardHeader>
+              <CardBody>
+              <Row className="card-wrapper">
+              <Col lg="4">
+                  <Card>
+                      <CardImg
+                        alt="..."
+                        src={require("assets/img/care/care-credit-cards.png").default}
+                        top
+                      />              
+                    <CardBody >
+                      <CardTitle className="mb-3 text-center" tag="h3">
+                        Care Credit Cards
+                      </CardTitle>
+                      <CardText className="mb-4" >
+                        <Row className="justify-content-center">
+                          <Col lg="12">
+                           Recognize a colleague from everywhere in the world
+                          </Col>
+                        </Row>
+                      </CardText>
+                      <Button
+                        color="primary"
+                        href="#pablo"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        Read More
+                      </Button>
+                    </CardBody>
+                  </Card>
+                </Col>
+                <Col lg="4">
+                  <Card >
+                      <CardImg
+                        alt="..."
+                        src={require("assets/img/care/huddle.png").default}
+                        top
+                      />              
+                    <CardBody>
+                      <CardTitle className="mb-3 text-center" tag="h3">
+                        Huddles
+                      </CardTitle>
+                      <CardText className="mb-4">
+                        <Row className="justify-content-center">
+                          <Col lg="12">
+                            Guide the team in a discussion around the topics and what the idea means
+                          </Col>
+                        </Row>
+                      </CardText>
+                      <Button
+                        id="1"
+                        color="primary"
+                        href="#pablo"
+                        onClick={(e) => toBestPracticeDetailsPage(e)}
+                      >
+                        Read More
+                      </Button>
+                    </CardBody>
+                  </Card>
+                </Col>
+                <Col lg="4">
+                  <Card>
+                      <CardImg
+                        alt="..."
+                        src={require("assets/img/care/remote-work.png").default}                       
+                        top
+                      />              
+                    <CardBody>
+                      <CardTitle className="mb-3 text-center" tag="h3">
+                        Care & Remote Work
+                      </CardTitle>
+                      <CardText className="mb-4">
+                        <Row className="justify-content-center">
+                          <Col lg="12">
+                            Playbook for remote work
+                          </Col>
+                        </Row>
+                      </CardText>
+                      <Button
+                        color="primary"
+                        href="#pablo"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        Read More
+                      </Button>
+                    </CardBody>
+                  </Card>
+                </Col>              
+              </Row>
+              </CardBody>  
+            </Card>
+          </Col>
+      </Row>
+     
+      <Row>    
+        <div className="col">
+            <Card >
+              <CardHeader>
+                <h3 className="mb-0">Search Best Practices</h3>
+                <p className="text-sm mb-0">Filters</p>
+              </CardHeader>
+              <CardBody>
+                   <Row>
+               <Col md="3">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="author"
+                  >
+                    Author
+                  </label>
+                  <Input                   
+                    placeholder="Author"
+                    onChange={(e) => setSearchAuthor(e.target.value)}
+                    value={searchAuthor}
+                    id="author"
+                    type="text"
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="3">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="title"
+                  >
+                    Title
+                  </label>
+                  <Input
+                    placeholder="Title"
+                    onChange={(e) => setSearchTitle(e.target.value)}
+                    value={searchTitle}
+                    id="title"
+                    type="text"
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="2">
+              <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="tag"
+                  >
+                    Tag
+                  </label>
+                  <Input                   
+                    placeholder="Tag"
+                    onChange={(e) => setSearchTag(e.target.value)}
+                    value={searchTag}
+                    id="search-Tag"
+                    type="text"
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="2">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="example3cols2Input"
+                  >
+                   Creation Date
+                  </label>
+                  <ReactDatetime                   
+                    inputProps={{
+                      placeholder: "Creation Date",
+                    }}
+                    onChange={(e) =>
+                      console.log(e)
+                    }
+                    timeFormat={false}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="2"> 
+                <FormGroup>            
+                      <button
+                        style={{marginTop:'32px', marginLeft:'32px', height:'40px'}}                       
+                        className="btn btn-info"
+                        type="button"
+                        onClick={e => console.log(e)}
+                      >
+                        Search
+                      </button>   
+                  </FormGroup>                 
+                </Col>
+            </Row>
+              </CardBody>
+              </Card>                   
+                </div>    
+      </Row>                
+       
+       
         <Row>
           <div className="col">
             <Card>
-              <CardHeader>
-                <h3 className="mb-0">React Bootstrap Table 2</h3>
-                <p className="text-sm mb-0">
-                  This is an exmaple of data table using the well known
-                  react-bootstrap-table2 plugin. This is a minimal setup in
-                  order to get started fast.
-                </p>
+            <CardHeader>
+                <h3 className="mb-0">Search results</h3>                              
               </CardHeader>
+
               <ToolkitProvider
-                data={dataTable}
-                keyField="name"
+                data={bestPractices}
+                keyField="id"
                 columns={[
                   {
-                    dataField: "name",
-                    text: "Name",
+                    dataField: 'id',
+                    text: 'id',
+                    hidden: true,
+                  },
+                  {
+                    dataField: 'title',
+                    text: 'Title',
                     sort: true,
                   },
                   {
-                    dataField: "position",
-                    text: "Position",
+                    dataField: 'content',
+                    text: 'Content',
                     sort: true,
                   },
                   {
-                    dataField: "office",
-                    text: "Office",
+                    dataField: 'description',
+                    text: 'Description',
                     sort: true,
                   },
                   {
-                    dataField: "age",
-                    text: "Age",
+                    dataField: 'author',
+                    text: 'Author',
                     sort: true,
                   },
                   {
-                    dataField: "start_date",
-                    text: "Start date",
+                    dataField: 'tag',
+                    text: 'Tag',
                     sort: true,
                   },
                   {
-                    dataField: "salary",
-                    text: "Salary",
+                    dataField: 'rate',
+                    text: 'Rate',
+                    sort: true,
+                  },
+                  {
+                    dataField: 'time',
+                    text: 'Time',
                     sort: true,
                   },
                 ]}
                 search
               >
                 {(props) => (
-                  <div className="py-4 table-responsive">
+                     <div className="py-4 table-responsive">
+
+                     <div
+                       id="datatable-basic_filter"
+                       className="dataTables_filter px-4 pb-1"
+                     >
+                     <label>
+                           Search:
+                           <SearchBar
+                             className="form-control-sm"
+                             placeholder="Filter results"
+                             {...props.searchProps}
+                           />
+                         </label>
+                     </div>
+                     {/* <div className="py-4 table-responsive">
                     <div
                       id="datatable-basic_filter"
                       className="dataTables_filter px-4 pb-1"
                     >
-                      <label>
-                        Search:
-                        <SearchBar
-                          className="form-control-sm"
-                          placeholder=""
-                          {...props.searchProps}
-                        />
-                      </label>
+                      <div
+                        id="datatable-basic_filter"
+                        className="dataTables_filter px-3 pb-1"
+                      >
+                        <label>
+                          <Input
+                            className="form-control-sm"
+                            placeholder="Time"
+                            onChange={(e) => setSearchTime(e.target.value)}
+                            value={searchTime}
+                            id="search-time"
+                            type="text"
+                          />
+                        </label>
+                      </div>
+                      <div
+                        id="datatable-basic_filter"
+                        className="dataTables_filter px-3 pb-1"
+                      >
+                        <label>
+                          <Input
+                            className="form-control-sm"
+                            placeholder="Author"
+                            onChange={(e) => setSearchAuthor(e.target.value)}
+                            value={searchAuthor}
+                            id="search-Author"
+                            type="text"
+                          />
+                        </label>
+                      </div>
+                      <div
+                        id="datatable-basic_filter"
+                        className="dataTables_filter px-3 pb-1"
+                      >
+                        <label>
+                          <Input
+                            className="form-control-sm"
+                            placeholder="Tag"
+                            onChange={(e) => setSearchTag(e.target.value)}
+                            value={searchTag}
+                            id="search-Tag"
+                            type="text"
+                          />
+                        </label>
+                      </div>
+                      <div
+                        id="datatable-basic_filter"
+                        className="dataTables_filter px-3 pb-1"
+                      >
+                        <label>
+                          <Input
+                            className="form-control-sm"
+                            placeholder="Rate"
+                            onChange={(e) => setSearchRate(e.target.value)}
+                            value={searchRate}
+                            id="search-Rate"
+                            type="text"
+                          />
+                        </label>
+                      </div>
+                      <div
+                        id="datatable-basic_filter"
+                        className="dataTables_filter px-3 pb-1"
+                      >
+                        <label>
+                          <Input
+                            className="form-control-sm"
+                            placeholder="Title"
+                            onChange={(e) => setSearchTitle(e.target.value)}
+                            value={searchTitle}
+                            id="search-Title"
+                            type="text"
+                          />
+                        </label>
+                      </div>
+                      <Button
+                        type="button"
+                        color="info"
+                        href="#pablo"
+                        onClick={makeSearch}
+                      >
+                        Search
+                      </Button>
                     </div>
                     <BootstrapTable
                       {...props.baseProps}
@@ -185,130 +505,16 @@ function ReactBSTables() {
                       pagination={pagination}
                       bordered={false}
                     />
-                  </div>
-                )}
-              </ToolkitProvider>
-            </Card>
-            <Card>
-              <CardHeader>
-                <h3 className="mb-0">Action buttons</h3>
-                <p className="text-sm mb-0">
-                  This is an exmaple of data table using the well known
-                  react-bootstrap-table2 plugin. This is a minimal setup in
-                  order to get started fast.
-                </p>
-              </CardHeader>
-              <ToolkitProvider
-                data={dataTable}
-                keyField="name"
-                columns={[
-                  {
-                    dataField: "name",
-                    text: "Name",
-                    sort: true,
-                  },
-                  {
-                    dataField: "position",
-                    text: "Position",
-                    sort: true,
-                  },
-                  {
-                    dataField: "office",
-                    text: "Office",
-                    sort: true,
-                  },
-                  {
-                    dataField: "age",
-                    text: "Age",
-                    sort: true,
-                  },
-                  {
-                    dataField: "start_date",
-                    text: "Start date",
-                    sort: true,
-                  },
-                  {
-                    dataField: "salary",
-                    text: "Salary",
-                    sort: true,
-                  },
-                ]}
-                search
-              >
-                {(props) => (
-                  <div className="py-4 table-responsive">
-                    <Container fluid>
-                      <Row>
-                        <Col xs={12} sm={6}>
-                          <ButtonGroup>
-                            <Button
-                              className="buttons-copy buttons-html5"
-                              color="default"
-                              size="sm"
-                              id="copy-tooltip"
-                              onClick={() =>
-                                copyToClipboardAsTable(
-                                  document.getElementById("react-bs-table")
-                                )
-                              }
-                            >
-                              <span>Copy</span>
-                            </Button>
-                            <ReactToPrint
-                              trigger={() => (
-                                <Button
-                                  color="default"
-                                  size="sm"
-                                  className="buttons-copy buttons-html5"
-                                  id="print-tooltip"
-                                >
-                                  Print
-                                </Button>
-                              )}
-                              content={() => componentRef.current}
-                            />
-                          </ButtonGroup>
-                          <UncontrolledTooltip
-                            placement="top"
-                            target="print-tooltip"
-                          >
-                            This will open a print page with the visible rows of
-                            the table.
-                          </UncontrolledTooltip>
-                          <UncontrolledTooltip
-                            placement="top"
-                            target="copy-tooltip"
-                          >
-                            This will copy to your clipboard the visible rows of
-                            the table.
-                          </UncontrolledTooltip>
-                        </Col>
-                        <Col xs={12} sm={6}>
-                          <div
-                            id="datatable-basic_filter"
-                            className="dataTables_filter px-4 pb-1 float-right"
-                          >
-                            <label>
-                              Search:
-                              <SearchBar
-                                className="form-control-sm"
-                                placeholder=""
-                                {...props.searchProps}
-                              />
-                            </label>
-                          </div>
-                        </Col>
-                      </Row>
-                    </Container>
-                    <BootstrapTable
-                      ref={componentRef}
+                  </div> */}
+                     <BootstrapTable
                       {...props.baseProps}
                       bootstrap4={true}
                       pagination={pagination}
                       bordered={false}
-                      id="react-bs-table"
                     />
-                  </div>
+
+                     </div>
+                  
                 )}
               </ToolkitProvider>
             </Card>
@@ -316,7 +522,7 @@ function ReactBSTables() {
         </Row>
       </Container>
     </>
-  );
+  )
 }
 
-export default ReactBSTables;
+export default SearchBestPracticePage

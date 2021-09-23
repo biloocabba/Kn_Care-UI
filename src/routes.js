@@ -16,40 +16,31 @@
 */
 
 
-import Buttons from "views/pages/examples/components/Buttons.js";
-import Calendar from "views/pages/examples/components/Calendar.js";
-import Cards from "views/pages/examples/components/Cards.js";
-import Components from "views/pages/examples/forms/Components.js";
-import Elements from "views/pages/examples/forms/Elements.js";
-import Validation from "views/pages/examples/forms/Validation.js";
-import Notifications from "views/pages/examples/components/Notifications.js";
-import Timeline from "views/pages/examples/components/Timeline.js";
-import Typography from "views/pages/examples/components/Typography.js";
-
-import Pricing from "views/pages/examples/pages/Pricing.js";
-import Profile from "views/pages/examples/pages/Profile.js";
-
-
-
+import CreateCareMemberPage from "views/pages/users/CreateCareMemberPage";
 import CareMembersPage from "views/pages/users/CareMembersPage.js";
 import EditCareMemberPage from "views/pages/users/EditCareMemberPage.js";
+
 import EmployeesPage from "views/pages/users/EmployeesPage.js"
 import EmployeeDetailsPage from "views/pages/users/EmployeeDetailsPage.js";
+
 import CreateGroupPage from "views/pages/groups/CreateGroupPage.js"
+import EditGroupPage from "views/pages/groups/EditGroupPage";
 import GroupsPage from "views/pages/groups/GroupsPage.js"
 
 import CreateBestPracticePage from "views/pages/best-practices/CreateBestPracticePage.js"
 import SearchBestPracticesPage from "views/pages/best-practices/SearchBestPracticesPage.js"
+import BestPracticeDetailPage from "views/pages/best-practices/BestPracticeDetailPage";
 
-import CreateEmailPage from "views/pages/communications/CreateEmailPage.js"
-import SendNotificationPage from "views/pages/communications/SendNotificationPage.js"
-import CreateEmailTemplatePage from "views/pages/communications/CreateEmailTemplatePage.js"
-import SearchTemplatePage from "views/pages/communications/SearchTemplatePage.js"
-import EmailHistoryPage from "views/pages/communications/EmailHistoryPage.js"
-import ArchivePage from "views/pages/communications/ArchivePage.js"
+import CreateNewEmailPage from "views/pages/communications/CreateNewEmailPage";
+import EmailDetailsPage from "views/pages/communications/EmailDetailsPage";
+import SearchEmailDraftsPage from "views/pages/communications/SearchEmailDraftPage";
+
 
 import ChartsPage from "views/pages/dashboards/ChartsPage.js"
 import WorldOverviewPage from "views/pages/dashboards/WorldOverviewPage.js"
+
+
+import LoginPage from "views/pages/users/LoginPage"
 
 
 const routes = [
@@ -129,44 +120,58 @@ const routes = [
         path: "/create-email",
         name: "Create Email",
         miniName: "CE",
-        component: CreateEmailPage,
+        component: CreateNewEmailPage,
         layout: "/admin",
       },
+      // {
+      //   path: "/search-email",
+      //   name: "Search Email",
+      //   miniName: "SE",
+      //   component: SearchEmailPage,
+      //   layout: "/admin",
+      // },
       {
-        path: "/create-notification",
-        name: "Create Notification",
-        miniName: "CN",
-        component: SendNotificationPage,
+        path: "/search-email-draft",
+        name: "Search Email",
+        miniName: "SED",
+        component: SearchEmailDraftsPage,
         layout: "/admin",
       },
-      {
-        path: "/email-history",
-        name: "Email History",
-        miniName: "EH",
-        component: EmailHistoryPage,
-        layout: "/admin",
-      },
-      {
-        path: "/email-create-template",
-        name: "Create Template",
-        miniName: "CT",
-        component: CreateEmailTemplatePage,
-        layout: "/admin",
-      },
-      {
-        path: "/email-search-template",
-        name: "Search Template",
-        miniName: "ST",
-        component: SearchTemplatePage,
-        layout: "/admin",
-      },
-      {
-        path: "/archive",
-        name: "Archive",
-        miniName: "CA",
-        component: ArchivePage,
-        layout: "/admin",
-      },
+      // {
+      //   path: "/create-notification",
+      //   name: "Create Notification",
+      //   miniName: "CN",
+      //   component: SendNotificationPage,
+      //   layout: "/admin",
+      // },
+      // {
+      //   path: "/email-history",
+      //   name: "Email History",
+      //   miniName: "EH",
+      //   component: EmailHistoryPage,
+      //   layout: "/admin",
+      // },
+      // {
+      //   path: "/email-create-template",
+      //   name: "Create Template",
+      //   miniName: "CT",
+      //   component: CreateEmailTemplatePage,
+      //   layout: "/admin",
+      // },
+      // {
+      //   path: "/email-search-template",
+      //   name: "Search Template",
+      //   miniName: "ST",
+      //   component: SearchTemplatePage,
+      //   layout: "/admin",
+      // },
+      // {
+      //   path: "/archive",
+      //   name: "Archive",
+      //   miniName: "CA",
+      //   component: ArchivePage,
+      //   layout: "/admin",
+      // },
     ],
   },
   {
@@ -174,7 +179,7 @@ const routes = [
     name: "Dashboard",
     icon: "ni ni-chart-pie-35 text-info",
     state: "dashboardCollapse",
-    views: [
+    views: [     
       {
         path: "/statistics",
         name: "Charts",
@@ -194,103 +199,153 @@ const routes = [
   {
     collapse: false,  
     global:true, 
+    path: "/group-member-details/:id",
+    component: EditGroupPage,
+    layout: "/admin"
+  },
+  {
+    collapse: false,  
+    global:true, 
+    path: "/login",
+    component: LoginPage,
+    layout: "/auth"
+  },
+  {
+    collapse: false,
+    global: true,
+    path: "/email-details/:id",
+    component: EmailDetailsPage,
+    layout: "/admin"
+  },
+  {
+    collapse: false,  
+    global: true, 
     path: "/users/employee-details/:id",
     component: EmployeeDetailsPage,
     layout: "/admin"
   },
   {
     collapse: false,  
-    global:true, 
+    global: true, 
     path: "/users/care-member-details/:id",
     component: EditCareMemberPage,
     layout: "/admin"
   },
   {
-    collapse: true,
-    name: "Examples",
-    icon: "ni ni-briefcase-24 text-info",
-    state: "exampleCollapse",
+    collapse: false,  
+    global:true, 
+    path: "/users/new-care-member/:id",
+    component: CreateCareMemberPage,
     layout: "/admin",
-    views: [
-      {
-        path: "/buttons",
-        name: "Buttons demo",
-        miniName: "NB",
-        component: Buttons,
-        layout: "/admin",
-      },
-      {
-        path: "/calendars",
-        name: "calendars",
-        miniName: "WV",
-        component: Calendar,
-        layout: "/admin",
-      },
-      {
-        path: "/cards",
-        name: "cards",
-        miniName: "WV",
-        component: Cards,
-        layout: "/admin",
-      },
-      {
-        path: "/components",
-        name: "components",
-        miniName: "WV",
-        component: Components,
-        layout: "/admin",
-      },
-      {
-        path: "/elements",
-        name: "elements",
-        miniName: "WV",
-        component: Elements,
-        layout: "/admin",
-      },
-      {
-        path: "/validation",
-        name: "validation",
-        miniName: "WV",
-        component: Validation,
-        layout: "/admin",
-      },
-      {
-        path: "/notifications",
-        name: "notifications",
-        miniName: "WV",
-        component: Notifications,
-        layout: "/admin",
-      },
-      {
-        path: "/timeline",
-        name: "timeline",
-        miniName: "WV",
-        component: Timeline,
-        layout: "/admin",
-      },
-      {
-        path: "/typography",
-        name: "typography",
-        miniName: "WV",
-        component: Typography,
-        layout: "/admin",
-      },
-      {
-        path: "/comparePage",
-        name: "compare page",
-        miniName: "WV",
-        component: Pricing,
-        layout: "/admin",
-      },
-      {
-        path: "/profilePage",
-        name: "profile",
-        miniName: "WV",
-        component: Profile,
-        layout: "/admin",
-      },
-    ],
-  }
+  },
+  {
+    collapse: false,  
+    global:true, 
+    path: "/best-practice/:id",
+    component: BestPracticeDetailPage,
+    layout: "/admin",
+  },
+  // {
+  //   collapse: true,
+  //   name: "Examples",
+  //   icon: "ni ni-briefcase-24 text-info",
+  //   state: "exampleCollapse",
+  //   layout: "/admin",
+  //   views: [
+  //     {
+  //       path: "/buttons",
+  //       name: "Buttons demo",
+  //       miniName: "NB",
+  //       component: Buttons,
+  //       layout: "/admin",
+  //     },
+  //     {
+  //       path: "/calendars",
+  //       name: "calendars",
+  //       miniName: "WV",
+  //       component: Calendar,
+  //       layout: "/admin",
+  //     },
+  //     {
+  //       path: "/cards",
+  //       name: "cards",
+  //       miniName: "WV",
+  //       component: Cards,
+  //       layout: "/admin",
+  //     },
+  //     {
+  //       path: "/components",
+  //       name: "components",
+  //       miniName: "WV",
+  //       component: Components,
+  //       layout: "/admin",
+  //     },
+  //     {
+  //       path: "/elements",
+  //       name: "elements",
+  //       miniName: "WV",
+  //       component: Elements,
+  //       layout: "/admin",
+  //     },
+  //     {
+  //       path: "/validation",
+  //       name: "validation",
+  //       miniName: "WV",
+  //       component: Validation,
+  //       layout: "/admin",
+  //     },
+  //     {
+  //       path: "/notifications",
+  //       name: "notifications",
+  //       miniName: "WV",
+  //       component: Notifications,
+  //       layout: "/admin",
+  //     },
+  //     {
+  //       path: "/timeline",
+  //       name: "timeline",
+  //       miniName: "WV",
+  //       component: Timeline,
+  //       layout: "/admin",
+  //     },
+  //     {
+  //       path: "/typography",
+  //       name: "typography",
+  //       miniName: "WV",
+  //       component: Typography,
+  //       layout: "/admin",
+  //     },
+  //     {
+  //       path: "/comparePage",
+  //       name: "compare page",
+  //       miniName: "WV",
+  //       component: Pricing,
+  //       layout: "/admin",
+  //     },
+  //     {
+  //       path: "/profilePage",
+  //       name: "profile",
+  //       miniName: "WV",
+  //       component: Profile,
+  //       layout: "/admin",
+  //     },
+  //   ],
+  // },
+  // {
+  //   collapse: true,
+  //   name: "Roles",
+  //   icon: "ni ni-circle-08 text-info",
+  //   state: "rolesCollapse",
+  //   views: [
+  //     {
+  //       path: "/new-role",
+  //       name: "Create New",
+  //       miniName: "NR",
+  //       component: CreateRolePage,
+  //       layout: "/admin",
+  //     },
+  //   ],
+  // }
 
 ];
 

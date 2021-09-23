@@ -14,249 +14,337 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-// react plugin that prints a given react component
-import ReactToPrint from "react-to-print";
-// react component for creating dynamic tables
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory from "react-bootstrap-table2-paginator";
-import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-// react component used to create sweet alerts
-import ReactBSAlert from "react-bootstrap-sweetalert";
-// reactstrap components
+import React, { useState} from "react";
+import BootstrapTable from 'react-bootstrap-table-next'
+
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit'
+import { Button, Card, Col, Form ,CardBody, CardHeader, Container, Input, Row,FormGroup } from 'reactstrap'
+import ReactDatetime from "react-datetime";
+
+import GradientEmptyHeader from 'components/Headers/GradientEmptyHeader.js'
+import { useDispatch, useSelector } from 'react-redux'
+import Select from "react-select";
+import makeAnimated from 'react-select/animated';
 import {
-  Button,
-  ButtonGroup,
-  Card,
-  CardHeader,
-  Container,
-  Row,
-  Col,
-  UncontrolledTooltip,
-} from "reactstrap";
-// core components
-import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
+  searchEmployees,
+  deleteUser,
+} from "../../../actions/employee";
 
-import { employees } from "./EmployeesData.js";
+import {pagination} from "utils/tableUtils.js";
+
+// const pagination = paginationFactory({
+//   page: 1,
+//   alwaysShowAllBtns: true,
+//   showTotal: true,
+//   withFirstAndLast: false,
+//   sizePerPageRenderer: ({ options, currSizePerPage, onSizePerPageChange }) => (
+//     <div className="dataTables_length" id="datatable-basic_length">
+//       <label>
+//         Show{' '}
+//         {
+//           <select
+//             name="datatable-basic_length"
+//             aria-controls="datatable-basic"
+//             className="form-control form-control-sm"
+//             onChange={(e) => onSizePerPageChange(e.target.value)}
+//           >
+//             <option value="10">10</option>
+//             <option value="25">25</option>
+//             <option value="50">50</option>
+//             <option value="100">100</option>
+//           </select>
+//         }{' '}
+//         entries.
+//       </label>
+//     </div>
+//   ),
+// })
+
+const { SearchBar } = Search
+
+function EmployeesPage(props) {
+
+  const businessUnits = useSelector( (state) => {
+    return state.categories.businessUnits.map(bunit => {return {"value": bunit.id, "label":bunit.name}})
+  });
+
+  const countries = useSelector( (state) => {
+    return state.categories.countryListAllIsoData.map(country => {return {"value": country.code3, "label":country.name}})
+  });
+
+  const employees = useSelector(state => state.employees);
+  const dispatch = useDispatch();
 
 
-
-
-const pagination = paginationFactory({
-  page: 1,
-  alwaysShowAllBtns: true,
-  showTotal: true,
-  withFirstAndLast: false,
-  sizePerPageRenderer: ({ options, currSizePerPage, onSizePerPageChange }) => (
-    <div className="dataTables_length" id="datatable-basic_length">
-      <label>
-        Show{" "}
-        {
-          <select
-            name="datatable-basic_length"
-            aria-controls="datatable-basic"
-            className="form-control form-control-sm"
-            onChange={(e) => onSizePerPageChange(e.target.value)}
-          >
-            <option value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-          </select>
-        }{" "}
-        entries.
-      </label>
-    </div>
-  ),
-});
-
-const { SearchBar } = Search;
-
-function Employees(props) {
-
+  const [searchLastName, setSearchLastName] = useState("");
+  const [searchBusinessUnit, setSearchBusinessUnit] = useState("");
+  const [searchCountry, setSearchCountry] = useState("");
+  const [searchHiringDate, setSearchHiringDate] = useState(null);
   
-
-  const employeeDetails = (e)=> {  
-      var { id} = e.target;
-      props.history.push('/admin/users/employee-details/'+id);     
-  }
-
-  const employeeRemove = (e)=> {       
-    var { id} = e.target;   
-    let empIndex=employees.findIndex(emp => emp.id!==parseInt(id));
-    console.log(employees[empIndex]);
-    console.log(employees.length);
-    employees= employees.splice(id,  1);
-    console.log(employees.length);
-
-    //props.history.push('/admin/users/employee-details/'+id);   
-  }
-  
-  const formatActionButtonCell =(cell, row)=>{  
-      
-    return (    <>
-                    <Button id={row.id} className="btn-icon btn-2" type="button" color="info" onClick={employeeDetails}>
-                        <span id={row.id} className="btn-inner--icon">
-                          <i id={row.id} className="ni ni-badge" />
-                        </span>                        
-                      </Button>
-                      <Button id={row.id} className="btn-icon btn-2" color="danger" type="button" onClick={employeeRemove}>
-                        <span id={row.id} className="btn-inner--icon">
-                          <i id={row.id} className="ni ni-fat-remove" />
-                        </span>
-                      </Button>
-                      </>);
-        
-  
-  }
-
-  const [alert, setAlert] = React.useState(null);
-  const componentRef = React.useRef(null);
-  // this function will copy to clipboard an entire table,
-  // so you can paste it inside an excel or csv file
-  const copyToClipboardAsTable = (el) => {
-    var body = document.body,
-      range,
-      sel;
-    if (document.createRange && window.getSelection) {
-      range = document.createRange();
-      sel = window.getSelection();
-      sel.removeAllRanges();
-      try {
-        range.selectNodeContents(el);
-        sel.addRange(range);
-      } catch (e) {
-        range.selectNode(el);
-        sel.addRange(range);
-      }
-      document.execCommand("copy");
-    } else if (body.createTextRange) {
-      range = body.createTextRange();
-      range.moveToElementText(el);
-      range.select();
-      range.execCommand("Copy");
-    }
-    setAlert(
-      <ReactBSAlert
-        success
-        style={{ display: "block", marginTop: "-100px" }}
-        title="Good job!"
-        onConfirm={() => setAlert(null)}
-        onCancel={() => setAlert(null)}
-        confirmBtnBsStyle="info"
-        btnSize=""
-      >
-        Copied to clipboard!
-      </ReactBSAlert>
-    );
+  const onChangeSearchLastName = e => {  
+    const searchLastName = e.target.value;
+    setSearchLastName(searchLastName);
   };
+
+  const findByAllParameters = () => {
+    let filters ={    
+      lastName: searchLastName,
+      businessUnitId: searchBusinessUnit,
+      countryId:searchCountry,    
+      hiringDate:searchHiringDate
+    }
+    dispatch(searchEmployees(filters));
+  }
+
+  const employeeDetails = (e) => {
+    var { id } = e.target
+    props.history.push('/admin/users/employee-details/' + id)
+  }
+
+  const employeeRemove = (e) => {
+    var { id } = e.target
+    console.log(id)
+    dispatch(deleteUser(id))
+  }
+
+  const onChangeSearchHiringDate = (dateAsMoment) => {    
+    setSearchHiringDate(dateAsMoment.format('D-MM-YYYY'));
+  };
+
+  const formatActionButtonCell = (cell, row) => {
+    return (
+      <>
+        <Button
+          id={row.id}
+          className="btn-icon btn-2"
+          type="button"
+          color="info"
+          onClick={employeeDetails}
+        >
+          <span id={row.id} className="btn-inner--icon">
+            <i id={row.id} className="ni ni-badge" />
+          </span>
+        </Button>
+        <Button
+          id={row.id}
+          className="btn-icon btn-2"
+          color="danger"
+          type="button"
+          onClick={employeeRemove}
+        >
+          <span id={row.id} className="btn-inner--icon">
+            <i id={row.id} className="ni ni-fat-remove" />
+          </span>
+        </Button>
+      </>
+    )
+  }
 
   return (
     <>
-      {alert}
-      <GradientEmptyHeader name="Employees"  />
+      {/* alert*/}
+      <GradientEmptyHeader name="Employees" />
       <Container className="mt--6" fluid>
+
+      <Row>    
+        <div className="col">
+            <Card >
+              <CardHeader>
+                <h3 className="mb-0">Search Employees</h3>
+                <p className="text-sm mb-0">Filters</p>
+              </CardHeader>
+              <CardBody>
+                   <Row>
+               <Col md="3">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="lastName"
+                  >
+                    Last name
+                  </label>
+                  <Input
+                    id="lastName"
+                    style={{height:'36px'}}
+                    className="form-control"                    
+                    type="text"
+                    placeholder="Last Name"
+                    value={searchLastName}
+                    onChange={onChangeSearchLastName}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="3">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="businessUnits"
+                  >
+                    Business Units
+                  </label>
+                  <Select
+                      id="businessUnits"
+                      components = {makeAnimated()}
+                      options = {businessUnits}
+                      onChange = {item => setSearchBusinessUnit(item.value)}
+                    />
+                </FormGroup>
+              </Col>
+              <Col md="2">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="country"
+                  >
+                    Countries
+                  </label>
+                  <Select
+                      id="country"
+                      components = {makeAnimated()}
+                      options = {countries}
+                      onChange = {item => setSearchCountry(item.value)}
+                    />
+                </FormGroup>
+              </Col>
+              <Col md="2">
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="example3cols2Input"
+                  >
+                   Hire Date From
+                  </label>
+                  <ReactDatetime                   
+                    inputProps={{
+                      placeholder: "Hire date",
+                    }}
+                    onChange={(e) =>
+                      onChangeSearchHiringDate(e)
+                    }
+                    timeFormat={false}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="2"> 
+                <FormGroup>            
+                      <button
+                        style={{marginTop:'32px', marginLeft:'32px', height:'40px'}}                       
+                        className="btn btn-info"
+                        type="button"
+                        onClick={findByAllParameters}
+                      >
+                        Search
+                      </button>   
+                  </FormGroup>                 
+                </Col>
+            </Row>
+              </CardBody>
+              </Card>                   
+                </div>    
+      </Row>                
+                   
+
         <Row>
           <div className="col">
             <Card>
               <CardHeader>
                 <h3 className="mb-0">Employees</h3>
-                <p className="text-sm mb-0">
-                  Kn Employees from PDM
-                </p>
+                <p className="text-sm mb-0">Kn Employees from PDM</p>
               </CardHeader>
               <ToolkitProvider
                 data={employees}
                 keyField="firstName"
                 columns={[
                   {
-                    dataField: "firstName",
-                    text: "First Name",
-                    hidden : true,
+                    dataField: 'firstName',
+                    text: 'First Name',
+                    hidden: true,
                   },
                   {
-                    dataField: "lastName",
-                    text: "lastName",
-                    hidden : true,
+                    dataField: 'lastName',
+                    text: 'lastName',
+                    hidden: true,
                   },
                   {
-                    dataField: "internationalName",
-                    text: "int Name",
-                    sort: true                    
-                  },
-                  {
-                    dataField: "title",
-                    text: "title",
-                    sort: true ,
-                    style: { width:'50px' }                   
-                  },
-                  {
-                    dataField: "businessUnit",
-                    text: "bUnit",
-                    sort: true,
-                    style: { width:'50px' }
-                  },
-                  {
-                    dataField: "managementGroup",
-                    text: "Man Group",
-                    sort: true,
-                    style: { width:'50px' }
-                  },
-                  {
-                    dataField: "companyCode",
-                    text: "companyCode",
-                    sort: true,
-                    style: { width:'50px' }
-                  },
-                  {
-                    dataField: "costCenter",
-                    text: "costCenter",
+                    dataField: 'internationalName',
+                    text: 'int Name',
                     sort: true,
                   },
                   {
-                    dataField: "country",
-                    text: "country",
+                    dataField: 'title',
+                    text: 'title',
                     sort: true,
-                  },{  
-                    dataField: 'action',    
-                    text:'',
-                    formatter: formatActionButtonCell
-                }
+                    style: { width: '50px' },
+                  },
+                  {
+                    dataField: 'businessUnit',
+                    text: 'bUnit',
+                    sort: true,
+                    style: { width: '50px' },
+                  },
+                  {
+                    dataField: 'companyCode',
+                    text: 'companyCode',
+                    sort: true,
+                    style: { width: '50px' },
+                  },
+                  {
+                    dataField: 'costCenter',
+                    text: 'costCenter',
+                    sort: true,
+                  },
+                  {
+                    dataField: 'country',
+                    text: 'country',
+                    sort: true,
+                  },
+                  {
+                    dataField: "hiringDate",
+                    text: "hiringDate",
+                    sort: true,
+                  },
+                  {
+                    dataField: 'action',
+                    text: '',
+                    formatter: formatActionButtonCell,
+                  },
                 ]}
                 search
               >
                 {(props) => (
+                  <> 
                   <div className="py-4 table-responsive">
+
                     <div
                       id="datatable-basic_filter"
                       className="dataTables_filter px-4 pb-1"
                     >
-                      <label>
-                        Search:
-                        <SearchBar
-                          className="form-control-sm"
-                          placeholder=""
-                          {...props.searchProps}
-                        />
-                      </label>
+                    <label>
+                          Search:
+                          <SearchBar
+                            className="form-control-sm"
+                            placeholder="Filter results"
+                            {...props.searchProps}
+                          />
+                        </label>
                     </div>
+                                       
                     <BootstrapTable
                       {...props.baseProps}
                       bootstrap4={true}
                       pagination={pagination}
                       bordered={false}
-                      deleteRow={ true }
                     />
                   </div>
+                  </>
                 )}
               </ToolkitProvider>
             </Card>
-         
           </div>
         </Row>
       </Container>
     </>
-  );
+  )
 }
 
-export default Employees;
+export default EmployeesPage

@@ -14,14 +14,20 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {useState, useEffect} from "react";
+import { useDispatch, useSelector } from  "react-redux";
+import BootstrapTable from 'react-bootstrap-table-next'
+import paginationFactory from 'react-bootstrap-table2-paginator'
 
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit'
 // reactstrap components
 import {
   Button,
+  ButtonGroup,
   Card,
   CardHeader,
   CardBody,
+  Collapse,
   CardImg,
   CardTitle,
   FormGroup,
@@ -33,361 +39,191 @@ import {
   Container,
   Row,
   Col,
+  Modal, ModalHeader, ModalBody, ModalFooter
 } from "reactstrap";
-// core components
-import ProfileHeader from "components/Headers/ProfileHeader.js";
 
-function EditGroupPage() {
+
+// core components
+
+import AddMemberPanel from "./AddMemberPanel.js";
+import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
+import {useParams} from "react-router-dom";
+import {DEACTIVATE_GROUP, UPDATE_GROUP} from "actions/types"
+const { SearchBar } = Search
+
+const pagination = paginationFactory({
+  page: 1,
+  alwaysShowAllBtns: true,
+  showTotal: true,
+  withFirstAndLast: false,
+  sizePerPageRenderer: ({ options, currSizePerPage, onSizePerPageChange }) => (
+    <div className="dataTables_length" id="datatable-basic_length">
+      <label>
+        Show{' '}
+        {
+          <select
+            name="datatable-basic_length"
+            aria-controls="datatable-basic"
+            className="form-control form-control-sm"
+            onChange={(e) => onSizePerPageChange(e.target.value)}
+          >
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        }{' '}
+        entries.
+      </label>
+    </div>
+  ),
+})
+
+
+
+function EditGroupPage(props) {
+
+  const dispatch = useDispatch();
+  const groups = useSelector(state => state.groups);
+  const careMembers = useSelector(state => state.careMembers);
+
+  let { id } = useParams(); //see in routes path: "/users/employee-details/:id",
+  let currentGroup = groups.find(grp=> grp.id===parseInt(id));
+
+ 
+  const [group, setGroup] = useState(currentGroup)
+
+  const toggleCurrentMembers = () => {
+    setCurrentMembersCollapse(!currentMembersCollapse);
+    setAddMembersCollapse(false);  
+  }
+  const [currentMembersCollapse, setCurrentMembersCollapse] = useState(false);
+
+  const toggleAddMembers = () => {
+    setAddMembersCollapse(!addMembersCollapse);
+    setCurrentMembersCollapse(false);
+  }  
+  const [addMembersCollapse, setAddMembersCollapse] = useState(false);
+
+  const handleInputChange = event => {
+    event.preventDefault()
+    const { name, value } = event.target;
+    setGroup({ ...group, [name]: value });
+  };
+
+  const deactivateGroup = () => {
+    dispatch({
+      type: DEACTIVATE_GROUP,
+      payload: group
+    });
+    setGroup(prev => ({...group, active:!prev.active })) ;
+  }
+
+
+  const handleSaveClick = () => {
+    dispatch({
+      type: UPDATE_GROUP,
+      payload: group
+    });
+    backToSearch();
+  }
+
+  const formatActionButtonCell = (cell, row) => {
+    return (
+      <>
+        <Button
+          id={row.id}
+          className="btn-icon btn-2"
+          type="button"
+          color="info"
+          onClick={memberDetails}
+        >
+          <span id={row.id} className="btn-inner--icon">
+            <i id={row.id} className="ni ni-badge" />
+          </span>
+        </Button>
+        <Button
+          id={row.id}
+          className="btn-icon btn-2"
+          color="danger"
+          type="button"
+          onClick={memberRemove}
+        >
+          <span id={row.id} className="btn-inner--icon">
+            <i id={row.id} className="ni ni-fat-remove" />
+          </span>
+        </Button>
+      </>
+    )
+  }
+
+  const memberDetails = (e) => {
+    var { id } = e.target
+    props.history.push('/admin/users/employee-details/' + id)
+  }
+
+  const memberRemove = (e) => {
+    var { id } = e.target
+    console.log(id)    
+  }
+
+
+  const backToSearch = () => {
+    props.history.push('/admin/search-groups')
+  }
+ 
+  let numOfMembers = 2; //(group.members) ? group.members.length : 0;
+
   return (
     <>
-      <ProfileHeader />
-      <Container className="mt--6" fluid>
-        <Row>
-          <Col className="order-xl-2" xl="4">
-            <Card className="card-profile">
-              <CardImg
-                alt="..."
-                src={require("assets/img/theme/img-1-1000x600.jpg").default}
-                top
-              />
-              <Row className="justify-content-center">
-                <Col className="order-lg-2" lg="3">
-                  <div className="card-profile-image">
-                    <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                      <img
-                        alt="..."
-                        className="rounded-circle"
-                        src={require("assets/img/theme/team-4.jpg").default}
-                      />
-                    </a>
-                  </div>
-                </Col>
-              </Row>
-              <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                <div className="d-flex justify-content-between">
-                  <Button
-                    className="mr-4"
-                    color="info"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                    size="sm"
-                  >
-                    Connect
-                  </Button>
-                  <Button
-                    className="float-right"
-                    color="default"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                    size="sm"
-                  >
-                    Message
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardBody className="pt-0">
-                <Row>
-                  <div className="col">
-                    <div className="card-profile-stats d-flex justify-content-center">
-                      <div>
-                        <span className="heading">22</span>
-                        <span className="description">Friends</span>
-                      </div>
-                      <div>
-                        <span className="heading">10</span>
-                        <span className="description">Photos</span>
-                      </div>
-                      <div>
-                        <span className="heading">89</span>
-                        <span className="description">Comments</span>
-                      </div>
-                    </div>
-                  </div>
-                </Row>
-                <div className="text-center">
-                  <h5 className="h3">
-                    Jessica Jones
-                    <span className="font-weight-light">, 27</span>
-                  </h5>
-                  <div className="h5 font-weight-300">
-                    <i className="ni location_pin mr-2" />
-                    Bucharest, Romania
-                  </div>
-                  <div className="h5 mt-4">
-                    <i className="ni business_briefcase-24 mr-2" />
-                    Solution Manager - Creative Tim Officer
-                  </div>
-                  <div>
-                    <i className="ni education_hat mr-2" />
-                    University of Computer Science
-                  </div>
-                </div>
-              </CardBody>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <h5 className="h3 mb-0">Progress track</h5>
-              </CardHeader>
-
-              <CardBody>
-                <ListGroup className="list my--3" flush>
-                  <ListGroupItem className="px-0">
-                    <Row className="align-items-center">
-                      <Col className="col-auto">
-                        <a
-                          className="avatar rounded-circle"
-                          href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <img
-                            alt="..."
-                            src={
-                              require("assets/img/theme/bootstrap.jpg").default
-                            }
-                          />
-                        </a>
-                      </Col>
-                      <div className="col">
-                        <h5>Argon Design System</h5>
-                        <Progress
-                          className="progress-xs mb-0"
-                          max="100"
-                          value="60"
-                          color="warning"
-                        />
-                      </div>
-                    </Row>
-                  </ListGroupItem>
-                  <ListGroupItem className="px-0">
-                    <Row className="align-items-center">
-                      <Col className="col-auto">
-                        <a
-                          className="avatar rounded-circle"
-                          href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <img
-                            alt="..."
-                            src={
-                              require("assets/img/theme/angular.jpg").default
-                            }
-                          />
-                        </a>
-                      </Col>
-                      <div className="col">
-                        <h5>Angular Now UI Kit PRO</h5>
-                        <Progress
-                          className="progress-xs mb-0"
-                          max="100"
-                          value="100"
-                          color="success"
-                        />
-                      </div>
-                    </Row>
-                  </ListGroupItem>
-                  <ListGroupItem className="px-0">
-                    <Row className="align-items-center">
-                      <Col className="col-auto">
-                        <a
-                          className="avatar rounded-circle"
-                          href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <img
-                            alt="..."
-                            src={require("assets/img/theme/sketch.jpg").default}
-                          />
-                        </a>
-                      </Col>
-                      <div className="col">
-                        <h5>Black Dashboard</h5>
-                        <Progress
-                          className="progress-xs mb-0"
-                          max="100"
-                          value="72"
-                          color="danger"
-                        />
-                      </div>
-                    </Row>
-                  </ListGroupItem>
-                  <ListGroupItem className="px-0">
-                    <Row className="align-items-center">
-                      <Col className="col-auto">
-                        <a
-                          className="avatar rounded-circle"
-                          href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <img
-                            alt="..."
-                            src={require("assets/img/theme/react.jpg").default}
-                          />
-                        </a>
-                      </Col>
-                      <div className="col">
-                        <h5>React Material Dashboard</h5>
-                        <Progress
-                          className="progress-xs mb-0"
-                          max="100"
-                          value="90"
-                          color="info"
-                        />
-                      </div>
-                    </Row>
-                  </ListGroupItem>
-                  <ListGroupItem className="px-0">
-                    <Row className="align-items-center">
-                      <Col className="col-auto">
-                        <a
-                          className="avatar rounded-circle"
-                          href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <img
-                            alt="..."
-                            src={require("assets/img/theme/vue.jpg").default}
-                          />
-                        </a>
-                      </Col>
-                      <div className="col">
-                        <h5>Vue Paper UI Kit PRO</h5>
-                        <Progress
-                          className="progress-xs mb-0"
-                          max="100"
-                          value="100"
-                          color="success"
-                        />
-                      </div>
-                    </Row>
-                  </ListGroupItem>
-                </ListGroup>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col className="order-xl-1" xl="8">
-            <Row>
-              <Col lg="6">
-                <Card className="bg-gradient-success border-0">
-                  <CardBody>
-                    <Row>
-                      <div className="col">
-                        <CardTitle
-                          className="text-uppercase text-muted mb-0 text-white"
-                          tag="h5"
-                        >
-                          Total traffic
-                        </CardTitle>
-                        <span className="h2 font-weight-bold mb-0 text-white">
-                          350,897
-                        </span>
-                      </div>
-                      <Col className="col-auto">
-                        <div className="icon icon-shape bg-white text-dark rounded-circle shadow">
-                          <i className="ni ni-active-40" />
-                        </div>
-                      </Col>
-                    </Row>
-                    <p className="mt-3 mb-0 text-sm">
-                      <span className="text-white mr-2">
-                        <i className="fa fa-arrow-up" />
-                        3.48%
-                      </span>
-                      <span className="text-nowrap text-light">
-                        Since last month
-                      </span>
-                    </p>
-                  </CardBody>
-                </Card>
-              </Col>
-              <Col lg="6">
-                <Card className="bg-gradient-danger border-0" tag="h5">
-                  <CardBody>
-                    <Row>
-                      <div className="col">
-                        <CardTitle className="text-uppercase text-muted mb-0 text-white">
-                          Performance
-                        </CardTitle>
-                        <span className="h2 font-weight-bold mb-0 text-white">
-                          49,65%
-                        </span>
-                      </div>
-                      <Col className="col-auto">
-                        <div className="icon icon-shape bg-white text-dark rounded-circle shadow">
-                          <i className="ni ni-spaceship" />
-                        </div>
-                      </Col>
-                    </Row>
-                    <p className="mt-3 mb-0 text-sm">
-                      <span className="text-white mr-2">
-                        <i className="fa fa-arrow-up" />
-                        3.48%
-                      </span>
-                      <span className="text-nowrap text-light">
-                        Since last month
-                      </span>
-                    </p>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
+      <GradientEmptyHeader name="Groups"  />
+      <Container className="mt--6" fluid>    
+        <Row>     
+          <Col className="order-xl-1" xl="12">
             <Card>
               <CardHeader>
                 <Row className="align-items-center">
                   <Col xs="8">
-                    <h3 className="mb-0">Edit profile</h3>
-                  </Col>
-                  <Col className="text-right" xs="4">
-                    <Button
-                      color="primary"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                      size="sm"
-                    >
-                      Settings
-                    </Button>
+                    <h3 className="mb-0">Group Details</h3>
+                  </Col>                
+                </Row>
+                <Row className="align-items-center py-4">              
+                  <Col lg="12" xs="7" className="text-right">
+
+                    {group && group.active ? <Button
+                          type="button"
+                          color="danger"
+                          onClick={deactivateGroup}                  
+                        >
+                          Deactivate Group
+                        </Button> : <Button
+                          type="button"
+                          color="success"
+                          onClick={deactivateGroup}                  
+                        >
+                          Activate Group
+                        </Button> 
+                        }
+                      
+
+                        <Button
+                          type="button"
+                          color="info"
+                          onClick={backToSearch}                  
+                        >
+                          Back to Search
+                        </Button>                     
                   </Col>
                 </Row>
               </CardHeader>
+
               <CardBody>
+              {group && 
                 <Form>
                   <h6 className="heading-small text-muted mb-4">
-                    User information
+                   Group Details
                   </h6>
-                  <div className="pl-lg-4">
-                    <Row>
-                      <Col lg="6">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-username"
-                          >
-                            Username
-                          </label>
-                          <Input
-                            defaultValue="lucky.jesse"
-                            id="input-username"
-                            placeholder="Username"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="6">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-email"
-                          >
-                            Email address
-                          </label>
-                          <Input
-                            id="input-email"
-                            placeholder="jesse@example.com"
-                            type="email"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
+                  <div className="pl-lg-4">                    
                     <Row>
                       <Col lg="6">
                         <FormGroup>
@@ -395,13 +231,13 @@ function EditGroupPage() {
                             className="form-control-label"
                             htmlFor="input-first-name"
                           >
-                            First name
+                            Group ID
                           </label>
-                          <Input
-                            defaultValue="Lucky"
+                          <Input                            
                             id="input-first-name"
-                            placeholder="First name"
-                            type="text"
+                            value={group.id}
+                            disabled = {true}       
+                            type="text"                            
                           />
                         </FormGroup>
                       </Col>
@@ -411,114 +247,190 @@ function EditGroupPage() {
                             className="form-control-label"
                             htmlFor="input-last-name"
                           >
-                            Last name
+                            Group Name
                           </label>
-                          <Input
-                            defaultValue="Jesse"
+                          <Input                           
                             id="input-last-name"
-                            placeholder="Last name"
+                            value={group.name}
+                            name="groupName"
+                            onChange={handleInputChange}                           
                             type="text"
                           />
                         </FormGroup>
                       </Col>
                     </Row>
+                    <Row>
+                      <Col >
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-username"
+                          >
+                            Group Description
+                          </label>
+                          <Input                           
+                            id="input-last-name"
+                            value={group.description}
+                            name="groupDesc"
+                            onChange={handleInputChange}
+                            rows="4"     
+                            type="textarea"
+                          />
+                        </FormGroup>
+                      </Col>
+                   
+                    </Row>
                   </div>
-                  <hr className="my-4" />
-
+                <hr className="my-4" />
+   
+               <Row className="d-flex justify-content-between mx-2">
+               
                   <h6 className="heading-small text-muted mb-4">
-                    Contact information
-                  </h6>
-                  <div className="pl-lg-4">
-                    <Row>
-                      <Col md="12">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-address"
-                          >
-                            Address
-                          </label>
-                          <Input
-                            defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                            id="input-address"
-                            placeholder="Home Address"
-                            type="text"
-                          />
-                        </FormGroup>
+                    MEMBERS
+                  </h6> 
+
+                  <ButtonGroup className="d-flex">
+                    <Button onClick={toggleAddMembers} color='success'>
+                        Add new Members
+                    </Button>
+                    <Button onClick={toggleCurrentMembers} disabled={careMembers.length === 0} color='info'>
+                          {currentMembersCollapse ?"Hide members":  "Show members"} ({careMembers.length} members)
+                    </Button>
+                  </ButtonGroup>    
+
+                </Row>
+
+                <Row>
+                    <Col lg="12">
+                    {/* <MembersTableComps data={group.members} /> */}
+                      <Collapse isOpen={addMembersCollapse} >
+                        <AddMemberPanel 
+                          onchangeRole={ (e) => console.log(e)}
+                          onchangeCountry={(e) => console.log(e)}
+                          onchangeBunit={(e) => console.log(e)}
+                          onSelectCareMember={(e) => console.log(e)}                        
+                        />
+                      </Collapse>
+                      <Collapse isOpen={currentMembersCollapse} >
+                      <Card>
+                            <CardHeader>
+                              <h3 className="mb-0">Group members</h3>
+                              <p className="text-sm mb-0">Care Members</p>
+                            </CardHeader>
+                      
+                            <ToolkitProvider
+                              data={careMembers}
+                              keyField="firstName"
+                              columns={[
+                                {
+                                  dataField: 'firstName',
+                                  text: 'First Name',
+                                  hidden: true,
+                                },
+                                {
+                                  dataField: 'lastName',
+                                  text: 'lastName',
+                                  hidden: true,
+                                },
+                                {
+                                  dataField: 'internationalName',
+                                  text: 'int Name',
+                                  sort: true,
+                                },
+                                {
+                                  dataField: 'title',
+                                  text: 'title',
+                                  sort: true,
+                                  style: { width: '50px' },
+                                },
+                                {
+                                  dataField: 'businessUnit',
+                                  text: 'bUnit',
+                                  sort: true,
+                                  style: { width: '50px' },
+                                },
+                                {
+                                  dataField: 'companyCode',
+                                  text: 'companyCode',
+                                  sort: true,
+                                  style: { width: '50px' },
+                                },
+                                {
+                                  dataField: 'costCenter',
+                                  text: 'costCenter',
+                                  sort: true,
+                                },
+                                {
+                                  dataField: 'country',
+                                  text: 'country',
+                                  sort: true,
+                                },
+                                {
+                                  dataField: "hiringDate",
+                                  text: "hiringDate",
+                                  sort: true,
+                                },
+                                {
+                                  dataField: 'action',
+                                  text: '',
+                                  formatter: formatActionButtonCell,
+                                },
+                              ]}
+                              search
+                            >
+                              {(props) => (
+                                <> 
+                                <div className="py-4 table-responsive">
+
+                                  <div
+                                    id="datatable-basic_filter"
+                                    className="dataTables_filter px-4 pb-1"
+                                  >
+                                  <label>
+                                        Search:
+                                        <SearchBar
+                                          className="form-control-sm"
+                                          placeholder="Filter results"
+                                          {...props.searchProps}
+                                        />
+                                      </label>
+                                  </div>
+                                                    
+                                  <BootstrapTable
+                                    {...props.baseProps}
+                                    bootstrap4={true}
+                                    pagination={pagination}
+                                    bordered={false}
+                                  />
+                                </div>
+                                </>
+                              )}
+                            </ToolkitProvider>
+                          </Card>
+                      </Collapse>
                       </Col>
                     </Row>
-                    <Row>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-city"
-                          >
-                            City
-                          </label>
-                          <Input
-                            defaultValue="New York"
-                            id="input-city"
-                            placeholder="City"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-country"
-                          >
-                            Country
-                          </label>
-                          <Input
-                            defaultValue="United States"
-                            id="input-country"
-                            placeholder="Country"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-country"
-                          >
-                            Postal code
-                          </label>
-                          <Input
-                            id="input-postal-code"
-                            placeholder="Postal code"
-                            type="number"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                  </div>
+                 
+
                   <hr className="my-4" />
 
-                  <h6 className="heading-small text-muted mb-4">About me</h6>
                   <div className="pl-lg-4">
-                    <FormGroup>
-                      <label className="form-control-label">About Me</label>
-                      <Input
-                        placeholder="A few words about you ..."
-                        rows="4"
-                        type="textarea"
-                        defaultValue="A beautiful premium dashboard for Bootstrap 4."
-                      />
-                    </FormGroup>
+                  <Row>
+                    <Button color="primary" onClick={() => handleSaveClick()}> Save</Button>
+                    <Button color="danger" onClick={() => handleSaveClick()}> Delete group</Button>
+                 </Row>
                   </div>
-                </Form>
+                </Form>}
               </CardBody>
             </Card>
           </Col>
         </Row>
+
+      
       </Container>
     </>
   );
 }
+
 
 export default EditGroupPage;
