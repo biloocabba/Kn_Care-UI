@@ -1,57 +1,41 @@
-import http from './http-common'
-import { careMembersData } from '../mock-data/careMembers.js'
-import { categoriesData } from '../mock-data/categories.js'
+import http from './http-common';
+import { careMembersData } from '../mock-data/careMembers.js';
+// import {
+//   addLastNameFilter,
+//   addCountryFilter,
+//   addBusinessUnitFilter,
+// } from 'utils/filters';
+// import { fetchFilteredData } from 'utils/queries';
 
-const getAllCareMembers = () => {
-  return {
-    data:careMembersData
-  };
-};
+// this search logic is now in searchWithFilters.js function
+// const searchCareMembers = async queryParams => {
+//   const lastName = addLastNameFilter(queryParams.get('lastName'));
+//   const country = addCountryFilter(queryParams.get('countryId'));
+//   const businessUnit = await addBusinessUnitFilter(
+//     queryParams.get('businessUnitId'),
+//   );
 
-const searchCareMembers = (queryParams) => {
+//   const params = {
+//     lastName,
+//     country,
+//     businessUnit,
+//   };
 
-  let result= careMembersData.filter((careMember) => {
-   
-    /*
-      if (queryParams && queryParams.get('lastName') && 
-        careMember.lastName!==queryParams.get('lastName')){
-        return false;
-      }
+//   const { data } = await fetchFilteredData('*', 'careMembers', params);
 
-      if (queryParams && queryParams.get('countryId')){ 
-        const countryCode = queryParams.get('countryId')
-        const countryObj =categoriesData.countryListAllIsoData.find(country => country.code3===countryCode)
+//   return {
+//     data,
+//   };
+// };
 
-        if(careMember.country!==countryObj.name){
-          return false;
-        }            
-      }
-
-      if (queryParams && queryParams.get('businessUnitId')) {
-        const bunitId =parseInt(queryParams.get('businessUnitId'));
-        const businessUnitObj =categoriesData.businessUnits.find(bunit => bunit.id===bunitId);     
-
-        if(careMember.businessUnit!==businessUnitObj.name){
-          return false;
-        }        
-      }
-      */
-      return true
-  })
-
-  return {
-    data:result
-  }; 
-};
-
-const create = (member) => {
+const create = member => {
   careMembersData.push(member);
-  return {data:member}
-}
+  return { data: member };
+};
 
 const getByRegion = region => {
-  return http.get(`/members/region=${region}`)
-}
+  return http.get(`/members/region=${region}`);
+};
 
 /**  */
 /*
@@ -73,13 +57,10 @@ const getByRegion = region => {
 
 */
 
-
 const careMemberService = {
   create,
-  getAllCareMembers,
-  searchCareMembers
-}
+  // searchCareMembers,
+  getByRegion,
+};
 
-
-
-export default careMemberService
+export default careMemberService;

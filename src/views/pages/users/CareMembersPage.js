@@ -14,28 +14,40 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useState } from "react";
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory from "react-bootstrap-table2-paginator";
-import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import React, { useState } from 'react';
+import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory from 'react-bootstrap-table2-paginator';
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
+import { searchCareMembers } from '../../../actions/careMembers';
 import {
-  searchCareMembers
-} from "../../../actions/careMembers";
-import { Button, Card, Col, CardBody, CardHeader, Container, Input, Row,FormGroup } from 'reactstrap'
-import Select from "react-select";
+  Button,
+  Card,
+  Col,
+  CardBody,
+  CardHeader,
+  Container,
+  Input,
+  Row,
+  FormGroup,
+} from 'reactstrap';
+import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
-import ReactDatetime from "react-datetime";
+import ReactDatetime from 'react-datetime';
 
-import ReactBSAlert from 'react-bootstrap-sweetalert'
-import GradientEmptyHeader from "components/Headers/GradientEmptyHeader.js";
-import { useDispatch, useSelector } from  "react-redux";
+import ReactBSAlert from 'react-bootstrap-sweetalert';
+import GradientEmptyHeader from 'components/Headers/GradientEmptyHeader.js';
+import { useDispatch, useSelector } from 'react-redux';
 
 const pagination = paginationFactory({
   page: 1,
   alwaysShowAllBtns: true,
   showTotal: true,
   withFirstAndLast: false,
-  sizePerPageRenderer: ({ options, currSizePerPage, onSizePerPageChange }) => (
+  sizePerPageRenderer: ({
+    options,
+    currSizePerPage,
+    onSizePerPageChange,
+  }) => (
     <div className="dataTables_length" id="datatable-basic_length">
       <label>
         Show{' '}
@@ -44,7 +56,7 @@ const pagination = paginationFactory({
             name="datatable-basic_length"
             aria-controls="datatable-basic"
             className="form-control form-control-sm"
-            onChange={(e) => onSizePerPageChange(e.target.value)}
+            onChange={e => onSizePerPageChange(e.target.value)}
           >
             <option value="10">10</option>
             <option value="25">25</option>
@@ -56,90 +68,94 @@ const pagination = paginationFactory({
       </label>
     </div>
   ),
-})
+});
 
-const { SearchBar } = Search
+const { SearchBar } = Search;
 
 function CareMembersPage(props) {
-
   const careMembers = useSelector(state => state.careMembers);
   const dispatch = useDispatch();
 
-
-  const businessUnits = useSelector( (state) => {
-    return state.categories.businessUnits.map(bunit => {return {"value": bunit.id, "label":bunit.name}})
+  const businessUnits = useSelector(state => {
+    return state.categories.businessUnits.map(bunit => {
+      return { value: bunit.id, label: bunit.name };
+    });
   });
 
-  const countries = useSelector( (state) => {
-    return state.categories.countryListAllIsoData.map(country => {return {"value": country.code3, "label":country.name}})
+  const countries = useSelector(state => {
+    return state.categories.countryListAllIsoData.map(country => {
+      return { value: country.code3, label: country.name };
+    });
   });
 
-  const careRoles = useSelector( (state) => {
-    return state.categories.careRoles.map(role => {return {"value": role.id, "label":role.name}})
+  const careRoles = useSelector(state => {
+    return state.categories.careRoles.map(role => {
+      return { value: role.id, label: role.name };
+    });
   });
 
-  const groups =  useSelector( (state) => {
-    return state.groups.map(group => {return {"value": group.id, "label":group.name}})
+  const groups = useSelector(state => {
+    return state.groups.map(group => {
+      return { value: group.id, label: group.name };
+    });
   });
-  
 
-  const [searchRole, setSearchRole] = useState("");
-  const [searchLastName, setSearchLastName] = useState("");
-  const [searchBusinessUnit, setSearchBusinessUnit] = useState("");
-  const [searchCountry, setSearchCountry] = useState("");
-  const [searchGroup, setSearchGroup] = useState("");  
+  const [searchRole, setSearchRole] = useState('');
+  const [searchLastName, setSearchLastName] = useState('');
+  const [searchBusinessUnit, setSearchBusinessUnit] = useState('');
+  const [searchCountry, setSearchCountry] = useState('');
+  const [searchGroup, setSearchGroup] = useState('');
   const [searchOnBoardDateFrom, setSearchOnBoardDateFrom] = useState(null);
-  
+
   const [searchOnBoardDateTo, setSearchOnBoardDateTo] = useState(null);
-  const [searchOffboardingDateFrom, setSearchOffboardingDateFrom] = useState(null);
-  const [searchOffboardingDateTo, setSearchOffboardingDateTo] = useState(null);
+  const [searchOffboardingDateFrom, setSearchOffboardingDateFrom] =
+    useState(null);
+  const [searchOffboardingDateTo, setSearchOffboardingDateTo] =
+    useState(null);
 
-
-  const onChangeSearchOnboardingDateFrom = (dateAsMoment) => {    
+  const onChangeSearchOnboardingDateFrom = dateAsMoment => {
     setSearchRole(dateAsMoment.format('D-MM-YYYY'));
   };
 
-  const onChangeSearchLastName = e => {  
+  const onChangeSearchLastName = e => {
     const searchLastName = e.target.value;
     setSearchLastName(searchLastName);
   };
 
-  // const onChangeSearchOnboardingDateFrom = (dateAsMoment) => {    
+  // const onChangeSearchOnboardingDateFrom = (dateAsMoment) => {
   //   setSearchOnBoardDateFrom(dateAsMoment.format('D-MM-YYYY'));
   // };
 
-  const onChangeSearchOnboardingDateTo = (dateAsMoment) => {    
+  const onChangeSearchOnboardingDateTo = dateAsMoment => {
     setSearchOnBoardDateTo(dateAsMoment.format('D-MM-YYYY'));
   };
 
-  const onChangeSearchOffboardingDateFrom = (dateAsMoment) => {    
+  const onChangeSearchOffboardingDateFrom = dateAsMoment => {
     setSearchOffboardingDateFrom(dateAsMoment.format('D-MM-YYYY'));
   };
 
-  const onChangeSearchOffboardingDateTo = (dateAsMoment) => {    
+  const onChangeSearchOffboardingDateTo = dateAsMoment => {
     setSearchOffboardingDateTo(dateAsMoment.format('D-MM-YYYY'));
   };
-  
-    const findByAllParameters = () => {
-    let filters ={    
+
+  const findByAllParameters = () => {
+    let filters = {
       lastName: searchLastName,
       businessUnitId: searchBusinessUnit,
-      countryId:searchCountry,    
-      onboardDateFrom:searchOnBoardDateFrom,
-      onboardDateTo:searchOnBoardDateTo,
-      offboardingDateFrom:searchOffboardingDateFrom,
-      offboardingDateTo:searchOffboardingDateTo
-    }
+      countryIsoCode3: searchCountry,
+      onboardDateFrom: searchOnBoardDateFrom,
+      onboardDateTo: searchOnBoardDateTo,
+      offboardingDateFrom: searchOffboardingDateFrom,
+      offboardingDateTo: searchOffboardingDateTo,
+    };
     dispatch(searchCareMembers(filters));
-  }
+  };
 
-
-
-  const rowDataDetails = (e) => {
+  const rowDataDetails = e => {
     //console.log(e.target);
-    var { id } = e.target
-    props.history.push('/admin/users/care-member-details/'+ id)
-  }
+    var { id } = e.target;
+    props.history.push('/admin/users/care-member-details/' + id);
+  };
 
   const formatActionButtonCell = (cell, row) => {
     return (
@@ -168,210 +184,201 @@ function CareMembersPage(props) {
           </span>
         </Button>
       </>
-    )
-  }
+    );
+  };
 
-  const [alert, setAlert] = React.useState(null)
-
-  
+  const [alert, setAlert] = React.useState(null);
 
   return (
     <>
       {alert}
       <GradientEmptyHeader name="Employees" />
       <Container className="mt--6" fluid>
-      <Row>    
-        <div className="col">
-            <Card >
+        <Row>
+          <div className="col">
+            <Card>
               <CardHeader>
                 <h3 className="mb-0">Search Care Members</h3>
                 <p className="text-sm mb-0">Filters</p>
               </CardHeader>
               <CardBody>
-                   <Row>
-               <Col md="3">
-               <FormGroup>
-                  <label
-                    className="form-control-label"
-                    htmlFor="example3cols2Input"
-                  >
-                  Role
-                  </label>
-                  <Select
-                      id="group"
-                      components = {makeAnimated()}
-                      options = {careRoles}
-                      onChange = {item => setSearchRole(item.value)}
-                    />
-                   </FormGroup>    
-              </Col>
-              <Col md="3">
-                <FormGroup>
-                  <label
-                    className="form-control-label"
-                    htmlFor="businessUnits"
-                  >
-                    Business Units
-                  </label>
-                  <Select
-                      id="businessUnits"
-                      components = {makeAnimated()}
-                      options = {businessUnits}
-                      onChange = {item => setSearchBusinessUnit(item.value)}
-                    />
-                </FormGroup>
-              </Col>
-              <Col md="3">
-                <FormGroup>
-                  <label
-                    className="form-control-label"
-                    htmlFor="country"
-                  >
-                    Countries
-                  </label>
-                  <Select
-                      id="country"
-                      components = {makeAnimated()}
-                      options = {countries}
-                      onChange = {item => setSearchCountry(item.value)}
-                    />
-                </FormGroup>
-              </Col>
-              <Col md="3">
-                <FormGroup>
-                  <label
-                    className="form-control-label"
-                    htmlFor="group"
-                  >
-                   Group
-                  </label>
-                  <Select
-                      id="group"
-                      components = {makeAnimated()}
-                      options = {groups}
-                      onChange = {item => setSearchGroup(item.value)}
-                    />
-                </FormGroup>
-              </Col> 
-              </Row>
+                <Row>
+                  <Col md="3">
+                    <FormGroup>
+                      <label
+                        className="form-control-label"
+                        htmlFor="example3cols2Input"
+                      >
+                        Role
+                      </label>
+                      <Select
+                        id="group"
+                        components={makeAnimated()}
+                        options={careRoles}
+                        onChange={item => setSearchRole(item.value)}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md="3">
+                    <FormGroup>
+                      <label
+                        className="form-control-label"
+                        htmlFor="businessUnits"
+                      >
+                        Business Units
+                      </label>
+                      <Select
+                        id="businessUnits"
+                        components={makeAnimated()}
+                        options={businessUnits}
+                        onChange={item =>
+                          setSearchBusinessUnit(item.value)
+                        }
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md="3">
+                    <FormGroup>
+                      <label
+                        className="form-control-label"
+                        htmlFor="country"
+                      >
+                        Countries
+                      </label>
+                      <Select
+                        id="country"
+                        components={makeAnimated()}
+                        options={countries}
+                        onChange={item => setSearchCountry(item.value)}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md="3">
+                    <FormGroup>
+                      <label
+                        className="form-control-label"
+                        htmlFor="group"
+                      >
+                        Group
+                      </label>
+                      <Select
+                        id="group"
+                        components={makeAnimated()}
+                        options={groups}
+                        onChange={item => setSearchGroup(item.value)}
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
 
-              <Row>
-                   
-                <Col md="3">
-                <FormGroup>
-                  <label
-                    className="form-control-label"
-                    htmlFor="lastName"
-                  >
-                    Last name
-                  </label>
-                  <Input
-                    id="lastName"                  
-                    className="form-control"                    
-                    type="text"
-                    placeholder="Last Name"
-                    value={searchLastName}
-                    onChange={onChangeSearchLastName}
-                  />
-                </FormGroup>
-                </Col>
-                <Col md="2">
-                <FormGroup>
-                  <label
-                    className="form-control-label"
-                    htmlFor="example3cols2Input"
-                  >
-                   Onbording from
-                  </label>
-                  <ReactDatetime                   
-                    inputProps={{
-                      placeholder: "From",
-                    }}
-                    onChange={(e) =>
-                      onChangeSearchOnboardingDateFrom(e)
-                    }
-                    timeFormat={false}
-                  />
-                </FormGroup>
-              </Col>
-              <Col md="2">
-              <FormGroup>
-                  <label
-                    className="form-control-label"
-                    htmlFor="example3cols2Input"
-                  >
-                   Onbording to
-                  </label>
-                  <ReactDatetime                   
-                    inputProps={{
-                      placeholder: "To",
-                    }}
-                    onChange={(e) =>
-                      onChangeSearchOnboardingDateTo(e)
-                    }
-                    timeFormat={false}
-                  />   
-                   </FormGroup>            
-              </Col>  
-              <Col md="2">
-              <FormGroup>
-                  <label
-                    className="form-control-label"
-                    htmlFor="example3cols2Input"
-                  >
-                   Offboarded From
-                  </label>
-                  <ReactDatetime                   
-                    inputProps={{
-                      placeholder: "To",
-                    }}
-                    onChange={(e) =>
-                      onChangeSearchOffboardingDateFrom(e)
-                    }
-                    timeFormat={false}
-                  />   
-                   </FormGroup>            
-              </Col>
-              <Col md="2">
-              <FormGroup>
-                  <label
-                    className="form-control-label"
-                    htmlFor="example3cols2Input"
-                  >
-                   Offboarded to
-                  </label>
-                  <ReactDatetime                   
-                    inputProps={{
-                      placeholder: "To",
-                    }}
-                    onChange={(e) =>
-                      onChangeSearchOffboardingDateTo(e)
-                    }
-                    timeFormat={false}
-                  />   
-                   </FormGroup>            
-              </Col> 
-                            
-              <Col md="1"> 
-                <FormGroup className="text-right">            
+                <Row>
+                  <Col md="3">
+                    <FormGroup>
+                      <label
+                        className="form-control-label"
+                        htmlFor="lastName"
+                      >
+                        Last name
+                      </label>
+                      <Input
+                        id="lastName"
+                        className="form-control"
+                        type="text"
+                        placeholder="Last Name"
+                        value={searchLastName}
+                        onChange={onChangeSearchLastName}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md="2">
+                    <FormGroup>
+                      <label
+                        className="form-control-label"
+                        htmlFor="example3cols2Input"
+                      >
+                        Onbording from
+                      </label>
+                      <ReactDatetime
+                        inputProps={{
+                          placeholder: 'From',
+                        }}
+                        onChange={e => onChangeSearchOnboardingDateFrom(e)}
+                        timeFormat={false}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md="2">
+                    <FormGroup>
+                      <label
+                        className="form-control-label"
+                        htmlFor="example3cols2Input"
+                      >
+                        Onbording to
+                      </label>
+                      <ReactDatetime
+                        inputProps={{
+                          placeholder: 'To',
+                        }}
+                        onChange={e => onChangeSearchOnboardingDateTo(e)}
+                        timeFormat={false}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md="2">
+                    <FormGroup>
+                      <label
+                        className="form-control-label"
+                        htmlFor="example3cols2Input"
+                      >
+                        Offboarded From
+                      </label>
+                      <ReactDatetime
+                        inputProps={{
+                          placeholder: 'To',
+                        }}
+                        onChange={e =>
+                          onChangeSearchOffboardingDateFrom(e)
+                        }
+                        timeFormat={false}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md="2">
+                    <FormGroup>
+                      <label
+                        className="form-control-label"
+                        htmlFor="example3cols2Input"
+                      >
+                        Offboarded to
+                      </label>
+                      <ReactDatetime
+                        inputProps={{
+                          placeholder: 'To',
+                        }}
+                        onChange={e => onChangeSearchOffboardingDateTo(e)}
+                        timeFormat={false}
+                      />
+                    </FormGroup>
+                  </Col>
+
+                  <Col md="1">
+                    <FormGroup className="text-right">
                       <button
-                        style={{marginTop:'32px', height:'40px'}}                       
+                        style={{ marginTop: '32px', height: '40px' }}
                         className="btn btn-info"
                         type="button"
                         onClick={findByAllParameters}
                       >
                         Search
-                      </button>   
-                  </FormGroup>                 
-                </Col>
-              
-            </Row>
+                      </button>
+                    </FormGroup>
+                  </Col>
+                </Row>
               </CardBody>
-              </Card>                   
-          </div>    
-      </Row> 
-       
-       
+            </Card>
+          </div>
+        </Row>
+
         <Row>
           <div className="col">
             <Card>
@@ -392,7 +399,7 @@ function CareMembersPage(props) {
                   },
                   {
                     dataField: 'firstName',
-                    text: 'First Name',                   
+                    text: 'First Name',
                   },
                   {
                     dataField: 'lastName',
@@ -446,20 +453,20 @@ function CareMembersPage(props) {
                 ]}
                 search
               >
-                {(props) => (
+                {props => (
                   <div className="py-4 table-responsive">
-                      <div
+                    <div
                       id="datatable-basic_filter"
                       className="dataTables_filter px-4 pb-1"
                     >
-                    <label>
-                          Search:
-                          <SearchBar
-                            className="form-control-sm"
-                            placeholder="Filter results"
-                            {...props.searchProps}
-                          />
-                        </label>
+                      <label>
+                        Search:
+                        <SearchBar
+                          className="form-control-sm"
+                          placeholder="Filter results"
+                          {...props.searchProps}
+                        />
+                      </label>
                     </div>
 
                     <BootstrapTable
@@ -476,7 +483,7 @@ function CareMembersPage(props) {
         </Row>
       </Container>
     </>
-  )
+  );
 }
 
-export default CareMembersPage
+export default CareMembersPage;

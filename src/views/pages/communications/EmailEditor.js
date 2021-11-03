@@ -14,19 +14,19 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
-import Select from "react-select";
-import AsyncSelect from "react-select/async";
+import Select from 'react-select';
+import AsyncSelect from 'react-select/async';
 import makeAnimated from 'react-select/animated';
 
-import SimpleHeader from "components/Headers/SimpleHeader.js";
+import SimpleHeader from 'components/Headers/SimpleHeader.js';
 
-import emailService from "services/emailService";
+import emailService from 'services/EmailService';
 
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 // reactstrap components
 import {
@@ -46,11 +46,10 @@ import {
   Container,
   Row,
   Col,
-} from "reactstrap";
+} from 'reactstrap';
 // core components
 
 function EmailEditor(props) {
-
   let history = useHistory();
   const [emailState, setEmailState] = useState(props.initialEmailState);
 
@@ -58,27 +57,27 @@ function EmailEditor(props) {
   //fetching groups and individual recipients is unavailable
   //as of August 10th
   const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "mango", label: "Mango" },
-    { value: "orange", label: "Orange" },
-    { value: "passionfruit", label: "Passionfruit" }
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' },
+    { value: 'mango', label: 'Mango' },
+    { value: 'orange', label: 'Orange' },
+    { value: 'passionfruit', label: 'Passionfruit' },
   ];
 
   const handleSend = () => {
     emailService.sendMail(emailState);
-    history.push("/admin/search-email");
-  }
+    history.push('/admin/search-email');
+  };
 
   const handleSaveAsDraft = () => {
     emailService.saveAsDraft(emailState);
-    history.push("/admin/search-email");
-  }
+    history.push('/admin/search-email');
+  };
 
   const handleDiscard = () => {
-    history.push("/admin/search-email");
-  }
+    history.push('/admin/search-email');
+  };
 
   return (
     <>
@@ -133,16 +132,21 @@ function EmailEditor(props) {
                           >
                             Recipient
                           </label>
-                          <Select 
-                          id="input-email"
-                          components = {makeAnimated()} 
-                          isMulti 
-                          options = {options}
-                          onChange={e => {
-                            let recipientsArray = [];
-                            e.forEach(element => recipientsArray.push(element.value));
-                            setEmailState({...emailState, recipients:recipientsArray});
-                          }}
+                          <Select
+                            id="input-email"
+                            components={makeAnimated()}
+                            isMulti
+                            options={options}
+                            onChange={e => {
+                              let recipientsArray = [];
+                              e.forEach(element =>
+                                recipientsArray.push(element.value),
+                              );
+                              setEmailState({
+                                ...emailState,
+                                recipients: recipientsArray,
+                              });
+                            }}
                           />
                         </FormGroup>
                       </Col>
@@ -154,18 +158,23 @@ function EmailEditor(props) {
                             className="form-control-label"
                             htmlFor="input-recipient-group"
                           >
-                          Recipient Group
+                            Recipient Group
                           </label>
                           <Select
-                          id="input-recipient-group"
-                          components = {makeAnimated()}
-                          isMulti
-                          options = {options}
-                          onChange = {e => {
-                            let recipientGroupsArray = [];
-                            e.forEach(element => recipientGroupsArray.push(element.value));
-                            setEmailState({...emailState, recipientGroups:recipientGroupsArray});
-                          }}
+                            id="input-recipient-group"
+                            components={makeAnimated()}
+                            isMulti
+                            options={options}
+                            onChange={e => {
+                              let recipientGroupsArray = [];
+                              e.forEach(element =>
+                                recipientGroupsArray.push(element.value),
+                              );
+                              setEmailState({
+                                ...emailState,
+                                recipientGroups: recipientGroupsArray,
+                              });
+                            }}
                           />
                         </FormGroup>
                       </Col>
@@ -174,20 +183,30 @@ function EmailEditor(props) {
                   <hr className="my-4" />
                   <div className="pl-lg-4">
                     <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="email-subject"
-                          >
-                          Subject
-                          </label>
-                          <Input
-                            id="email-subject"
-                            type="text"
-                            value={emailState.subject}
-                            onChange={e => setEmailState({...emailState, subject:e.target.value})}
-                          />
+                      <label
+                        className="form-control-label"
+                        htmlFor="email-subject"
+                      >
+                        Subject
+                      </label>
+                      <Input
+                        id="email-subject"
+                        type="text"
+                        value={emailState.subject}
+                        onChange={e =>
+                          setEmailState({
+                            ...emailState,
+                            subject: e.target.value,
+                          })
+                        }
+                      />
                     </FormGroup>
-                    <ReactQuill value={emailState.content} onChange={e=>setEmailState({...emailState, content:e})}/>
+                    <ReactQuill
+                      value={emailState.content}
+                      onChange={e =>
+                        setEmailState({ ...emailState, content: e })
+                      }
+                    />
                   </div>
                 </Form>
               </CardBody>

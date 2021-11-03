@@ -1,58 +1,33 @@
-import http from './http-common'
-import { employeesData } from '../mock-data/employees.js'
-import { categoriesData } from '../mock-data/categories.js'
+// import {
+//   addCountryFilter,
+//   addLastNameFilter,
+//   addBusinessUnitFilter,
+// } from 'utils/filters';
+// import { fetchFilteredData } from 'utils/queries';
 
+// const searchEmployees = async queryParams => {
+//   const lastName = addLastNameFilter(queryParams.get('lastName'));
+//   const country = addCountryFilter(queryParams.get('countryId'));
+//   const businessUnit = await addBusinessUnitFilter(
+//     queryParams.get('businessUnitId'),
+//   );
 
-const getAllEmployees = () => {
-  return employeesData;
-}
+//   const params = {
+//     lastName,
+//     country,
+//     businessUnit,
+//   };
 
-const searchEmployees =  (queryParams) => { 
- 
-    let result= employeesData.filter((employee) => {
-             
-      if (queryParams && queryParams.get('lastName') && 
-        employee.lastName!==queryParams.get('lastName')){
-        return false;
-      }
+//   const { data } = await fetchFilteredData('*', 'employees', params);
 
-      if (queryParams && queryParams.get('countryId')){ 
-        const countryCode = queryParams.get('countryId')
-        const countryObj =categoriesData.countryListAllIsoData.find(country => country.code3===countryCode)
+//   return { data };
+// };
 
-        if(employee.country!==countryObj.name){
-          return false;
-        }            
-      }
+// const employeeService = {
+//   searchEmployees,
+// };
 
-      if (queryParams && queryParams.get('businessUnitId')) {
-        const bunitId =parseInt(queryParams.get('businessUnitId'));
-        const businessUnitObj =categoriesData.businessUnits.find(bunit => bunit.id===bunitId);     
-
-        if(employee.businessUnit!==businessUnitObj.name){
-          return false;
-        }        
-      }
-   
-      return true
-           
-    })
-
-    return {data: result} 
-};
-
-
-
-
-
-
-const employeeService = {
-  getAllEmployees,
-  searchEmployees
-};
-
-export default employeeService
-
+// export default employeeService;
 
 /** real implementation */
 /*
