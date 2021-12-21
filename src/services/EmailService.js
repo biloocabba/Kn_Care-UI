@@ -16,11 +16,11 @@ const saveAsDraft = (emailState) => {
     return http.post("emails",emailState);
 };
 
-const EmailService = {
+const emailService = {
     getAll,
     getOne,
     saveAsDraft,
     sendMail
 };
 
-export default EmailService;
+export default emailService;

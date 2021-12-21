@@ -23,7 +23,7 @@ import makeAnimated from 'react-select/animated';
 
 import SimpleHeader from 'components/Headers/SimpleHeader.js';
 
-import emailService from 'services/EmailService';
+import emailService from 'services/emailService';
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
